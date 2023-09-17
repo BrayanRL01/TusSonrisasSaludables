@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Idnumber)
             </th>
             <th>
@@ -44,9 +41,6 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Idnumber)
                 </td>
                 <td>
@@ -68,9 +62,9 @@
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
                     @Html.ActionLink("Details", "Details", new { id=item.UserId }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
                 </td>
             </tr>
         }

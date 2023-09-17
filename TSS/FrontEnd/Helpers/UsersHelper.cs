@@ -6,6 +6,7 @@ namespace FrontEnd.Helpers
     public class UsersHelper
     {
         ServiceRepository repository;
+
         public UsersHelper()
         {
             repository = new ServiceRepository();
@@ -14,49 +15,49 @@ namespace FrontEnd.Helpers
         #region GetAll
         public List<VWUserViewModel> GetAllView()
         {
-            List<VWUserViewModel> lista = new List<VWUserViewModel>();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/UsersView/");
+            List<VWUserViewModel> list = new List<VWUserViewModel>();
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Users/GetUsersView");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                lista = JsonConvert.DeserializeObject<List<VWUserViewModel>>(content);
+                list = JsonConvert.DeserializeObject<List<VWUserViewModel>>(content);
             }
-            return lista;
+            return list;
         }
 
-        //public List<VistaUsuarioViewModel> GetAllView()
-        //{
-        //    List<VistaUsuarioViewModel> lista = new List<VistaUsuarioViewModel>();
-        //    HttpResponseMessage responseMessage = repository.GetResponse("api/VistaUsuario/");
-        //    if (responseMessage != null)
-        //    {
-        //        var content = responseMessage.Content.ReadAsStringAsync().Result;
-        //        lista = JsonConvert.DeserializeObject<List<VistaUsuarioViewModel>>(content);
-        //    }
-        //    return lista;
-        //}
         #endregion
 
         #region GetByID
         public VWUserViewModel GetViewByID(int id)
         {
             VWUserViewModel Usuario = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/UsersView/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Users/GetUserView/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             Usuario = JsonConvert.DeserializeObject<VWUserViewModel>(content);
+
+            return Usuario;
+        }
+
+        public UserViewModel GetByID(int id)
+        {
+            UserViewModel Usuario = new();
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Users/GetUser/" + id);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
 
             return Usuario;
         }
         #endregion
 
         #region Update
-        //public UsuarioViewModel Edit(UsuarioViewModel Usuario)
-        //{
-        //    HttpResponseMessage responseMessage = repository.PutResponse("api/Usuario/", Usuario);
-        //    var content = responseMessage.Content.ReadAsStringAsync().Result;
-        //    UsuarioViewModel UsuarioAPI = JsonConvert.DeserializeObject<UsuarioViewModel>(content);
-        //    return UsuarioAPI;
-        //}
+        public UserViewModel Edit(UserViewModel User)
+        {
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Users/PutUser/", User);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            UserViewModel UserAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
+
+            return UserAPI;
+        }
         #endregion
 
         #region Add
@@ -64,12 +65,27 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Users/", Usuario);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Users/PostUser", Usuario);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 UserViewModel UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
                 return UsuarioAPI;
             }
-            catch (Exception ex)
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public UserViewModel AddAdmin(UserViewModel Usuario)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Users/PostAdminUser", Usuario);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                UserViewModel UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
+                return UsuarioAPI;
+            }
+            catch (Exception)
             {
                 throw;
             }
@@ -77,12 +93,12 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Delete
-        //public UsuarioViewModel Delete(int id)
-        //{
-        //    UsuarioViewModel Usuario = new UsuarioViewModel();
-        //    HttpResponseMessage responseMessage = repository.DeleteResponse("api/Usuario/" + id);
-        //    return Usuario;
-        //}
+        public UserViewModel Delete(int id)
+        {
+            UserViewModel User = new UserViewModel();
+            HttpResponseMessage responseMessage = repository.DeleteResponse("api/Users/" + id);
+            return User;
+        }
         #endregion
     }
 }

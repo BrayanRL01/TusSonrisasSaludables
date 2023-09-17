@@ -5,9 +5,9 @@ VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackEnd", "BackEnd\BackEnd.csproj", "{12974253-A0E3-4324-A97C-AC340BB1F324}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{326CEEBA-D8BE-4EBF-A9FE-28CF5D76713D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{326CEEBA-D8BE-4EBF-A9FE-28CF5D76713D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontEnd", "FrontEnd\FrontEnd.csproj", "{EEC6BEEF-0892-4F14-93EA-C456207E6B91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontEnd", "FrontEnd\FrontEnd.csproj", "{EEC6BEEF-0892-4F14-93EA-C456207E6B91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

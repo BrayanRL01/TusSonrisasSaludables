@@ -19,15 +19,15 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Details/5
         public ActionResult Details(int id)
         {
-            VWUserViewModel user = new();
-            user = Helper.GetViewByID(id);
-            return View(user);
+            VWUserViewModel vwuser = new();
+            vwuser = Helper.GetViewByID(id);
+            return View(vwuser);
         }
 
         // GET: UsersController/Create
         public ActionResult Create()
         {
-            UserViewModel user = new UserViewModel();
+            UserViewModel user = new();
             return View(user);
         }
 
@@ -50,16 +50,18 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            UserViewModel user = Helper.GetByID(id);
+            return View(user);
         }
 
         // POST: UsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(UserViewModel user)
         {
             try
             {
+                user = Helper.Edit(user);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -71,16 +73,19 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            VWUserViewModel vwuser = new();
+            vwuser = Helper.GetViewByID(id);
+            return View(vwuser);
         }
 
         // POST: UsersController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(UserViewModel user)
         {
             try
             {
+                user = Helper.Delete(user.UserId);
                 return RedirectToAction(nameof(Index));
             }
             catch

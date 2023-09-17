@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BackEnd.Models;
 using Entities.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Specialized;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BackEnd.Controllers
 {
@@ -17,95 +19,406 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
-        // GET: api/Users
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        //{
-        //    if (_context.Users == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return await _context.Users.FromSqlRaw("EXEC SP_GetAllUsers").ToListAsync();
-        //}
-
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> SP_GetUser(int id)
-        {
-            var users = await _context.VwUsers.FromSqlInterpolated($"EXEC SP_GetUser {id}").ToListAsync();
-
-            var user = users.FirstOrDefault();
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
-
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut]
-        //public async Task<ActionResult<IEumerable<User>>> PutUser(User user)
-        //{
-        //    if (id != user.UserId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(user).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<IEnumerable<User>>> PostUser([FromBody] User user)
-        {
-            return null;
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        #region GetUsers
+        // GET: api/<UsersController>
+        [HttpGet("GetUsersView")]
+        public async Task<ActionResult<IEnumerable<VwUser>>> SP_GetUsersView()
         {
             if (_context.Users == null)
             {
                 return NotFound();
             }
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var users = await _context.VwUsers.FromSqlRaw("EXEC SP_GetAllUsersView").ToListAsync();
+            return users;
         }
 
-        private bool UserExists(int id)
+        [HttpGet("GetUserView/{id}")]
+        public async Task<ActionResult> SP_GetUserView(int id)
         {
-            return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
+            try
+            {
+                var users = await _context.VwUsers.FromSqlInterpolated($"EXEC SP_GetUserView {id}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado el usuario: " + ex.Message);
+            }
         }
+
+        // GET api/<UserController>/5
+        [HttpGet("GetUser/{id}")]
+        public async Task<ActionResult> SP_GetUser(int id)
+        {
+            try
+            {
+                var users = await _context.Users.FromSqlInterpolated($"EXEC SP_GetUser {id}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado el usuario: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region PostUsers
+        [HttpPost("PostAdminUser")]
+        public async Task<ActionResult<User>> PostAdminUser([FromBody] UserModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_CreateAdminUser @TypeID, @GenreID, @ProvinceID, @IDNumber, @Username," +
+                    "@FirstName, @LastName, @BirthDate, @Email," +
+                    "@Phone, @UserAddress, @Password";
+
+                var param = new SqlParameter[]
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@TypeID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.TypeId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@GenreID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.GenreId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@ProvinceID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProvinceId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@IDNumber",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Idnumber
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Username",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@FirstName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.FirstName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@LastName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.LastName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@BirthDate",
+                        SqlDbType  = System.Data.SqlDbType.Date,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.BirthDate
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Email",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Email
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Phone",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PhoneNumber
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@UserAddress",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserAddress
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Password",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PasswordHash
+                    }
+                };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo crear el usuario: " + ex.Message);
+            }
+        }
+
+        // POST api/<UserController>
+        [HttpPost("PostUser")]
+        public async Task<ActionResult<User>> PostUser([FromBody] UserModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_CreateUser @TypeID, @GenreID, @ProvinceID, @IDNumber, @Username," +
+                    "@FirstName, @LastName, @BirthDate, @Email," +
+                    "@Phone, @UserAddress, @Password";
+
+                var param = new SqlParameter[]
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@TypeID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.TypeId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@GenreID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.GenreId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@ProvinceID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProvinceId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@IDNumber",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Idnumber
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Username",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@FirstName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.FirstName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@LastName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.LastName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@BirthDate",
+                        SqlDbType  = System.Data.SqlDbType.Date,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.BirthDate
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Email",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Email
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Phone",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PhoneNumber
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@UserAddress",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserAddress
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Password",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PasswordHash
+                    }
+                };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo crear el usuario: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region PutUsers
+        // PUT api/<UserController>/5
+        [HttpPut("PutUser")]
+        public async Task<ActionResult<User>> PutUser([FromBody] UserModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_EditUser @ID, @TypeID, @GenreID, @ProvinceID, @IDNumber, @Username," +
+                    "@FirstName, @LastName, @BirthDate, @Email," +
+                    "@Phone, @UserAddress, @Password";
+
+                var param = new SqlParameter[]
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@ID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserId
+                    },
+                    new SqlParameter()
+                    {
+                        ParameterName = "@TypeID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.TypeId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@GenreID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.GenreId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@ProvinceID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProvinceId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@IDNumber",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Idnumber
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Username",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@FirstName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.FirstName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@LastName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.LastName
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@BirthDate",
+                        SqlDbType  = System.Data.SqlDbType.Date,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.BirthDate
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Email",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Email
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Phone",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PhoneNumber
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@UserAddress",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserAddress
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Password",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PasswordHash
+                    }
+                };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo editar el usuario: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region DeleteUsers
+        // DELETE api/<UserController>/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteUser {id}");
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo eliminar el usuario: " + ex.Message);
+            }
+        }
+        #endregion
     }
 }
