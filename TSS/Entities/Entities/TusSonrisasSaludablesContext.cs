@@ -31,9 +31,13 @@ namespace Entities.Entities
         public virtual DbSet<ShoppingDetail> ShoppingDetails { get; set; } = null!;
         public virtual DbSet<Specialty> Specialties { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<VwAppointment> VwAppointments { get; set; } = null!;
+        public virtual DbSet<VwBrand> VwBrands { get; set; } = null!;
+        public virtual DbSet<VwCategory> VwCategories { get; set; } = null!;
         public virtual DbSet<VwIdentification> VwIdentifications { get; set; } = null!;
         public virtual DbSet<VwProvince> VwProvinces { get; set; } = null!;
         public virtual DbSet<VwRole> VwRoles { get; set; } = null!;
+        public virtual DbSet<VwSubCategory> VwSubCategories { get; set; } = null!;
         public virtual DbSet<VwUser> VwUsers { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -44,6 +48,12 @@ namespace Entities.Entities
         {
             modelBuilder.Entity<Appointment>(entity =>
             {
+                entity.HasIndex(e => e.StartTime, "UQ__Appointm__18D8086CA2A8DC78")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.EndTime, "UQ__Appointm__C7752F0E1B4797EB")
+                    .IsUnique();
+
                 entity.Property(e => e.AppointmentId).HasColumnName("AppointmentID");
 
                 entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
@@ -59,18 +69,18 @@ namespace Entities.Entities
                 entity.HasOne(d => d.Doctor)
                     .WithMany(p => p.Appointments)
                     .HasForeignKey(d => d.DoctorId)
-                    .HasConstraintName("FK__Appointme__Docto__0D44F85C");
+                    .HasConstraintName("FK__Appointme__Docto__4865BE2A");
 
                 entity.HasOne(d => d.Specialty)
                     .WithMany(p => p.Appointments)
                     .HasForeignKey(d => d.SpecialtyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Appointme__Speci__0E391C95");
+                    .HasConstraintName("FK__Appointme__Speci__4959E263");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Appointments)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Appointme__UserI__0C50D423");
+                    .HasConstraintName("FK__Appointme__UserI__477199F1");
             });
 
             modelBuilder.Entity<Brand>(entity =>
@@ -370,13 +380,10 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Specialty>(entity =>
             {
-                entity.HasKey(e => e.Specialty1)
-                    .HasName("PK__Specialt__2B59E1AE90F17189");
-
                 entity.HasIndex(e => e.SpecialtyName, "UQ__Specialt__7DCA5748A8450E27")
                     .IsUnique();
 
-                entity.Property(e => e.Specialty1).HasColumnName("Specialty");
+                entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
 
                 entity.Property(e => e.SpecialtyName)
                     .HasMaxLength(50)
@@ -461,6 +468,57 @@ namespace Entities.Entities
                     .HasConstraintName("FK__Users__TypeID__69FBBC1F");
             });
 
+            modelBuilder.Entity<VwAppointment>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_Appointments");
+
+                entity.Property(e => e.AppointmentId).HasColumnName("AppointmentID");
+
+                entity.Property(e => e.Doctor)
+                    .HasMaxLength(82)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EndTime).HasColumnType("datetime");
+
+                entity.Property(e => e.SpecialtyName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StartTime).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<VwBrand>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_Brands");
+
+                entity.Property(e => e.BrandId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("BrandID");
+
+                entity.Property(e => e.BrandName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VwCategory>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_Categories");
+
+                entity.Property(e => e.CategoryId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("CategoryID");
+
+                entity.Property(e => e.CategoryName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<VwIdentification>(entity =>
             {
                 entity.HasNoKey();
@@ -503,6 +561,23 @@ namespace Entities.Entities
                     .HasColumnName("RoleID");
 
                 entity.Property(e => e.RoleType)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VwSubCategory>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_SubCategories");
+
+                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+
+                entity.Property(e => e.MainCategory)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.SubCategory)
                     .HasMaxLength(20)
                     .IsUnicode(false);
             });

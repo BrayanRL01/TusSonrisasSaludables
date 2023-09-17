@@ -28,7 +28,7 @@ namespace BackEnd.Controllers
 
         // GET: api/Roles/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetRole(int id)
+        public async Task<ActionResult<Role>> GetRole(int id)
         {
             if (_context.Roles == null)
             {

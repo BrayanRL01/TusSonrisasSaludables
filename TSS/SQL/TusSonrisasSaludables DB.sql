@@ -186,7 +186,7 @@ SELECT SC.CategoryID, MC.CategoryName AS 'MainCategory', SC.CategoryName AS 'Sub
 INNER JOIN Categories MC ON SC.MainCategoryID = MC.CategoryID WHERE SC.MainCategoryID IS NOT NULL
 GO
 
-CREATE OR ALTER VIEW VW_Appointmens AS
+CREATE OR ALTER VIEW VW_Appointments AS
 SELECT AppointmentID, DoctorName + ' ' + FirstName + ' ' + LastName AS 'Doctor', SpecialtyName, StartTime, EndTime FROM Appointments 
 INNER JOIN Doctors ON Appointments.DoctorID = Doctors.DoctorID 
 INNER JOIN Specialties ON Appointments.SpecialtyID = Specialties.SpecialtyID AND Specialties.SpecialtyID = Doctors.SpecialtyID

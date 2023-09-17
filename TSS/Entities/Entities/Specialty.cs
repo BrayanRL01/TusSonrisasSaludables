@@ -11,7 +11,7 @@ namespace Entities.Entities
             Doctors = new HashSet<Doctor>();
         }
 
-        public int Specialty1 { get; set; }
+        public int SpecialtyId { get; set; }
         public string SpecialtyName { get; set; } = null!;
 
         public virtual ICollection<Appointment> Appointments { get; set; }
