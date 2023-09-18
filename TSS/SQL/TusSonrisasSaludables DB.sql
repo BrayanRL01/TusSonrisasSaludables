@@ -481,7 +481,7 @@ PRINT 'Usuario actualizado con éxito.'
 END
 GO
 
-EXEC SP_EditUser 3, 1, 2, 2, '1-1855-0046', 'Brayan', 'Rivas', 'López', '2002/09/24', 
+EXEC SP_EditUser 3, 1, 2, 2, '1-1855-0046', 'Brayan', 'Rivas', 'López', '2003/09/24', 
 'brayan@gmail.com', '8888-8888', 'Al frente del Estadio Nacional', '12345678'
 GO
 
