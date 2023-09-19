@@ -47,6 +47,28 @@ namespace FrontEnd.Controllers
             }
         }
 
+        public ActionResult CreateAdmin()
+        {
+            UserViewModel user = new();
+            return View(user);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateAdmin(UserViewModel user)
+        {
+            try
+            {
+                user = Helper.AddAdmin(user);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         // GET: UsersController/Edit/5
         public ActionResult Edit(int id)
         {
