@@ -6,6 +6,7 @@ namespace FrontEnd.Helpers
     public class UsersHelper
     {
         ServiceRepository repository;
+
         public UsersHelper()
         {
             repository = new ServiceRepository();
