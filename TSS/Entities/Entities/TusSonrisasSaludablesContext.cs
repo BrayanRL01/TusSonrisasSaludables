@@ -34,7 +34,9 @@ namespace Entities.Entities
         public virtual DbSet<VwAppointment> VwAppointments { get; set; } = null!;
         public virtual DbSet<VwBrand> VwBrands { get; set; } = null!;
         public virtual DbSet<VwCategory> VwCategories { get; set; } = null!;
+        public virtual DbSet<VwGenre> VwGenres { get; set; } = null!;
         public virtual DbSet<VwIdentification> VwIdentifications { get; set; } = null!;
+        public virtual DbSet<VwProduct> VwProducts { get; set; } = null!;
         public virtual DbSet<VwProvince> VwProvinces { get; set; } = null!;
         public virtual DbSet<VwRole> VwRoles { get; set; } = null!;
         public virtual DbSet<VwSubCategory> VwSubCategories { get; set; } = null!;
@@ -48,10 +50,10 @@ namespace Entities.Entities
         {
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.HasIndex(e => e.StartTime, "UQ__Appointm__18D8086CA2A8DC78")
+                entity.HasIndex(e => e.StartTime, "UQ__Appointm__18D8086C0E3445A0")
                     .IsUnique();
 
-                entity.HasIndex(e => e.EndTime, "UQ__Appointm__C7752F0E1B4797EB")
+                entity.HasIndex(e => e.EndTime, "UQ__Appointm__C7752F0EFD65BD93")
                     .IsUnique();
 
                 entity.Property(e => e.AppointmentId).HasColumnName("AppointmentID");
@@ -69,23 +71,23 @@ namespace Entities.Entities
                 entity.HasOne(d => d.Doctor)
                     .WithMany(p => p.Appointments)
                     .HasForeignKey(d => d.DoctorId)
-                    .HasConstraintName("FK__Appointme__Docto__4865BE2A");
+                    .HasConstraintName("FK__Appointme__Docto__6D0D32F4");
 
                 entity.HasOne(d => d.Specialty)
                     .WithMany(p => p.Appointments)
                     .HasForeignKey(d => d.SpecialtyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Appointme__Speci__4959E263");
+                    .HasConstraintName("FK__Appointme__Speci__6E01572D");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Appointments)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Appointme__UserI__477199F1");
+                    .HasConstraintName("FK__Appointme__UserI__6C190EBB");
             });
 
             modelBuilder.Entity<Brand>(entity =>
             {
-                entity.HasIndex(e => e.BrandName, "UQ__Brands__2206CE9B15AD1DFE")
+                entity.HasIndex(e => e.BrandName, "UQ__Brands__2206CE9B397F1DD0")
                     .IsUnique();
 
                 entity.Property(e => e.BrandId).HasColumnName("BrandID");
@@ -97,7 +99,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E0946D80BD")
+                entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E0E5047FAB")
                     .IsUnique();
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -111,15 +113,15 @@ namespace Entities.Entities
                 entity.HasOne(d => d.MainCategory)
                     .WithMany(p => p.InverseMainCategory)
                     .HasForeignKey(d => d.MainCategoryId)
-                    .HasConstraintName("FK__Categorie__MainC__793DFFAF");
+                    .HasConstraintName("FK__Categorie__MainC__5DCAEF64");
             });
 
             modelBuilder.Entity<ClinicProcedure>(entity =>
             {
                 entity.HasKey(e => e.ProcedureId)
-                    .HasName("PK__ClinicPr__54C2E50DF4DF3EB4");
+                    .HasName("PK__ClinicPr__54C2E50D7C275BAE");
 
-                entity.HasIndex(e => e.ProcedureName, "UQ__ClinicPr__3950E7D48C899CE8")
+                entity.HasIndex(e => e.ProcedureName, "UQ__ClinicPr__3950E7D42C9F6EBE")
                     .IsUnique();
 
                 entity.Property(e => e.ProcedureId).HasColumnName("ProcedureID");
@@ -129,13 +131,13 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Doctor>(entity =>
             {
-                entity.HasIndex(e => e.Idnumber, "UQ__Doctors__564DB08AAD788BC2")
+                entity.HasIndex(e => e.Idnumber, "UQ__Doctors__564DB08A23352A3A")
                     .IsUnique();
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__Doctors__85FB4E381A949034")
+                entity.HasIndex(e => e.PhoneNumber, "UQ__Doctors__85FB4E3827D57367")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Doctors__A9D105349DF3E0C9")
+                entity.HasIndex(e => e.Email, "UQ__Doctors__A9D105340E903957")
                     .IsUnique();
 
                 entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
@@ -179,24 +181,24 @@ namespace Entities.Entities
                     .WithMany(p => p.Doctors)
                     .HasForeignKey(d => d.GenreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Doctors__GenreID__74794A92");
+                    .HasConstraintName("FK__Doctors__GenreID__5629CD9C");
 
                 entity.HasOne(d => d.Specialty)
                     .WithMany(p => p.Doctors)
                     .HasForeignKey(d => d.SpecialtyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Doctors__Special__73852659");
+                    .HasConstraintName("FK__Doctors__Special__5535A963");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Doctors)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Doctors__TypeID__72910220");
+                    .HasConstraintName("FK__Doctors__TypeID__5441852A");
             });
 
             modelBuilder.Entity<Genre>(entity =>
             {
-                entity.HasIndex(e => e.GenreName, "UQ__Genres__BBE1C33971771B97")
+                entity.HasIndex(e => e.GenreName, "UQ__Genres__BBE1C33924593AD6")
                     .IsUnique();
 
                 entity.Property(e => e.GenreId).HasColumnName("GenreID");
@@ -209,9 +211,9 @@ namespace Entities.Entities
             modelBuilder.Entity<IdentificationType>(entity =>
             {
                 entity.HasKey(e => e.TypeId)
-                    .HasName("PK__Identifi__516F0395615726CB");
+                    .HasName("PK__Identifi__516F039597B249A4");
 
-                entity.HasIndex(e => e.Idtype, "UQ__Identifi__B2733398F7A4F17D")
+                entity.HasIndex(e => e.Idtype, "UQ__Identifi__B27333983ED3EC77")
                     .IsUnique();
 
                 entity.Property(e => e.TypeId).HasColumnName("TypeID");
@@ -225,7 +227,7 @@ namespace Entities.Entities
             modelBuilder.Entity<PatientRecord>(entity =>
             {
                 entity.HasKey(e => e.RecordId)
-                    .HasName("PK__PatientR__FBDF78C903CF2FD2");
+                    .HasName("PK__PatientR__FBDF78C9F95126E1");
 
                 entity.Property(e => e.RecordId).HasColumnName("RecordID");
 
@@ -255,19 +257,19 @@ namespace Entities.Entities
                     .WithMany(p => p.PatientRecords)
                     .HasForeignKey(d => d.DoctorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__PatientRe__Docto__0880433F");
+                    .HasConstraintName("FK__PatientRe__Docto__66603565");
 
                 entity.HasOne(d => d.Procedure)
                     .WithMany(p => p.PatientRecords)
                     .HasForeignKey(d => d.ProcedureId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__PatientRe__Proce__09746778");
+                    .HasConstraintName("FK__PatientRe__Proce__6754599E");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.PatientRecords)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__PatientRe__UserI__078C1F06");
+                    .HasConstraintName("FK__PatientRe__UserI__656C112C");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -292,18 +294,18 @@ namespace Entities.Entities
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.BrandId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Products__BrandI__02C769E9");
+                    .HasConstraintName("FK__Products__BrandI__60A75C0F");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Products__Catego__03BB8E22");
+                    .HasConstraintName("FK__Products__Catego__619B8048");
             });
 
             modelBuilder.Entity<Province>(entity =>
             {
-                entity.HasIndex(e => e.ProvinceName, "UQ__Province__B27F2372E832858E")
+                entity.HasIndex(e => e.ProvinceName, "UQ__Province__B27F23726CCC7186")
                     .IsUnique();
 
                 entity.Property(e => e.ProvinceId).HasColumnName("ProvinceID");
@@ -315,7 +317,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.HasIndex(e => e.RoleType, "UQ__Roles__5D0A2E94537A458C")
+                entity.HasIndex(e => e.RoleType, "UQ__Roles__5D0A2E94B438F86F")
                     .IsUnique();
 
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
@@ -328,7 +330,7 @@ namespace Entities.Entities
             modelBuilder.Entity<ShoppingCart>(entity =>
             {
                 entity.HasKey(e => e.CartId)
-                    .HasName("PK__Shopping__51BCD79708688F1A");
+                    .HasName("PK__Shopping__51BCD7972761CE5F");
 
                 entity.Property(e => e.CartId)
                     .ValueGeneratedNever()
@@ -345,13 +347,13 @@ namespace Entities.Entities
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.ShoppingCarts)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__ShoppingC__UserI__1209AD79");
+                    .HasConstraintName("FK__ShoppingC__UserI__71D1E811");
             });
 
             modelBuilder.Entity<ShoppingDetail>(entity =>
             {
                 entity.HasKey(e => e.DetailId)
-                    .HasName("PK__Shopping__135C314D7B12FAB3");
+                    .HasName("PK__Shopping__135C314DC356FA27");
 
                 entity.Property(e => e.DetailId)
                     .ValueGeneratedNever()
@@ -370,17 +372,17 @@ namespace Entities.Entities
                 entity.HasOne(d => d.Cart)
                     .WithMany(p => p.ShoppingDetails)
                     .HasForeignKey(d => d.CartId)
-                    .HasConstraintName("FK__ShoppingD__CartI__15DA3E5D");
+                    .HasConstraintName("FK__ShoppingD__CartI__74AE54BC");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.ShoppingDetails)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__ShoppingD__Produ__16CE6296");
+                    .HasConstraintName("FK__ShoppingD__Produ__75A278F5");
             });
 
             modelBuilder.Entity<Specialty>(entity =>
             {
-                entity.HasIndex(e => e.SpecialtyName, "UQ__Specialt__7DCA5748A8450E27")
+                entity.HasIndex(e => e.SpecialtyName, "UQ__Specialt__7DCA57482C6C7384")
                     .IsUnique();
 
                 entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
@@ -392,10 +394,10 @@ namespace Entities.Entities
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Idnumber, "UQ__Users__564DB08A9A04E0B0")
+                entity.HasIndex(e => e.Idnumber, "UQ__Users__564DB08AE34BB20A")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D105341C48DBCC")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D1053417837744")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
@@ -447,25 +449,25 @@ namespace Entities.Entities
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.GenreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Users__GenreID__6AEFE058");
+                    .HasConstraintName("FK__Users__GenreID__46E78A0C");
 
                 entity.HasOne(d => d.Province)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.ProvinceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Users__ProvinceI__6BE40491");
+                    .HasConstraintName("FK__Users__ProvinceI__47DBAE45");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Users__RoleID__690797E6");
+                    .HasConstraintName("FK__Users__RoleID__44FF419A");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Users__TypeID__69FBBC1F");
+                    .HasConstraintName("FK__Users__TypeID__45F365D3");
             });
 
             modelBuilder.Entity<VwAppointment>(entity =>
@@ -519,6 +521,21 @@ namespace Entities.Entities
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<VwGenre>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_Genres");
+
+                entity.Property(e => e.GenreId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("GenreID");
+
+                entity.Property(e => e.GenreName)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<VwIdentification>(entity =>
             {
                 entity.HasNoKey();
@@ -533,6 +550,35 @@ namespace Entities.Entities
                 entity.Property(e => e.TypeId)
                     .ValueGeneratedOnAdd()
                     .HasColumnName("TypeID");
+            });
+
+            modelBuilder.Entity<VwProduct>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_Products");
+
+                entity.Property(e => e.BrandName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CategoryName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(400)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+                entity.Property(e => e.ProductName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UnitPrice)
+                    .HasMaxLength(42)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<VwProvince>(entity =>

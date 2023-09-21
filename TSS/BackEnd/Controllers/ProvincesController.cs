@@ -21,14 +21,23 @@ namespace BackEnd.Controllers
         }
 
         // GET: api/Provinces
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Province>>> GetProvinces()
+        [HttpGet("GetProvincesView")]
+        public async Task<ActionResult<IEnumerable<VwProvince>>> GetProvinces()
         {
-            if (_context.Provinces == null)
+            if (_context.VwProvinces == null)
             {
                 return NotFound();
             }
-            return await _context.Provinces.ToListAsync();
+
+            try
+            {
+                var provinces = await _context.VwProvinces.FromSqlRaw("EXEC SP_GetProvincesView").ToListAsync();
+                return Ok(provinces);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/Provinces/5

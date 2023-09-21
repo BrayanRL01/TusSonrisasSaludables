@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,18 +10,49 @@ namespace BackEnd.Controllers
     [ApiController]
     public class GenresController : ControllerBase
     {
-        // GET: api/<GenresModel>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly TusSonrisasSaludablesContext _context;
+
+        public GenresController(TusSonrisasSaludablesContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
+        }
+
+        // GET: api/<GenresModel>
+        [HttpGet("GetGenresView")]
+        public async Task<ActionResult<IEnumerable<VwGenre>>> SP_GetGenresView()
+        {
+            if (_context.Genres == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var genres = await _context.VwGenres.FromSqlRaw("EXEC SP_GetGenresView").ToListAsync();
+                return Ok(genres);
+            }
+
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<GenresModel>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetGenreView/{id}")]
+        public async Task<ActionResult> SP_GetGenreView(int id)
         {
-            return "value";
+            try
+            {
+                var genres = await _context.VwGenres.FromSqlInterpolated($"EXEC SP_GetGenreView {id}").ToListAsync();
+                var genre = genres.FirstOrDefault();
+
+                return Ok(genre);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado el género: " + ex.Message);
+            }
         }
 
         // POST api/<GenresModel>

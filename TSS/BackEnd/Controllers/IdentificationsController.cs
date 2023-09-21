@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,11 +10,31 @@ namespace BackEnd.Controllers
     [ApiController]
     public class IdentificationsController : ControllerBase
     {
-        // GET: api/<IdentificationsModel>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly TusSonrisasSaludablesContext context;
+
+        public IdentificationsController(TusSonrisasSaludablesContext _context)
         {
-            return new string[] { "value1", "value2" };
+            context = _context;
+        }
+
+        // GET: api/<IdentificationsModel>
+        [HttpGet("GetIDTypesView")]
+        public async Task<ActionResult<IEnumerable<VwIdentification>>> GetProvinces()
+        {
+            if (context.VwIdentifications == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var identifications = await context.VwIdentifications.FromSqlRaw("EXEC SP_GetIdentificationsView").ToListAsync();
+                return Ok(identifications);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<IdentificationsModel>/5

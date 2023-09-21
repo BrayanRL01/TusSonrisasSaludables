@@ -2,6 +2,7 @@
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 
 namespace FrontEnd.Controllers
@@ -9,6 +10,9 @@ namespace FrontEnd.Controllers
     public class UsersController : Controller
     {
         UsersHelper Helper = new();
+        GenresHelper genresHelper = new();
+        IdentificationsHelper idHelper = new();
+        ProvincesHelper provincesHelper = new();
 
         public ActionResult Index()
         {
@@ -28,6 +32,12 @@ namespace FrontEnd.Controllers
         public ActionResult Create()
         {
             UserViewModel user = new();
+            var genres = genresHelper.GetAllView();
+            var ids = idHelper.GetAllView();
+            var provinces = provincesHelper.GetAllView();
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "Idtype");
+            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
             return View(user);
         }
 
@@ -73,6 +83,8 @@ namespace FrontEnd.Controllers
         public ActionResult Edit(int id)
         {
             UserViewModel user = Helper.GetByID(id);
+            var genres = genresHelper.GetAllView();
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
             return View(user);
         }
 
