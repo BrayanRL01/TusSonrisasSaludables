@@ -60,6 +60,12 @@ namespace FrontEnd.Controllers
         public ActionResult CreateAdmin()
         {
             UserViewModel user = new();
+            var genres = genresHelper.GetAllView();
+            var ids = idHelper.GetAllView();
+            var provinces = provincesHelper.GetAllView();
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "Idtype");
+            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
             return View(user);
         }
 
@@ -84,7 +90,11 @@ namespace FrontEnd.Controllers
         {
             UserViewModel user = Helper.GetByID(id);
             var genres = genresHelper.GetAllView();
+            var ids = idHelper.GetAllView();
+            var provinces = provincesHelper.GetAllView();
             ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "Idtype");
+            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
             return View(user);
         }
 

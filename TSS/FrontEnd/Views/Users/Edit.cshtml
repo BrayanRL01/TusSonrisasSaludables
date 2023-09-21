@@ -16,7 +16,7 @@
             @Html.HiddenFor(Model => Model.RoleId)
             <div class="form-group">
                 <label asp-for="TypeId" class="control-label"></label>
-                <input asp-for="TypeId" class="form-control" />
+                @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo", new { @class = "form-control" })
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProvinceId" class="control-label"></label>
-                <input asp-for="ProvinceId" class="form-control" />
+                @Html.DropDownListFor(model => model.ProvinceId, (SelectList)ViewBag.Provinces, "Seleccione una provincia", new { @class = "form-control" })
                 <span asp-validation-for="ProvinceId" class="text-danger"></span>
             </div>
             <div class="form-group">
