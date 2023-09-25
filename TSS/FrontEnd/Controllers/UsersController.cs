@@ -1,9 +1,7 @@
 ﻿using FrontEnd.Helpers;
 using FrontEnd.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace FrontEnd.Controllers
 {

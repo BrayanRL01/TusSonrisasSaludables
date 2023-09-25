@@ -17,13 +17,21 @@ namespace BackEnd.Controllers
 
         // GET: api/Roles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
+        public async Task<ActionResult<IEnumerable<VwRole>>> GetRoles()
         {
-            if (_context.Roles == null)
+            if (_context.VwRoles == null)
             {
                 return NotFound();
             }
-            return await _context.Roles.FromSqlRaw("SP_GetAllRoles").ToListAsync();
+            try
+            {
+                var roles = await _context.VwRoles.FromSqlRaw("SP_GetAllRoles").ToListAsync();
+                return Ok(roles);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/Roles/5
