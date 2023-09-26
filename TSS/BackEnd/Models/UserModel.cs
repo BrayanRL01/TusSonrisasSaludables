@@ -7,7 +7,7 @@
         public int TypeId { get; set; }
         public int GenreId { get; set; }
         public int ProvinceId { get; set; }
-        public string Idnumber { get; set; } = null!;
+        public string IdNumber { get; set; } = null!;
         public string UserName { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;

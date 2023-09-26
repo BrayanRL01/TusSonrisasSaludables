@@ -17,6 +17,7 @@ namespace Entities.Entities
         public string ProductDescription { get; set; } = null!;
         public decimal UnitPrice { get; set; }
         public int Stock { get; set; }
+        public byte[]? ProductImage { get; set; }
 
         public virtual Brand Brand { get; set; } = null!;
         public virtual Category Category { get; set; } = null!;

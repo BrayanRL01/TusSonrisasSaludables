@@ -15,7 +15,7 @@ namespace Entities.Entities
         public int TypeId { get; set; }
         public int SpecialtyId { get; set; }
         public int GenreId { get; set; }
-        public string Idnumber { get; set; } = null!;
+        public string IdNumber { get; set; } = null!;
         public string DoctorName { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;

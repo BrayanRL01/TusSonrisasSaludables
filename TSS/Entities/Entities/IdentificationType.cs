@@ -12,7 +12,7 @@ namespace Entities.Entities
         }
 
         public int TypeId { get; set; }
-        public string Idtype { get; set; } = null!;
+        public string IdType { get; set; } = null!;
 
         public virtual ICollection<Doctor> Doctors { get; set; }
         public virtual ICollection<User> Users { get; set; }

@@ -24,12 +24,20 @@ namespace BackEnd.Controllers
         [HttpGet("GetUsersView")]
         public async Task<ActionResult<IEnumerable<VwUser>>> SP_GetUsersView()
         {
-            if (_context.Users == null)
+            if (_context.VwUsers == null)
             {
                 return NotFound();
             }
-            var users = await _context.VwUsers.FromSqlRaw("EXEC SP_GetAllUsersView").ToListAsync();
-            return users;
+
+            try
+            {
+                var users = await _context.VwUsers.FromSqlRaw("EXEC SP_GetUsersView").ToListAsync();
+                return users;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("GetUserView/{id}")]
@@ -58,6 +66,20 @@ namespace BackEnd.Controllers
                 var user = users.FirstOrDefault();
 
                 return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado el usuario: " + ex.Message);
+            }
+        }
+
+        [HttpGet("FindUser/{data}")]
+        public async Task<ActionResult> SP_FindUser(string data)
+        {
+            try
+            {
+                var users = await _context.VwUsers.FromSqlInterpolated($"EXEC SP_FindUserView {data}").ToListAsync();
+                return Ok(users);
             }
             catch (Exception ex)
             {
@@ -104,7 +126,7 @@ namespace BackEnd.Controllers
                         ParameterName = "@IDNumber",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.Idnumber
+                        Value = entity.IdNumber
                     },
                      new SqlParameter()
                     {
@@ -213,7 +235,7 @@ namespace BackEnd.Controllers
                         ParameterName = "@IDNumber",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.Idnumber
+                        Value = entity.IdNumber
                     },
                      new SqlParameter()
                     {
@@ -331,7 +353,7 @@ namespace BackEnd.Controllers
                         ParameterName = "@IDNumber",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.Idnumber
+                        Value = entity.IdNumber
                     },
                      new SqlParameter()
                     {

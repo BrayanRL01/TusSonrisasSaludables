@@ -7,7 +7,6 @@ namespace Entities.Entities
     {
         public Category()
         {
-            InverseMainCategory = new HashSet<Category>();
             Products = new HashSet<Product>();
         }
 
@@ -15,8 +14,6 @@ namespace Entities.Entities
         public int? MainCategoryId { get; set; }
         public string CategoryName { get; set; } = null!;
 
-        public virtual Category? MainCategory { get; set; }
-        public virtual ICollection<Category> InverseMainCategory { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }
 }

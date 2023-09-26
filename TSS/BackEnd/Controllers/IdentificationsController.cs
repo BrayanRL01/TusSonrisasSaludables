@@ -10,25 +10,25 @@ namespace BackEnd.Controllers
     [ApiController]
     public class IdentificationsController : ControllerBase
     {
-        private readonly TusSonrisasSaludablesContext context;
+        private readonly TusSonrisasSaludablesContext _context;
 
-        public IdentificationsController(TusSonrisasSaludablesContext _context)
+        public IdentificationsController(TusSonrisasSaludablesContext context)
         {
-            context = _context;
+            _context = context;
         }
 
         // GET: api/<IdentificationsModel>
         [HttpGet("GetIDTypesView")]
         public async Task<ActionResult<IEnumerable<VwIdentification>>> GetProvinces()
         {
-            if (context.VwIdentifications == null)
+            if (_context.VwIdentifications == null)
             {
                 return NotFound();
             }
 
             try
             {
-                var identifications = await context.VwIdentifications.FromSqlRaw("EXEC SP_GetIdentificationsView").ToListAsync();
+                var identifications = await _context.VwIdentifications.FromSqlRaw("EXEC SP_GetIdentificationsView").ToListAsync();
                 return Ok(identifications);
             }
             catch (Exception ex)
@@ -38,10 +38,20 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<IdentificationsModel>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetIDTypeView/{id}")]
+        public async Task<ActionResult> SP_GetIDTypeView(int id)
         {
-            return "value";
+            try
+            {
+                var types = await _context.VwProvinces.FromSqlInterpolated($"EXEC SP_GetIdentificationView {id}").ToListAsync();
+                var type = types.FirstOrDefault();
+
+                return Ok(type);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado el tipo de identificación: " + ex.Message);
+            }
         }
 
         // POST api/<IdentificationsModel>

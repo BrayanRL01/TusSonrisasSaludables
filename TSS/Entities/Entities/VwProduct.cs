@@ -12,5 +12,6 @@ namespace Entities.Entities
         public string Description { get; set; } = null!;
         public string UnitPrice { get; set; } = null!;
         public int Stock { get; set; }
+        public byte[]? ProductImage { get; set; }
     }
 }
