@@ -1,5 +1,7 @@
-﻿using Entities.Entities;
+﻿using BackEnd.Models;
+using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -61,21 +63,85 @@ namespace BackEnd.Controllers
         }
 
         // POST api/<BrandsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("PostBrand")]
+        public async Task<ActionResult<Brand>> PostBrand([FromBody] BrandModel entity)
         {
+            try
+            {
+                string Query = "EXEC SP_CreateBrand @BrandName";
+
+                var param = new SqlParameter[]
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@BrandName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.BrandName
+                    }
+                };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo agregar la marca: " + ex.Message);
+            }
         }
 
         // PUT api/<BrandsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("PutBrand")]
+        public async Task<ActionResult<Brand>> PutBrand([FromBody] BrandModel entity)
         {
-        }
+            try
+            {
+                string Query = "EXEC SP_EditBrand @BrandID, @BrandName";
 
+                var param = new SqlParameter[]
+                {
+                     new SqlParameter()
+                    {
+                        ParameterName = "@BrandID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.BrandId
+                    },
+                    new SqlParameter()
+                    {
+                        ParameterName = "@BrandName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.BrandName
+                    }
+                };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Marca actualizada correctamente. {entity.BrandName}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo modificar la marca: " + ex.Message);
+            }
+        }
         // DELETE api/<BrandsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> DeleteBrand(int id)
         {
+            try
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteBrand {id}");
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo eliminar la marca: " + ex.Message);
+            }
         }
     }
 }
