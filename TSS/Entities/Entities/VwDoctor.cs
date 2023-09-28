@@ -5,6 +5,7 @@ namespace Entities.Entities
 {
     public partial class VwDoctor
     {
+        public int DoctorId { get; set; }
         public string IdNumber { get; set; } = null!;
         public string SpecialtyName { get; set; } = null!;
         public string FullName { get; set; } = null!;

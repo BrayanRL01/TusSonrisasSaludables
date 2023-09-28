@@ -585,6 +585,8 @@ namespace Entities.Entities
 
                 entity.Property(e => e.BirthDate).HasColumnType("date");
 
+                entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
+
                 entity.Property(e => e.DoctorPhoto).HasColumnType("image");
 
                 entity.Property(e => e.Email)
