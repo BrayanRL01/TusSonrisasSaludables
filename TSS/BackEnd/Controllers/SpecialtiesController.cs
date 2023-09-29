@@ -1,0 +1,163 @@
+﻿using BackEnd.Models;
+using Entities.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace BackEnd.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SpecialtiesController : ControllerBase
+    {
+        private readonly TusSonrisasSaludablesContext _context;
+        public SpecialtiesController(TusSonrisasSaludablesContext context)
+        {
+            _context = context;
+        }
+        // GET: api/<SpecialtiesController>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<VwSpecialty>>> SP_GetSpecialtiesView()
+        {
+            if (_context.VwSpecialties == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var users = await _context.VwSpecialties.FromSqlRaw("EXEC SP_GetSpecialtiesView").ToListAsync();
+                return users;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        // GET api/<SpecialtiesController>/5
+        [HttpGet("GetSpecialties/{id}")]
+        public async Task<ActionResult> SP_GetSpecialties(int id)
+        {
+            try
+            {
+                var users = await _context.VwSpecialties.FromSqlInterpolated($"EXEC SP_GetSpecialtyView {id}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado la especialidad " + ex.Message);
+            }
+        }
+
+        [HttpGet("FindSpecialties/{data}")]
+        public async Task<ActionResult> SP_FindSpecialties(int data)
+        {
+            try
+            {
+                var users = await _context.VwSpecialties.FromSqlInterpolated($"EXEC SP_FindSpecialtiesView {data}").ToListAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado la especialidad: " + ex.Message);
+            }
+        }
+
+        // POST api/<SpecialtiesController>
+        [HttpPost("PostSpecialties")]
+        public async Task<ActionResult<Specialty>> PostAppointment([FromBody] SpecialtyModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_CreateSpecialty @SpecialtyName";
+
+                var param = new SqlParameter[]
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@SpecialtyName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.SpecialtyName
+                    }
+                };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo crear la especialidad: " + ex.Message);
+            }
+        }
+
+        // PUT api/<SpecialtiesController>/5
+        [HttpPut("PutSpecialty")]
+
+        public async Task<ActionResult<Specialty>> PutAppointment([FromBody] SpecialtyModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_EditSpecialty @ID, @SpecialtyName";
+
+                var param = new SqlParameter[]
+               {
+                    new SqlParameter()
+                    {
+
+                        ParameterName = "@ID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.SpecialtyId
+                    },
+                    new SqlParameter()
+                    {
+                        ParameterName = "@SpecialtyName",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.SpecialtyName
+                    }
+               };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo editar la especialidad: " + ex.Message);
+            }
+        }
+
+
+        // DELETE api/<SpecialtiesController>/5
+        #region DeleteAppointments
+        [HttpDelete("{id}")]
+
+        public async Task<ActionResult> DeleteSpecialties(int id)
+        {
+            {
+                try
+                {
+                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteSpecialty {id}");
+                    await _context.SaveChangesAsync();
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, "No se pudo eliminar la especialidad: " + ex.Message);
+                }
+            }
+        #endregion
+        }
+    }
+}
