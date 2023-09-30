@@ -47,10 +47,12 @@ namespace FrontEnd.Controllers
             try
             {
                 user = Helper.Add(user);
+                ViewBag.Message = true;
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
+                ViewBag.Message = false;
                 return View();
             }
         }

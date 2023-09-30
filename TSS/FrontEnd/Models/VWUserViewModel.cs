@@ -6,7 +6,7 @@ namespace FrontEnd.Models
     {
         public int UserId { get; set; }
         [Display(Name = "Número de Cédula")]
-        public string Idnumber { get; set; } = null!;
+        public string IdNumber { get; set; } = null!;
         [Display(Name = "Provincia de Residencia")]
         public string ProvinceName { get; set; } = null!;
         [Display(Name = "Nombre Completo")]
