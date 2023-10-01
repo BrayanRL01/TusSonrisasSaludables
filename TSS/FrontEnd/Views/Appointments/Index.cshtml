@@ -1,0 +1,62 @@
+﻿@model IEnumerable<FrontEnd.Models.VWAdminAppointmentViewModel>
+
+@{
+    ViewData["Title"] = "Appointments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Appointments</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecialtyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayName("Estado")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Doctor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialtyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                @if (item.PacientName == null)
+                {
+                    <td>
+                        <button> @Html.ActionLink("Confirmar Cita", "Confirm", new { /* id=item.PrimaryKey */ })</button>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <button> @Html.ActionLink("Cita Reservada", "Cancel", new { /* id=item.PrimaryKey */ })</button>
+                    </td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>

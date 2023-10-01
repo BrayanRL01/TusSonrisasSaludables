@@ -3,8 +3,6 @@ using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -93,7 +91,7 @@ namespace BackEnd.Controllers
             }
         }
 
-      
+
         // POST api/<AppointmentsController>
         [HttpPost("PostAppointment")]
         public async Task<ActionResult<Appointment>> PostAppointment([FromBody] AppointmentModel entity)
@@ -149,11 +147,11 @@ namespace BackEnd.Controllers
         // PUT api/<AppointmentsController>/5
         [HttpPut("PutAppointment")]
 
-                public async Task<ActionResult<Appointment>> PutAppointment([FromBody] AppointmentModel entity)
-                {
-                    try
-                    {
-                        string Query = "EXEC SP_EditAppointment @AppointmentID, @DoctorID, @SpecialtyID, @StartTime, @EndTime";
+        public async Task<ActionResult<Appointment>> PutAppointment([FromBody] AppointmentModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_EditAppointment @AppointmentID, @DoctorID, @SpecialtyID, @StartTime, @EndTime";
 
                 var param = new SqlParameter[]
                {
@@ -195,24 +193,24 @@ namespace BackEnd.Controllers
                        }
                };
 
-                     await _context.Database.ExecuteSqlRawAsync(Query, param);
-                     await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
 
-                        return Ok(entity);
-                    }
-                    catch (Exception ex)
-                    {
-                        return StatusCode(500, "No se pudo editar la cita: " + ex.Message);
-                    }
-                }
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo editar la cita: " + ex.Message);
+            }
+        }
 
-                #endregion
+        #endregion
 
-                #region DeleteAppointments
-                // DELETE api/<AppointmentsController>/5
-                [HttpDelete("{id}")]
+        #region DeleteAppointments
+        // DELETE api/<AppointmentsController>/5
+        [HttpDelete("{id}")]
 
-                public async Task<ActionResult> DeleteAppointment(int id)
+        public async Task<ActionResult> DeleteAppointment(int id)
         {
             {
                 try

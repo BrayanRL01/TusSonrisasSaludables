@@ -13,10 +13,12 @@ namespace BackEnd.Controllers
     public class SpecialtiesController : ControllerBase
     {
         private readonly TusSonrisasSaludablesContext _context;
+
         public SpecialtiesController(TusSonrisasSaludablesContext context)
         {
             _context = context;
         }
+
         // GET: api/<SpecialtiesController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VwSpecialty>>> SP_GetSpecialtiesView()
@@ -52,20 +54,6 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "No se ha encontrado la especialidad " + ex.Message);
-            }
-        }
-
-        [HttpGet("FindSpecialties/{data}")]
-        public async Task<ActionResult> SP_FindSpecialties(int data)
-        {
-            try
-            {
-                var users = await _context.VwSpecialties.FromSqlInterpolated($"EXEC SP_FindSpecialtiesView {data}").ToListAsync();
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "No se ha encontrado la especialidad: " + ex.Message);
             }
         }
 
@@ -138,9 +126,8 @@ namespace BackEnd.Controllers
             }
         }
 
-
-        // DELETE api/<SpecialtiesController>/5
         #region DeleteAppointments
+        // DELETE api/<SpecialtiesController>/5
         [HttpDelete("{id}")]
 
         public async Task<ActionResult> DeleteSpecialties(int id)
@@ -157,7 +144,7 @@ namespace BackEnd.Controllers
                     return StatusCode(500, "No se pudo eliminar la especialidad: " + ex.Message);
                 }
             }
-        #endregion
         }
+        #endregion
     }
 }

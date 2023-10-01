@@ -13,6 +13,7 @@ namespace FrontEnd.Controllers
         #region Helpers
 
         UsersHelper Helper = new();
+        AppointmentsHelper appointmentsHelper = new();
         CategoriesHelper categoriesHelper = new();
         GenresHelper genresHelper = new();
         IdentificationsHelper idHelper = new();
@@ -147,6 +148,13 @@ namespace FrontEnd.Controllers
         #endregion
         #endregion
 
+        #region Appointments
+        public ActionResult Appointments()
+        {
+            List<VWAdminAppointmentViewModel> adminAppointments = appointmentsHelper.GetAdminAppointmentsView();
+            return View("Appointments/AdminAppointments", adminAppointments);
+        }
+        #endregion
         public IActionResult Privacy()
         {
             return View();
