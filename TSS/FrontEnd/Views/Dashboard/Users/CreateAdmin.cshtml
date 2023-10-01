@@ -1,88 +1,83 @@
 ﻿@model FrontEnd.Models.UserViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "CreateAdmin";
+    Layout = "_DashLayout";
 }
 
-<h1>Edit</h1>
-
-<h4>UserViewModel</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col">
+        <form asp-action="CreateAdmin">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @Html.HiddenFor(Model => Model.UserId)
-            @Html.HiddenFor(Model => Model.RoleId)
             <div class="form-group">
-                <label asp-for="TypeId" class="control-label"></label>
+                <label asp-for="TypeId" class="form-label"></label>
                 @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo", new { @class = "form-control" })
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GenreId" class="control-label"></label>
+                <label asp-for="GenreId" class="form-label"></label>
                 @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
                 <span asp-validation-for="GenreId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProvinceId" class="control-label"></label>
+                <label asp-for="ProvinceId" class="form-label"></label>
                 @Html.DropDownListFor(model => model.ProvinceId, (SelectList)ViewBag.Provinces, "Seleccione una provincia", new { @class = "form-control" })
                 <span asp-validation-for="ProvinceId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Idnumber" class="control-label"></label>
+                <label asp-for="Idnumber" class="form-label"></label>
                 <input asp-for="Idnumber" class="form-control" />
                 <span asp-validation-for="Idnumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
+                <label asp-for="UserName" class="form-label"></label>
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
+                <label asp-for="FirstName" class="form-label"></label>
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName" class="form-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
+                <label asp-for="BirthDate" class="form-label"></label>
                 <input asp-for="BirthDate" class="form-control" />
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="Email" class="form-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
+                <label asp-for="PhoneNumber" class="form-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserAddress" class="control-label"></label>
+                <label asp-for="UserAddress" class="form-label"></label>
                 <input asp-for="UserAddress" class="form-control" />
                 <span asp-validation-for="UserAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PasswordHash" class="control-label"></label>
+                <label asp-for="PasswordHash" class="form-label"></label>
                 <input asp-for="PasswordHash" class="form-control" />
                 <span asp-validation-for="PasswordHash" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Users">Volver a Usuarios</a>
 </div>
 
 @section Scripts {

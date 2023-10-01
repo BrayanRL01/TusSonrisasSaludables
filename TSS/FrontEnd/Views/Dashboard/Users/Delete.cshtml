@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Delete";
+    Layout = "_DashLayout";
 }
 
 <h1>Delete</h1>
@@ -58,6 +59,6 @@
     <form asp-action="Delete">
         @Html.HiddenFor(Model => Model.UserId)
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Users">Volver a Usuarios</a>
     </form>
 </div>

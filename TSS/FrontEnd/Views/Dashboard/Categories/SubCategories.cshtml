@@ -1,0 +1,47 @@
+﻿@model IEnumerable<FrontEnd.Models.VWSubCategoryViewModel>
+
+@{
+    ViewData["Title"] = "SubCategories";
+    Layout = "~/Views/Shared/_TableLayout.cshtml";
+}
+
+<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Lista de SubCategorías</h6>
+    <br />
+    <a class="m-0 font-weight-bold text-primary" asp-action="CreateSubCategory">Crear SubCategoría</a>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MainCategory)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SubCategory)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MainCategory)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubCategory)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
