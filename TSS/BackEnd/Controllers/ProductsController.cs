@@ -21,7 +21,7 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
-        [HttpGet("GetProducts")]
+        [HttpGet("GetProductsView")]
         public async Task<ActionResult<IEnumerable<VwProduct>>> SP_GetProductsView()
         {
             if (_context.VwProducts == null)
@@ -53,6 +53,27 @@ namespace BackEnd.Controllers
             try
             {
                 var products = await _context.VwProducts.FromSqlInterpolated($"EXEC SP_GetProductView {id}").ToListAsync();
+                var product = products.FirstOrDefault();
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
+
+        [HttpGet("GetProduct/{id}")]
+        public async Task<ActionResult> SP_GetProduct(int id)
+        {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var products = await _context.Products.FromSqlInterpolated($"EXEC SP_GetProduct {id}").ToListAsync();
                 var product = products.FirstOrDefault();
                 return Ok(product);
             }
