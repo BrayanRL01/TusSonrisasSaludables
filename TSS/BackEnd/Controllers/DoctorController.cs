@@ -45,7 +45,7 @@ namespace BackEnd.Controllers
         {
             try
             {
-                var users = await _context.VwDoctors.FromSqlInterpolated($"EXEC SP_GetDoctorsView {id}").ToListAsync();
+                var users = await _context.VwDoctors.FromSqlInterpolated($"EXEC SP_GetDoctorView {id}").ToListAsync();
                 var user = users.FirstOrDefault();
 
                 return Ok(user);
@@ -172,11 +172,13 @@ namespace BackEnd.Controllers
 
         public async Task<ActionResult<Doctor>> PutDoctors([FromBody] DoctorModel entity)
         {
-            string Query = "EXEC SP_EditDoctor @TypeID,@SpecialtyID,@GenreID,@IDNumber,@DoctorName," +
-                   "@FirstName,@LastName,@BirthDate,@Email,@Phone,@Photo";
+            try
+            {
+                string Query = "EXEC SP_EditDoctor @TypeID,@SpecialtyID,@GenreID,@IDNumber,@DoctorName," +
+                       "@FirstName,@LastName,@BirthDate,@Email,@Phone,@Photo";
 
-            var param = new SqlParameter[]
-           {
+                var param = new SqlParameter[]
+               {
                     new SqlParameter()
                     {
                         ParameterName = "@TypeID",
@@ -247,39 +249,42 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.PhoneNumber
-                    }
-           };
+                    }, new SqlParameter()
+                    {
+                        ParameterName = "@Photo",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.DoctorPhoto
+                        }
+               };
 
-            await _context.Database.ExecuteSqlRawAsync(Query, param);
-            await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
 
-            return Ok(entity);
-
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se creo el doctor" + ex.Message);
+            }
         }
-        catch (Exception ex)
+
+        // DELETE api/<UserController>/5
+        #region Delete
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteDoctors(int id)
         {
-            return StatusCode(500,"No se creo el doctor" + ex.Message);
-    }
-}
-
-
-// DELETE api/<UserController>/5
-#region DeleteUsers
-[HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteDoctors(int id)
-
-    {
-        try
-        {
-            await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteDoctor {id}");
-            await _context.SaveChangesAsync();
-            return NoContent();
+            try
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteDoctor {id}");
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo eliminar el usuario: " + ex.Message);
+            }
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, "El dato no existe " + ex.Message);
-        }
-    }
-    #endregion
+        #endregion
     }
 }
