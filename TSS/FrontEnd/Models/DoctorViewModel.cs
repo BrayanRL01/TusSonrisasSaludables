@@ -1,4 +1,6 @@
-﻿namespace FrontEnd.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FrontEnd.Models
 {
     public class DoctorViewModel
     {
@@ -10,6 +12,8 @@
         public string DoctorName { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
+
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;

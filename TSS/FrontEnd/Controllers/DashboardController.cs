@@ -27,7 +27,12 @@ namespace FrontEnd.Controllers
 
         #region Categories
         CategoriesHelper categoriesHelper = new();
-        #endregion 
+        #endregion
+
+        #region Products
+
+        BrandsHelper brandsHelper = new();
+        #endregion
 
         #endregion
 
@@ -296,6 +301,21 @@ namespace FrontEnd.Controllers
             }
         }
         #endregion
+
+        #endregion
+
+        #region Brands
+        public ActionResult Brands()
+        {
+            List<BrandViewModel> brands = brandsHelper.GetBrandsView();
+            return View("Brands/Brands", brands);
+        }
+
+        public ActionResult BrandDetails(int id)
+        {
+            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            return View("Brands/BrandDetails", brand);
+        }
 
         #endregion
 
