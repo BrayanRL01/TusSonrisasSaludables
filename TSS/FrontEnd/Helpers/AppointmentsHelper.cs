@@ -37,12 +37,22 @@ namespace FrontEnd.Helpers
             return list;
         }
 
-        public VWAdminAppointmentViewModel GetByID(int id)
+        public VWAdminAppointmentViewModel GetViewByID(int id)
         {
             VWAdminAppointmentViewModel Appointment = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/GetAdminAppointment/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             Appointment = JsonConvert.DeserializeObject<VWAdminAppointmentViewModel>(content);
+
+            return Appointment;
+        }
+
+        public AppointmentViewModel GetByID(int id)
+        {
+            AppointmentViewModel Appointment = new();
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/GetAppointment/" + id);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            Appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
 
             return Appointment;
         }

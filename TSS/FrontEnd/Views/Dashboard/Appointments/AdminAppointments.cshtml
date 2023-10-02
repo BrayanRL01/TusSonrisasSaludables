@@ -54,9 +54,9 @@
                                 @Html.DisplayFor(modelItem => item.EndTime)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Edit", "EditAppointment", new { id=item.AppointmentId }) |
                                 @Html.ActionLink("Details", "AppointmentDetails", new { id=item.AppointmentId }) |
-                                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                @Html.ActionLink("Delete", "DeleteAppointment", new { id=item.AppointmentId })
                             </td>
                         </tr>
                     }

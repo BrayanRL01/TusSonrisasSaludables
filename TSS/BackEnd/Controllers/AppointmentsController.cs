@@ -60,9 +60,24 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<AppointmentsController>/5
-
         [HttpGet("GetAppointment/{id}")]
         public async Task<ActionResult> SP_GetAppointment(int id)
+        {
+            try
+            {
+                var users = await _context.Appointments.FromSqlInterpolated($"EXEC SP_GetAppointment {id}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado la cita: " + ex.Message);
+            }
+        }
+
+        [HttpGet("GetAppointmentView/{id}")]
+        public async Task<ActionResult> SP_GetAppointmentView(int id)
         {
             try
             {

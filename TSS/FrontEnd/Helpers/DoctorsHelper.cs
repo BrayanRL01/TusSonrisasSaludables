@@ -27,10 +27,20 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region GetByID
-        public VWDoctorViewModel GetByID(int id)
+        public DoctorViewModel GetByID(int id)
+        {
+            DoctorViewModel Doctor = new();
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/GetDoctor/" + id);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            Doctor = JsonConvert.DeserializeObject<DoctorViewModel>(content);
+
+            return Doctor;
+        }
+
+        public VWDoctorViewModel GetViewByID(int id)
         {
             VWDoctorViewModel Doctor = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/GetDoctor/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/GetDoctorView/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             Doctor = JsonConvert.DeserializeObject<VWDoctorViewModel>(content);
 

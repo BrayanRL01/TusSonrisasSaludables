@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BackEnd.Controllers
@@ -19,9 +18,9 @@ namespace BackEnd.Controllers
         {
             _context = context;
         }
+
         // GET: api/<DoctorsController>
         [HttpGet]
-
         public async Task<ActionResult<IEnumerable<VwDoctor>>> SP_GetDoctorsView()
         {
             if (_context.VwDoctors == null)
@@ -39,9 +38,10 @@ namespace BackEnd.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         // GET api/<DoctorsController>/5
-        [HttpGet("GetDoctors/{id}")]
-        public async Task<ActionResult> SP_GetDoctors(int id)
+        [HttpGet("GetDoctorView/{id}")]
+        public async Task<ActionResult> SP_GetDoctorView(int id)
         {
             try
             {
@@ -53,6 +53,22 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "El doctor no existe " + ex.Message);
+            }
+        }
+
+        [HttpGet("GetDoctor/{id}")]
+        public async Task<ActionResult> SP_GetDoctor(int id)
+        {
+            try
+            {
+                var users = await _context.Doctors.FromSqlInterpolated($"EXEC SP_GetDoctor {id}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "El doctor no existe: " + ex.Message);
             }
         }
 

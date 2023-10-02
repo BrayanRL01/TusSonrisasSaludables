@@ -22,6 +22,7 @@ namespace FrontEnd.Controllers
         #region Appointments
         AppointmentsHelper appointmentsHelper = new();
         SpecialtiesHelper specialtiesHelper = new();
+        DoctorsHelper doctorsHelper = new();
         #endregion
 
         #region Categories
@@ -169,7 +170,7 @@ namespace FrontEnd.Controllers
 
         public ActionResult AppointmentDetails(int id)
         {
-            VWAdminAppointmentViewModel Appointment = appointmentsHelper.GetByID(id);
+            VWAdminAppointmentViewModel Appointment = appointmentsHelper.GetViewByID(id);
             return View("Appointments/AppointmentDetails", Appointment);
         }
 
@@ -178,7 +179,9 @@ namespace FrontEnd.Controllers
         {
             AppointmentViewModel appointment = new();
             var specialties = specialtiesHelper.GetAllView();
+            var doctors = doctorsHelper.GetAllView();
             ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
             return View("Appointments/CreateAppointment", appointment);
         }
 
@@ -190,6 +193,59 @@ namespace FrontEnd.Controllers
             try
             {
                 appointment = appointmentsHelper.Add(appointment);
+                return RedirectToAction("Appointments");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditAppointment(int id)
+        {
+            AppointmentViewModel appointment = appointmentsHelper.GetByID(id);
+            var specialties = specialtiesHelper.GetAllView();
+            var doctors = doctorsHelper.GetAllView();
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            return View("Appointments/EditAppointment", appointment);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAppointment(AppointmentViewModel appointment)
+        {
+            try
+            {
+                appointment = appointmentsHelper.Edit(appointment);
+                return RedirectToAction("Appointments");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
+
+        #region Delete
+        // GET: UsersController/Delete/5
+        public ActionResult DeleteAppointment(int id)
+        {
+            VWAdminAppointmentViewModel vwappointment = appointmentsHelper.GetViewByID(id);
+            return View("Appointments/DeleteAppointment", vwappointment);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteAppointment(AppointmentViewModel appointment)
+        {
+            try
+            {
+                appointment = appointmentsHelper.Delete(appointment.AppointmentId);
                 return RedirectToAction("Appointments");
             }
             catch
