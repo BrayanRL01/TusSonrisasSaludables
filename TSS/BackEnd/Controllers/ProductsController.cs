@@ -21,6 +21,26 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
+        [HttpGet("GetProducts")]
+        public async Task<ActionResult<IEnumerable<VwProduct>>> SP_GetProductsView()
+        {
+            if (_context.VwProducts == null)
+            {
+                return NotFound("No se encontraron productos.");
+            }
+
+            try
+            {
+                var products = await _context.VwProducts.FromSqlRaw("EXEC SP_GetProductsView").ToListAsync();
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se encontraron productos: " + ex.Message);
+            }
+
+        }
+
         // GET api/<ProductssController>/5
         [HttpGet("GetProductView/{id}")]
         public async Task<ActionResult> SP_GetProductView(int id)
@@ -48,8 +68,8 @@ namespace BackEnd.Controllers
         {
             try
             {
-                string Query = "EXEC SP_CreateProduct @BrandID, @CategoryID, @ProductName, @Description, @Price," +
-                    "@Stock";
+                string Query = "EXEC SP_CreateProduct @BrandID, @CategoryID, @ProductName, " +
+                    "@Description, @Price, @Stock, @Image";
 
                 var param = new SqlParameter[]
                 {
@@ -94,6 +114,13 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.Stock
+                    },
+                        new SqlParameter()
+                    {
+                        ParameterName = "@Image",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProductImage
                     }
                 };
 
@@ -108,7 +135,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        // DELETE api/<UserController>/5
+        // DELETE api/<ProductsController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
@@ -120,18 +147,18 @@ namespace BackEnd.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "No se pudo eliminar el usuario: " + ex.Message);
+                return StatusCode(500, "No se pudo eliminar el producto: " + ex.Message);
             }
         }
 
-        // PUT api/<UserController>/5
+        // PUT api/<ProductsController>/5
         [HttpPut("PutProduct")]
         public async Task<ActionResult<Product>> PutProduct([FromBody] ProductModel entity)
         {
             try
             {
-                string Query = "EXEC SP_EditProduct @ProductID ,@BrandID, @CategoryID, @ProductName, @Description, @Price," +
-                    "@Stock";
+                string Query = "EXEC SP_EditProduct @ProductID ,@BrandID, " +
+                    "@CategoryID, @ProductName, @Description, @Price, @Stock, @Image";
 
                 var param = new SqlParameter[]
                 {
@@ -183,6 +210,13 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.Stock
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Image",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProductImage
                     }
                 };
 
@@ -193,7 +227,7 @@ namespace BackEnd.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "No se pudo editar el usuario: " + ex.Message);
+                return StatusCode(500, "No se pudo editar el producto: " + ex.Message);
             }
         }
 
