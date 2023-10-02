@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /TSS/FrontEnd/Helpers
+/TSS/FrontEnd/Helpers/ServiceRepository.cs
