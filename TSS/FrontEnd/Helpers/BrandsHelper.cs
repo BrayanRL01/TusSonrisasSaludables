@@ -44,5 +44,26 @@ namespace FrontEnd.Helpers
             return Brand;
         }
         #endregion
+
+        #region Update
+        public BrandViewModel Edit(BrandViewModel Brand)
+        {
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Brands/PutBrand/", Brand);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            BrandViewModel BrandAPI = JsonConvert.DeserializeObject<BrandViewModel>(content);
+
+            return BrandAPI;
+        }
+        #endregion
+
+        #region Create
+        public BrandViewModel Add(BrandViewModel Brand)
+        {
+            HttpResponseMessage responseMessage = repository.PostResponse("api/Brands/PostBrand", Brand);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            BrandViewModel BrandAPI = JsonConvert.DeserializeObject<BrandViewModel>(content);
+            return BrandAPI;
+        }
+        #endregion
     }
 }

@@ -317,6 +317,53 @@ namespace FrontEnd.Controllers
             return View("Brands/BrandDetails", brand);
         }
 
+        #region Create
+        public ActionResult CreateBrand()
+        {
+            BrandViewModel brand = new();
+            return View("Brands/CreateBrand", brand);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateBrand(BrandViewModel brand)
+        {
+            try
+            {
+                brand = brandsHelper.Add(brand);
+                return RedirectToAction("Brands");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditBrand(int id)
+        {
+            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            return View("Brands/EditBrand", brand);
+        }
+
+        // POST: UsersController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditBrand(BrandViewModel brand)
+        {
+            try
+            {
+                brand = brandsHelper.Edit(brand);
+                return RedirectToAction("Brands");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
         #endregion
 
         #region Doctors

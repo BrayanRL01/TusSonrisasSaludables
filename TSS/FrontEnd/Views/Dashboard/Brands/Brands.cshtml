@@ -8,7 +8,7 @@
 <h1>Brands</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateBrand">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -27,7 +27,7 @@
                     @Html.DisplayFor(modelItem => item.BrandName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Edit", "EditBrand", new { id=item.BrandId }) |
                     @Html.ActionLink("Details", "BrandDetails", new { id=item.BrandId }) |
                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                 </td>
