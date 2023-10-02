@@ -1,0 +1,42 @@
+﻿@model IEnumerable<FrontEnd.Models.SpecialtyViewModel>
+
+@{
+    ViewData["Title"] = "Specialties";
+    Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+
+<p>
+    <a asp-action="CreateSpecialty">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecialtyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecialtyName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialtyId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialtyName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "SpecialtyDetails", new { id=item.SpecialtyId }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>

@@ -77,6 +77,22 @@ namespace BackEnd.Controllers
             }
         }
 
+        [HttpGet("GetAdminAppointment/{id}")]
+        public async Task<ActionResult> SP_GetAdminAppointment(int id)
+        {
+            try
+            {
+                var users = await _context.VwAdminAppointments.FromSqlInterpolated($"EXEC SP_GetAdminAppointmentView {id}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado la cita: " + ex.Message);
+            }
+        }
+
         [HttpGet("FindAppointment/{data}")]
         public async Task<ActionResult> SP_FindAppointment(int data)
         {
@@ -146,7 +162,6 @@ namespace BackEnd.Controllers
         #region PutAppoiments
         // PUT api/<AppointmentsController>/5
         [HttpPut("PutAppointment")]
-
         public async Task<ActionResult<Appointment>> PutAppointment([FromBody] AppointmentModel entity)
         {
             try
@@ -209,22 +224,19 @@ namespace BackEnd.Controllers
         #region DeleteAppointments
         // DELETE api/<AppointmentsController>/5
         [HttpDelete("{id}")]
-
         public async Task<ActionResult> DeleteAppointment(int id)
         {
+            try
             {
-                try
-                {
-                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteAppointment {id}");
-                    await _context.SaveChangesAsync();
-                    return NoContent();
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, "No se pudo eliminar la cita: " + ex.Message);
-                }
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteAppointment {id}");
+                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            #endregion
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo eliminar la cita: " + ex.Message);
+            }
         }
+        #endregion
     }
 }

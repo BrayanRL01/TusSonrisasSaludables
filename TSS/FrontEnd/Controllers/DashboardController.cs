@@ -12,12 +12,21 @@ namespace FrontEnd.Controllers
 
         #region Helpers
 
+        #region Users
         UsersHelper Helper = new();
-        AppointmentsHelper appointmentsHelper = new();
-        CategoriesHelper categoriesHelper = new();
         GenresHelper genresHelper = new();
         IdentificationsHelper idHelper = new();
         ProvincesHelper provincesHelper = new();
+        #endregion
+
+        #region Appointments
+        AppointmentsHelper appointmentsHelper = new();
+        SpecialtiesHelper specialtiesHelper = new();
+        #endregion
+
+        #region Categories
+        CategoriesHelper categoriesHelper = new();
+        #endregion 
 
         #endregion
 
@@ -32,6 +41,8 @@ namespace FrontEnd.Controllers
         }
 
         #region Users 
+
+        #region Get
         public ActionResult Users()
         {
             List<VWUserViewModel> users = Helper.GetAllView();
@@ -43,6 +54,7 @@ namespace FrontEnd.Controllers
             VWUserViewModel vwuser = Helper.GetViewByID(id);
             return View("Users/Details", vwuser);
         }
+        #endregion
 
         #region Create
         public ActionResult CreateAdmin()
@@ -154,7 +166,83 @@ namespace FrontEnd.Controllers
             List<VWAdminAppointmentViewModel> adminAppointments = appointmentsHelper.GetAdminAppointmentsView();
             return View("Appointments/AdminAppointments", adminAppointments);
         }
+
+        public ActionResult AppointmentDetails(int id)
+        {
+            VWAdminAppointmentViewModel Appointment = appointmentsHelper.GetByID(id);
+            return View("Appointments/AppointmentDetails", Appointment);
+        }
+
+        #region Create
+        public ActionResult CreateAppointment()
+        {
+            AppointmentViewModel appointment = new();
+            var specialties = specialtiesHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            return View("Appointments/CreateAppointment", appointment);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateAppointment(AppointmentViewModel appointment)
+        {
+            try
+            {
+                appointment = appointmentsHelper.Add(appointment);
+                return RedirectToAction("Appointments");
+            }
+            catch
+            {
+                return View();
+            }
+        }
         #endregion
+
+        #endregion
+
+        #region Specialties
+
+        #region Get
+        public ActionResult Specialties()
+        {
+            List<SpecialtyViewModel> Specialties = specialtiesHelper.GetAllView();
+            return View("Specialties/Specialties", Specialties);
+        }
+
+        public ActionResult SpecialtyDetails(int id)
+        {
+            SpecialtyViewModel Specialty = specialtiesHelper.GetViewByID(id);
+            return View("Specialties/SpecialtyDetails", Specialty);
+        }
+        #endregion
+
+        #region Create
+        public ActionResult CreateSpecialty()
+        {
+            SpecialtyViewModel specialty = new();
+            return View("Specialties/CreateSpecialty", specialty);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateSpecialty(SpecialtyViewModel specialty)
+        {
+            try
+            {
+                specialty = specialtiesHelper.Add(specialty);
+                return RedirectToAction("Specialties");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
+
+        #endregion
+
         public IActionResult Privacy()
         {
             return View();
