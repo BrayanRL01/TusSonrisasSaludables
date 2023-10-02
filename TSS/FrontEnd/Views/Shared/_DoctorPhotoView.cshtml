@@ -1,0 +1,10 @@
+﻿@model FrontEnd.Models.VWDoctorViewModel
+
+@{
+    if (Model.DoctorPhoto != null)
+    {
+        string imageBase64 = Convert.ToBase64String(Model.DoctorPhoto);
+        string imageSrc = string.Format("data:ContentType = image/jpg;base64,{0}", imageBase64);
+        <img src="@imageSrc" width="75" height="75" />
+    }
+}

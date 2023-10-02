@@ -3,6 +3,6 @@
     public class IdentificationViewModel
     {
         public int TypeId { get; set; }
-        public string Idtype { get; set; } = null!;
+        public string IdType { get; set; } = null!;
     }
 }

@@ -299,6 +299,128 @@ namespace FrontEnd.Controllers
 
         #endregion
 
+        #region Doctors
+        public ActionResult Doctors()
+        {
+            List<VWDoctorViewModel> doctors = doctorsHelper.GetAllView();
+            return View("Doctors/Doctors", doctors);
+        }
+
+        public ActionResult DoctorDetails(int id)
+        {
+            VWDoctorViewModel doctor = doctorsHelper.GetViewByID(id);
+            return View("Doctors/DoctorDetails", doctor);
+        }
+
+        #region Create
+        public ActionResult CreateDoctor()
+        {
+            DoctorViewModel doctor = new();
+            var specialties = specialtiesHelper.GetAllView();
+            var types = idHelper.GetAllView();
+            var genres = genresHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Types = new SelectList(types, "TypeId", "IdType");
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            return View("Doctors/CreateDoctor", doctor);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateDoctor(DoctorViewModel doctor, List<IFormFile> files)
+        {
+            try
+            {
+                if (files.Count > 0)
+                {
+                    IFormFile formFile = files[0];
+
+                    using (var ms = new MemoryStream())
+                    {
+                        formFile.CopyTo(ms);
+                        doctor.DoctorPhoto = ms.ToArray();
+                    }
+                }
+
+                doctor = doctorsHelper.Add(doctor);
+                return RedirectToAction("Doctors");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditDoctor(int id)
+        {
+            DoctorViewModel doctor = doctorsHelper.GetByID(id);
+            var specialties = specialtiesHelper.GetAllView();
+            var types = idHelper.GetAllView();
+            var genres = genresHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Types = new SelectList(types, "TypeId", "IdType");
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            return View("Doctors/EditDoctor", doctor);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDoctor(DoctorViewModel doctor, List<IFormFile> files)
+        {
+            try
+            {
+                if (files.Count > 0)
+                {
+                    IFormFile formFile = files[0];
+
+                    using (var ms = new MemoryStream())
+                    {
+                        formFile.CopyTo(ms);
+                        doctor.DoctorPhoto = ms.ToArray();
+                    }
+                }
+
+                doctor = doctorsHelper.Edit(doctor);
+                return RedirectToAction("Doctors");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
+
+        #region Delete
+        // GET: UsersController/Delete/5
+        public ActionResult DeleteDoctor(int id)
+        {
+            VWDoctorViewModel vwdoctor = doctorsHelper.GetViewByID(id);
+            return View("Doctors/DeleteDoctor", vwdoctor);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteDoctor(DoctorViewModel doctor)
+        {
+            try
+            {
+                doctor = doctorsHelper.Delete(doctor.DoctorId);
+                return RedirectToAction("Doctors");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
+
+        #endregion
+
         public IActionResult Privacy()
         {
             return View();

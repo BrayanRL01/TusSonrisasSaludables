@@ -1,8 +1,11 @@
-﻿namespace FrontEnd.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FrontEnd.Models
 {
     public class VWDoctorViewModel
     {
         public int DoctorId { get; set; }
+
         public string IdNumber { get; set; } = null!;
         public string SpecialtyName { get; set; } = null!;
         public string FullName { get; set; } = null!;
