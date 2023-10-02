@@ -2,6 +2,7 @@
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Protocol;
 using System.Diagnostics;
 
 namespace FrontEnd.Controllers
@@ -342,12 +343,17 @@ namespace FrontEnd.Controllers
                         doctor.DoctorPhoto = ms.ToArray();
                     }
                 }
+                else
+                {
+                    doctor.DoctorPhoto = new byte[0];
+                }
 
                 doctor = doctorsHelper.Add(doctor);
                 return RedirectToAction("Doctors");
             }
-            catch
+            catch (Exception ex)
             {
+                TempData["Message"] = ex.Message;
                 return View();
             }
         }
@@ -383,12 +389,17 @@ namespace FrontEnd.Controllers
                         doctor.DoctorPhoto = ms.ToArray();
                     }
                 }
+                else
+                {
+                    doctor.DoctorPhoto = new byte[0];
+                }
 
                 doctor = doctorsHelper.Edit(doctor);
                 return RedirectToAction("Doctors");
             }
-            catch
+            catch (Exception ex)
             {
+                TempData["Message"] = ex.Message;
                 return View();
             }
         }
