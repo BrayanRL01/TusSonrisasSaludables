@@ -77,8 +77,8 @@ namespace BackEnd.Controllers
         {
             try
             {
-                string Query = "EXEC SP_CreateDoctor @TypeID,@SpecialtyID,@GenreID,@IDNumber,@DoctorName," +
-                    "@FirstName,@LastName,@BirthDate,@Email,@Phone,@Photo";
+                string Query = "EXEC SP_CreateDoctor @TypeID, @SpecialtyID, @GenreID, @IDNumber, @DoctorName," +
+                    "@FirstName, @LastName, @BirthDate, @Email, @Phone, @Photo";
 
                 var param = new SqlParameter[]
                {
@@ -152,6 +152,13 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.PhoneNumber
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Photo",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.DoctorPhoto
                     }
                };
 
@@ -162,23 +169,29 @@ namespace BackEnd.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "No se creo el doctor" + ex.Message);
+                return StatusCode(500, "No se creó el doctor: " + ex.Message);
             }
         }
         //aqui quede
 
         // PUT api/<DoctorsController>/5
         [HttpPut("PutDoctors")]
-
         public async Task<ActionResult<Doctor>> PutDoctors([FromBody] DoctorModel entity)
         {
             try
             {
-                string Query = "EXEC SP_EditDoctor @TypeID,@SpecialtyID,@GenreID,@IDNumber,@DoctorName," +
-                       "@FirstName,@LastName,@BirthDate,@Email,@Phone,@Photo";
+                string Query = "EXEC SP_EditDoctor @DoctorID, @TypeID, @SpecialtyID, @GenreID, @IDNumber, @DoctorName," +
+                       "@FirstName, @LastName, @BirthDate, @Email, @Phone, @Photo";
 
                 var param = new SqlParameter[]
                {
+                      new SqlParameter()
+                    {
+                        ParameterName = "@DoctorID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.DoctorId
+                    },
                     new SqlParameter()
                     {
                         ParameterName = "@TypeID",
@@ -249,13 +262,14 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.PhoneNumber
-                    }, new SqlParameter()
+                    },
+                   new SqlParameter()
                     {
                         ParameterName = "@Photo",
                         SqlDbType = System.Data.SqlDbType.Image,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.DoctorPhoto
-                        }
+                    }
                };
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
@@ -265,7 +279,7 @@ namespace BackEnd.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "No se creo el doctor" + ex.Message);
+                return StatusCode(500, "No se creó el doctor: " + ex.Message);
             }
         }
 
