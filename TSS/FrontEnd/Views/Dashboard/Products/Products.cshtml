@@ -18,9 +18,7 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ProductId)
-                        </th>
+
                         <th>
                             @Html.DisplayNameFor(model => model.BrandName)
                         </th>
@@ -49,9 +47,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ProductId)
-                            </td>
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.BrandName)
                             </td>
