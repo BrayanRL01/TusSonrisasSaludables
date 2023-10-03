@@ -61,6 +61,7 @@ namespace FrontEnd.Helpers
             HttpResponseMessage responseMessage = repository.PutResponse("api/Brands/PutBrand/", Brand);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             BrandViewModel BrandAPI = JsonConvert.DeserializeObject<BrandViewModel>(content);
+
             return BrandAPI;
         }
         #endregion

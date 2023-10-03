@@ -342,27 +342,26 @@ namespace FrontEnd.Controllers
         #endregion
 
         #region Edit
-        //public ActionResult EditBrand(int id)
-        //{
-        //    BrandViewModel brand = brandsHelper.GetViewByID(id);
-        //    return View("Brands/EditBrand", brand);
-        //}
+        public ActionResult EditBrand(int id)
+        {
+            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            return View("Brands/EditBrand", brand);
+        }
 
-        //// POST: UsersController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult EditBrand(BrandViewModel brand)
-        //{
-        //    try
-        //    {
-        //        brand = brandsHelper.Edit(brand);
-        //        return RedirectToAction("Brands");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditBrand(BrandViewModel brand)
+        {
+            try
+            {
+                brand = brandsHelper.Edit(brand);
+                return RedirectToAction("Brands");
+            }
+            catch
+            {
+                return View();
+            }
+        }
         #endregion
         #endregion
 

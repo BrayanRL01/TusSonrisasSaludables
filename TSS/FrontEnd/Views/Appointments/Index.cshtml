@@ -43,19 +43,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EndTime)
                 </td>
-                @if (item.PacientName == null)
-                {
-                    <td>
+                <td>
+                    @if (item.PacientName == "Espacio libre")
+                    {
                         <button> @Html.ActionLink("Confirmar Cita", "Confirm", new { /* id=item.PrimaryKey */ })</button>
-                    </td>
-                }
-                else
-                {
-                    <td>
+                    }
+                    else
+                    {
                         <button> @Html.ActionLink("Cita Reservada", "Cancel", new { /* id=item.PrimaryKey */ })</button>
-                    </td>
-                }
-
+                    }
+                </td>
             </tr>
         }
     </tbody>
