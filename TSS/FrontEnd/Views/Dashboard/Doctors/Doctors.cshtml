@@ -65,7 +65,7 @@
                                 @Html.DisplayFor(modelItem => item.PhoneNumber)
                             </td>
                             <td>
-                                <partial name="_DoctorPhotoView" model="item" />
+                                <partial name="Photo/_DoctorPhotoView" model="item" />
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "EditDoctor", new { id=item.DoctorId }) |

@@ -39,7 +39,7 @@ namespace FrontEnd.Helpers
         public ProductViewModel GetByID(int id)
         {
             ProductViewModel Product = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Product/GetProduct/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Products/GetProduct/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             Product = JsonConvert.DeserializeObject<ProductViewModel>(content);
 

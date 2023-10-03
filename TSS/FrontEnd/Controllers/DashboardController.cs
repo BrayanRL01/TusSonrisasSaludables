@@ -1,6 +1,7 @@
 ﻿using FrontEnd.Helpers;
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 
@@ -85,9 +86,10 @@ namespace FrontEnd.Controllers
                 user = Helper.AddAdmin(user);
                 return RedirectToAction("Users");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Users");
             }
         }
         #endregion
@@ -115,9 +117,10 @@ namespace FrontEnd.Controllers
                 user = Helper.Edit(user);
                 return RedirectToAction("Users");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Users");
             }
         }
         #endregion
@@ -140,9 +143,10 @@ namespace FrontEnd.Controllers
                 user = Helper.Delete(user.UserId);
                 return RedirectToAction("Users");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Users");
             }
         }
         #endregion
@@ -150,6 +154,7 @@ namespace FrontEnd.Controllers
         #endregion
 
         #region Categories
+
         #region GetAll
         // GET: CategoriesController
         public ActionResult Categories()
@@ -164,9 +169,12 @@ namespace FrontEnd.Controllers
             return View("Categories/SubCategories", subcategories);
         }
         #endregion
+
         #endregion
 
         #region Appointments
+
+        #region GetAll
         public ActionResult Appointments()
         {
             List<VWAdminAppointmentViewModel> adminAppointments = appointmentsHelper.GetAdminAppointmentsView();
@@ -178,6 +186,7 @@ namespace FrontEnd.Controllers
             VWAdminAppointmentViewModel Appointment = appointmentsHelper.GetViewByID(id);
             return View("Appointments/AppointmentDetails", Appointment);
         }
+        #endregion
 
         #region Create
         public ActionResult CreateAppointment()
@@ -200,9 +209,10 @@ namespace FrontEnd.Controllers
                 appointment = appointmentsHelper.Add(appointment);
                 return RedirectToAction("Appointments");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Appointments");
             }
         }
         #endregion
@@ -228,9 +238,10 @@ namespace FrontEnd.Controllers
                 appointment = appointmentsHelper.Edit(appointment);
                 return RedirectToAction("Appointments");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Appointments");
             }
         }
         #endregion
@@ -253,9 +264,10 @@ namespace FrontEnd.Controllers
                 appointment = appointmentsHelper.Delete(appointment.AppointmentId);
                 return RedirectToAction("Appointments");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Appointments");
             }
         }
         #endregion
@@ -293,11 +305,13 @@ namespace FrontEnd.Controllers
             try
             {
                 specialty = specialtiesHelper.Add(specialty);
+                TempData["Message"] = "Especialidad creada.";
                 return RedirectToAction("Specialties");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = "No se pudo crear la especialidad: " + ex.Message.ToString();
+                return RedirectToAction("Specialties");
             }
         }
         #endregion
@@ -334,9 +348,10 @@ namespace FrontEnd.Controllers
                 brand = brandsHelper.Add(brand);
                 return RedirectToAction("Brands");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Brands");
             }
         }
         #endregion
@@ -357,9 +372,10 @@ namespace FrontEnd.Controllers
                 brand = brandsHelper.Edit(brand);
                 return RedirectToAction("Brands");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Brands");
             }
         }
         #endregion
@@ -382,12 +398,14 @@ namespace FrontEnd.Controllers
                 brand = brandsHelper.Delete(brand.BrandId);
                 return RedirectToAction("Brands");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Brands");
             }
         }
         #endregion
+
         #endregion
 
         #region Doctors
@@ -444,7 +462,7 @@ namespace FrontEnd.Controllers
             catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
-                return View();
+                return View("Doctors");
             }
         }
         #endregion
@@ -490,7 +508,7 @@ namespace FrontEnd.Controllers
             catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
-                return View();
+                return View("Doctors");
             }
         }
         #endregion
@@ -513,9 +531,10 @@ namespace FrontEnd.Controllers
                 doctor = doctorsHelper.Delete(doctor.DoctorId);
                 return RedirectToAction("Doctors");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                TempData["Message"] = ex.Message;
+                return View("Doctors");
             }
         }
         #endregion
@@ -548,15 +567,30 @@ namespace FrontEnd.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateProduct(ProductViewModel product)
+        public ActionResult CreateProduct(ProductViewModel product, List<IFormFile> files)
         {
             try
             {
+                if (files.Count > 0)
+                {
+                    IFormFile formFile = files[0];
+
+                    using (var ms = new MemoryStream())
+                    {
+                        formFile.CopyTo(ms);
+                        product.ProductImage = ms.ToArray();
+                    }
+                }
+                else
+                {
+                    product.ProductImage = new byte[0];
+                }
                 product = productsHelper.Add(product);
                 return RedirectToAction("Products");
             }
-            catch
+            catch (Exception ex)
             {
+                TempData["Message"] = ex.Message;
                 return View("Products");
             }
         }
@@ -575,15 +609,54 @@ namespace FrontEnd.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProduct(ProductViewModel product)
+        public ActionResult EditProduct(ProductViewModel product, List<IFormFile> files)
         {
             try
             {
+                if (files.Count > 0)
+                {
+                    IFormFile formFile = files[0];
+
+                    using (var ms = new MemoryStream())
+                    {
+                        formFile.CopyTo(ms);
+                        product.ProductImage = ms.ToArray();
+                    }
+                }
+                else
+                {
+                    product.ProductImage = new byte[0];
+                }
                 product = productsHelper.Edit(product);
                 return RedirectToAction("Products");
             }
-            catch
+            catch (Exception ex)
             {
+                TempData["Message"] = ex.Message;
+                return View("Products");
+            }
+        }
+        #endregion
+
+        #region Delete
+        public ActionResult DeleteProduct(int id)
+        {
+            VWProductViewModel product = productsHelper.GetViewByID(id);
+            return View("Products/DeleteProduct", product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteProduct(ProductViewModel product)
+        {
+            try
+            {
+                product = productsHelper.Delete(product.ProductId);
+                return RedirectToAction("Products");
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
                 return View("Products");
             }
         }

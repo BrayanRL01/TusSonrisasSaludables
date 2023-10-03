@@ -8,6 +8,15 @@
 <p>
     <a asp-action="CreateSpecialty">Create New</a>
 </p>
+@if (TempData.ContainsKey("Message"))
+{
+    <div class="alert success-danger" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <table class="table">
     <thead>
         <tr>
