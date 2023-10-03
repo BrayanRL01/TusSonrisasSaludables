@@ -70,8 +70,8 @@
                                 @Html.DisplayFor(modelItem => item.ProductImage)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Edit", "EditProduct", new { id=item.ProductId }) |
+                                @Html.ActionLink("Details", "ProductDetails", new { id=item.ProductId }) |
                                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                             </td>
                         </tr>

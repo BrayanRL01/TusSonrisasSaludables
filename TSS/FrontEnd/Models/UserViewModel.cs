@@ -22,7 +22,7 @@ namespace FrontEnd.Models
         [RegularExpression(@"^[1-8]-[0-9]{4}-[0-9]{4}$",
         ErrorMessage = "El número de cédula debe tener el siguiente formato: 1-1111-1111")]
         [Display(Name = "Número de Identificación")]
-        public string Idnumber { get; set; } = null!;
+        public string IdNumber { get; set; } = null!;
 
         [Required(ErrorMessage = "El nombre es requerido.")]
         [Display(Name = "Nombre")]

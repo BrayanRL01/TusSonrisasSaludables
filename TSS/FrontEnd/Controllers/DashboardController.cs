@@ -528,7 +528,69 @@ namespace FrontEnd.Controllers
             List<VWProductViewModel> products = productsHelper.GetAllView();
             return View("Products/Products", products);
         }
+
+        public ActionResult ProductDetails(int id)
+        {
+            VWProductViewModel product = productsHelper.GetViewByID(id);
+            return View("Products/ProductDetails", product);
+        }
+
+        #region Create 
+        public ActionResult CreateProduct()
+        {
+            ProductViewModel product = new();
+            var brands = brandsHelper.GetBrandsView();
+            var categories = categoriesHelper.GetSubCategoriesView();
+            ViewBag.Brands = new SelectList(brands, "BrandId", "BrandName");
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "SubCategory");
+            return View("Products/CreateProduct", product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateProduct(ProductViewModel product)
+        {
+            try
+            {
+                product = productsHelper.Add(product);
+                return RedirectToAction("Products");
+            }
+            catch
+            {
+                return View("Products");
+            }
+        }
         #endregion
+
+        #region Edit 
+        public ActionResult EditProduct(int id)
+        {
+            ProductViewModel product = productsHelper.GetByID(id);
+            var brands = brandsHelper.GetBrandsView();
+            var categories = categoriesHelper.GetSubCategoriesView();
+            ViewBag.Brands = new SelectList(brands, "BrandId", "BrandName");
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "SubCategory");
+            return View("Products/EditProduct", product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProduct(ProductViewModel product)
+        {
+            try
+            {
+                product = productsHelper.Edit(product);
+                return RedirectToAction("Products");
+            }
+            catch
+            {
+                return View("Products");
+            }
+        }
+        #endregion
+
+        #endregion
+
         public IActionResult Privacy()
         {
             return View();

@@ -5,11 +5,12 @@ namespace FrontEnd.Models
 {
     public class ProductViewModel
     {
-        public int ProductID { get; set; }
-        public int BrandID { get; set; }
+        public int ProductId { get; set; }
+        public int CategoryId { get; set; }
+        public int BrandId { get; set; }
 
         [Display(Name = "Nombre del producto")]
-        public string ProductName { get; set; } = null!; 
+        public string ProductName { get; set; } = null!;
 
         [Display(Name = "Descripcion del producto")]
         public string ProductDescription { get; set; } = null!;
