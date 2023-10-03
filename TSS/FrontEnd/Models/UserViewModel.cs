@@ -62,7 +62,8 @@ namespace FrontEnd.Models
         [Required(ErrorMessage = "La contraseña es requerida.")]
         [Display(Name = "Contraseña")]
         [DataType(DataType.Password)]
-        [RegularExpression(@"^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$", ErrorMessage = "La contraseña no cumple con los requisitos.")]
+        [RegularExpression(@"^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$", ErrorMessage = "La contraseña debe cumplir con 8 caractéres, un número, " +
+            "una letra mayúscula y un caractér especial.")]
         public string PasswordHash { get; set; } = null!;
     }
 }

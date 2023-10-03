@@ -121,7 +121,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok($"Marca actualizada correctamente. {entity.BrandName}");
+                return Ok(entity);
             }
             catch (Exception ex)
             {

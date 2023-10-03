@@ -100,7 +100,7 @@ namespace FrontEnd.Controllers
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
             ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
-            ViewBag.IDTypes = new SelectList(ids, "TypeId", "Idtype");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
             ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
             return View("Users/Edit", user);
         }
@@ -342,6 +342,27 @@ namespace FrontEnd.Controllers
         #endregion
 
         #region Edit
+        //public ActionResult EditBrand(int id)
+        //{
+        //    BrandViewModel brand = brandsHelper.GetViewByID(id);
+        //    return View("Brands/EditBrand", brand);
+        //}
+
+        //// POST: UsersController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult EditBrand(BrandViewModel brand)
+        //{
+        //    try
+        //    {
+        //        brand = brandsHelper.Edit(brand);
+        //        return RedirectToAction("Brands");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
         #endregion
         #endregion
 

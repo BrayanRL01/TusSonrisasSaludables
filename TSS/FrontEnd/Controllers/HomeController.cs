@@ -37,7 +37,7 @@ namespace FrontEnd.Controllers
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
             ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
-            ViewBag.IDTypes = new SelectList(ids, "TypeId", "Idtype");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
             ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
             return View(user);
         }
@@ -50,7 +50,7 @@ namespace FrontEnd.Controllers
             {
                 user = Helper.Add(user);
                 ViewBag.Message = true;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login");
             }
             catch
             {
@@ -58,8 +58,6 @@ namespace FrontEnd.Controllers
                 return View();
             }
         }
-
-
 
         public IActionResult Privacy()
         {
