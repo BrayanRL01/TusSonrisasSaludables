@@ -65,5 +65,14 @@ namespace FrontEnd.Helpers
             return BrandAPI;
         }
         #endregion
+
+        #region Delete
+        public BrandViewModel Delete(int id)
+        {
+            BrandViewModel Brand = new();
+            HttpResponseMessage responseMessage = repository.DeleteResponse("api/Brands/" + id);
+            return Brand;
+        }
+        #endregion
     }
 }

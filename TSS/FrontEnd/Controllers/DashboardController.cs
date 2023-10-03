@@ -363,6 +363,31 @@ namespace FrontEnd.Controllers
             }
         }
         #endregion
+
+        #region Delete
+        // GET: UsersController/Delete/5
+        public ActionResult DeleteBrand(int id)
+        {
+            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            return View("Brands/DeleteBrand", brand);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteBrand(BrandViewModel brand)
+        {
+            try
+            {
+                brand = brandsHelper.Delete(brand.BrandId);
+                return RedirectToAction("Brands");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        #endregion
         #endregion
 
         #region Doctors

@@ -29,7 +29,7 @@
                 <td>
                     @Html.ActionLink("Edit", "EditBrand", new { id=item.BrandId }) |
                     @Html.ActionLink("Details", "BrandDetails", new { id=item.BrandId }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Delete", "DeleteBrand", new { id=item.BrandId })
                 </td>
             </tr>
         }
