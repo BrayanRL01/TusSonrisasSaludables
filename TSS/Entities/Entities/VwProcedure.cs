@@ -1,6 +1,9 @@
-﻿namespace BackEnd.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace Entities.Entities
 {
-    public class ProcedureModel
+    public partial class VwProcedure
     {
         public int ProcedureId { get; set; }
         public string ProcedureName { get; set; } = null!;
