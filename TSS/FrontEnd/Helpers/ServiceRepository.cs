@@ -8,18 +8,17 @@
         {
             Client = new HttpClient();
             Client.BaseAddress = new Uri("https://localhost:7091");
-
-            //Client.DefaultRequestHeaders.Add("ApiKey", "U46A546S");
+            Client.DefaultRequestHeaders.Add("ApiKey", "56CGE54GS94FS65V46F5BS6B1");
         }
 
-        //public ServiceRepository(string token)
-        //{
-        //    Client = new HttpClient();
-        //    Client.BaseAddress = new Uri("https://localhost:7261/");
-        //    Client.DefaultRequestHeaders.Add("ApiKey", "U46A546S");
-        //    Client.DefaultRequestHeaders.Authorization =
-        //      new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        //}
+        public ServiceRepository(string token)
+        {
+            Client = new();
+            Client.BaseAddress = new Uri("https://localhost:7091/");
+            Client.DefaultRequestHeaders.Add("ApiKey", "56CGE54GS94FS65V46F5BS6B1");
+            Client.DefaultRequestHeaders.Authorization =
+              new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
 
         public HttpResponseMessage GetResponse(string url)
         {

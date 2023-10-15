@@ -1,4 +1,5 @@
 ﻿using FrontEnd.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers
@@ -51,11 +52,18 @@ namespace FrontEnd.Helpers
         #region Update
         public UserViewModel Edit(UserViewModel User)
         {
-            HttpResponseMessage responseMessage = repository.PutResponse("api/Users/PutUser/", User);
-            var content = responseMessage.Content.ReadAsStringAsync().Result;
-            UserViewModel UserAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
+            try
+            {
+                HttpResponseMessage responseMessage = repository.PutResponse("api/Users/PutUser/", User);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                UserViewModel UserAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
 
-            return UserAPI;
+                return UserAPI;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error: " + ex);
+            }
         }
         #endregion
 

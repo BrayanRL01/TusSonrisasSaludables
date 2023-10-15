@@ -1,9 +1,12 @@
 ﻿using FrontEnd.Helpers;
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data.SqlTypes;
 using System.Diagnostics;
+using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FrontEnd.Controllers
 {
@@ -84,11 +87,12 @@ namespace FrontEnd.Controllers
             try
             {
                 user = Helper.AddAdmin(user);
+                TempData["Message"] = "Usuario creado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                TempData["Message"] = ex.Message;
+                TempData["Error"] = ex.Message;
                 return View("Users");
             }
         }
@@ -115,11 +119,12 @@ namespace FrontEnd.Controllers
             try
             {
                 user = Helper.Edit(user);
+                TempData["Message"] = "Usuario modificado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                TempData["Message"] = ex.Message;
+                TempData["Error"] = new Exception("Hubo un error: " + ex);
                 return View("Users");
             }
         }
@@ -141,6 +146,7 @@ namespace FrontEnd.Controllers
             try
             {
                 user = Helper.Delete(user.UserId);
+                TempData["Message"] = "Usuario eliminado correctamente.";
                 return RedirectToAction("Users");
             }
             catch (Exception ex)

@@ -49,13 +49,13 @@ namespace FrontEnd.Controllers
             try
             {
                 user = Helper.Add(user);
-                ViewBag.Message = true;
+                TempData["Success"] = "¡Usuario registrado correctamente!";
                 return RedirectToAction("Login");
             }
-            catch
+            catch (Exception ex)
             {
-                ViewBag.Message = false;
-                return View();
+                TempData["Error"] = "Datos inválidos, intente de nuevo. " + ex.Message;
+                return View("Register");
             }
         }
 
