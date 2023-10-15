@@ -14,7 +14,7 @@
         </button>
     </div>
 }
-else if (TempData.ContainsKey("Error"))
+@if (TempData.ContainsKey("Error"))
 {
     <div class="alert alert-danger" role="alert">
         @TempData["Error"]

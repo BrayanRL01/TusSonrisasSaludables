@@ -176,6 +176,173 @@ namespace FrontEnd.Controllers
         }
         #endregion
 
+        #region Details
+        public ActionResult CategoryDetails(int id)
+        {
+            VWCategoryViewModel category = categoriesHelper.GetViewByID(id);
+            return View("Categories/CategoryDetails", category);
+        }
+
+        public ActionResult SubCategoryDetails(int id)
+        {
+            VWSubCategoryViewModel category = categoriesHelper.GetSubByID(id);
+            return View("Categories/SubCategoryDetails", category);
+        }
+        #endregion
+
+        #region Create
+        public ActionResult CreateCategory()
+        {
+            CategoryViewModel category = new();
+            return View("Categories/CreateCategory", category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateCategory(CategoryViewModel category)
+        {
+            try
+            {
+                category = categoriesHelper.AddCategory(category);
+                TempData["Message"] = "Categoría creado correctamente.";
+                return View("Categories/Categories");
+            }
+            catch (SqlException ex)
+            {
+                TempData["Error"] = "No se pudo crear la categoría. " + ex.Message;
+                return View("Categories/Categories");
+            }
+        }
+
+        public ActionResult CreateSubCategory()
+        {
+            CategoryViewModel subcategory = new();
+            var categories = categoriesHelper.GetCategoriesView();
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
+            return View("Categories/CreateSubCategory", subcategory);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateSubCategory(CategoryViewModel category)
+        {
+            try
+            {
+                category = categoriesHelper.AddSubCategory(category);
+                TempData["Message"] = "Subcategoría creado correctamente.";
+                return View("Categories/SubCategories");
+            }
+            catch (SqlException ex)
+            {
+                TempData["Error"] = "No se pudo crear la subcategoría. " + ex.Message;
+                return View("Categories/Categories");
+            }
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditCategory(int id)
+        {
+            CategoryViewModel category = categoriesHelper.GetByID(id);
+            return View("Categories/EditCategory", category);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCategory(CategoryViewModel category)
+        {
+            try
+            {
+                category = categoriesHelper.EditCategory(category);
+                TempData["Message"] = "Categoría editada correctamente.";
+                return View("Categories/Categories");
+            }
+            catch (SqlException ex)
+            {
+                TempData["Error"] = "No se pudo editar la categoría. " + ex.Message;
+                return View("Categories/Categories");
+            }
+        }
+
+        public ActionResult EditSubCategory(int id)
+        {
+            CategoryViewModel subcategory = categoriesHelper.GetByID(id);
+            var categories = categoriesHelper.GetCategoriesView();
+            ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
+            return View("Categories/EditSubCategory", subcategory);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditSubCategory(CategoryViewModel category)
+        {
+            try
+            {
+                category = categoriesHelper.EditSubCategory(category);
+                TempData["Message"] = "Subcategoría creado correctamente.";
+                return View("Categories/SubCategories");
+            }
+            catch (SqlException ex)
+            {
+                TempData["Error"] = "No se pudo editar la subcategoría. " + ex.Message;
+                return View("Categories/Categories");
+            }
+        }
+        #endregion
+
+        #region Delete
+        public ActionResult DeleteCategory(int id)
+        {
+            VWCategoryViewModel category = categoriesHelper.GetViewByID(id);
+            return View("Categories/DeleteCategory", category);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteCategory(CategoryViewModel category)
+        {
+            try
+            {
+                category = categoriesHelper.Delete(category.CategoryId);
+                TempData["Message"] = "Categoría eliminada correctamente.";
+                return View("Categories/Categories");
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
+                return View("Categories");
+            }
+        }
+
+        public ActionResult DeleteSubCategory(int id)
+        {
+            VWSubCategoryViewModel category = categoriesHelper.GetSubByID(id);
+            return View("Categories/DeleteSubCategory", category);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteSubCategory(CategoryViewModel category)
+        {
+            try
+            {
+                category = categoriesHelper.Delete(category.CategoryId);
+                TempData["Message"] = "Subcategoría eliminada correctamente.";
+                TempData["Status"] = "success";
+                return RedirectToAction("SubCategories");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "No se eliminó la subcategoría: " + ex.Message;
+                TempData["Status"] = "danger";
+                return RedirectToAction("SubCategories");
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Appointments
