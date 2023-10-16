@@ -16,7 +16,7 @@ namespace FrontEnd.Helpers
         public List<VWAppointmentViewModel> GetAppointmentsView()
         {
             List<VWAppointmentViewModel> list = new List<VWAppointmentViewModel>();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments");
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
@@ -28,7 +28,7 @@ namespace FrontEnd.Helpers
         public List<VWAdminAppointmentViewModel> GetAdminAppointmentsView()
         {
             List<VWAdminAppointmentViewModel> list = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/GETAdminCitas");
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AdminAppointments");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
@@ -39,20 +39,18 @@ namespace FrontEnd.Helpers
 
         public VWAdminAppointmentViewModel GetViewByID(int id)
         {
-            VWAdminAppointmentViewModel Appointment = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/GetAdminAppointment/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AdminAppointment/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Appointment = JsonConvert.DeserializeObject<VWAdminAppointmentViewModel>(content);
+            VWAdminAppointmentViewModel Appointment = JsonConvert.DeserializeObject<VWAdminAppointmentViewModel>(content);
 
             return Appointment;
         }
 
         public AppointmentViewModel GetByID(int id)
         {
-            AppointmentViewModel Appointment = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/GetAppointment/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/Appointment/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+            AppointmentViewModel Appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
 
             return Appointment;
         }
@@ -63,13 +61,13 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/PutAppointment/", Cita);
+                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/Appointment/", Cita);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
 
                 return CitaAPI;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -81,7 +79,7 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Appointments/PostAppointment", Cita);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Appointments/Appointment", Cita);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
                 return CitaAPI;
@@ -102,7 +100,7 @@ namespace FrontEnd.Helpers
                 HttpResponseMessage responseMessage = repository.DeleteResponse("api/Appointments/" + id);
                 return Cita;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

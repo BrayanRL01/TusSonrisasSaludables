@@ -14,7 +14,7 @@
         </button>
     </div>
 }
-else
+else if (TempData.ContainsKey("Error"))
 {
     <div class="alert alert-danger" role="alert">
         @TempData["Error"]
@@ -63,4 +63,5 @@ else
             </tbody>
         </table>
     </div>
+</div>
 </div>

@@ -16,7 +16,7 @@ namespace FrontEnd.Helpers
         public List<VWDoctorViewModel> GetAllView()
         {
             List<VWDoctorViewModel> list = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/");
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/Doctors/");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
@@ -29,20 +29,17 @@ namespace FrontEnd.Helpers
         #region GetByID
         public DoctorViewModel GetByID(int id)
         {
-            DoctorViewModel Doctor = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/GetDoctor/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/Doctor/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Doctor = JsonConvert.DeserializeObject<DoctorViewModel>(content);
-
+            DoctorViewModel Doctor = JsonConvert.DeserializeObject<DoctorViewModel>(content);
             return Doctor;
         }
 
         public VWDoctorViewModel GetViewByID(int id)
         {
-            VWDoctorViewModel Doctor = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/GetDoctorView/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Doctor/DoctorInfo/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Doctor = JsonConvert.DeserializeObject<VWDoctorViewModel>(content);
+            VWDoctorViewModel Doctor = JsonConvert.DeserializeObject<VWDoctorViewModel>(content);
 
             return Doctor;
         }
@@ -51,10 +48,9 @@ namespace FrontEnd.Helpers
         #region Update
         public DoctorViewModel Edit(DoctorViewModel Doctor)
         {
-            HttpResponseMessage responseMessage = repository.PutResponse("api/Doctor/PutDoctors/", Doctor);
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Doctor/Doctor/", Doctor);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             DoctorViewModel DoctorAPI = JsonConvert.DeserializeObject<DoctorViewModel>(content);
-
             return DoctorAPI;
         }
         #endregion
@@ -64,7 +60,7 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Doctor/PostDoctors", Doctor);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Doctor/Doctor", Doctor);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 DoctorViewModel DoctorAPI = JsonConvert.DeserializeObject<DoctorViewModel>(content);
                 return DoctorAPI;

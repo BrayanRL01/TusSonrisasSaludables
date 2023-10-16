@@ -180,7 +180,7 @@ namespace BackEnd.Controllers
         #region PutCategories
         // PUT api/<CategoriesController>/5
         [HttpPut("Category")]
-        public async Task<ActionResult<Category>> PutCategory([FromBody] CategoryModel entity)
+        public async Task<JsonResult> PutCategory([FromBody] CategoryModel entity)
         {
             try
             {
@@ -207,11 +207,11 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return new JsonResult(Ok(entity));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "No se pudo editar la categoría: " + ex.Message);
+                return new JsonResult(StatusCode(500, "No se pudo editar la categoría: " + ex.Message));
             }
         }
 

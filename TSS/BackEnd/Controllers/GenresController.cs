@@ -18,7 +18,7 @@ namespace BackEnd.Controllers
         }
 
         // GET: api/<GenresModel>
-        [HttpGet("GetGenresView")]
+        [HttpGet("Genres")]
         public async Task<ActionResult<IEnumerable<VwGenre>>> SP_GetGenresView()
         {
             if (_context.Genres == null)
@@ -39,7 +39,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<GenresModel>/5
-        [HttpGet("GetGenreView/{id}")]
+        [HttpGet("Genre/{id}")]
         public async Task<ActionResult> SP_GetGenreView(int id)
         {
             try

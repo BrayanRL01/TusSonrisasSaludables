@@ -93,7 +93,7 @@ namespace FrontEnd.Controllers
             catch (SqlException ex)
             {
                 TempData["Error"] = ex.Message;
-                return View("Users");
+                return RedirectToAction("Users");
             }
         }
         #endregion
@@ -122,10 +122,10 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Usuario modificado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = new Exception("Hubo un error: " + ex);
-                return View("Users");
+                return RedirectToAction("Users");
             }
         }
         #endregion
@@ -151,8 +151,8 @@ namespace FrontEnd.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Users");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Users");
             }
         }
         #endregion
@@ -205,12 +205,12 @@ namespace FrontEnd.Controllers
             {
                 category = categoriesHelper.AddCategory(category);
                 TempData["Message"] = "Categoría creado correctamente.";
-                return View("Categories/Categories");
+                return RedirectToAction("Categories");
             }
-            catch (SqlException ex)
+            catch (JsonReaderException ex)
             {
                 TempData["Error"] = "No se pudo crear la categoría. " + ex.Message;
-                return View("Categories/Categories");
+                return RedirectToAction("Categories");
             }
         }
 
@@ -230,12 +230,12 @@ namespace FrontEnd.Controllers
             {
                 category = categoriesHelper.AddSubCategory(category);
                 TempData["Message"] = "Subcategoría creado correctamente.";
-                return View("Categories/SubCategories");
+                return RedirectToAction("SubCategories");
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = "No se pudo crear la subcategoría. " + ex.Message;
-                return View("Categories/Categories");
+                return RedirectToAction("SubCategories");
             }
         }
         #endregion
@@ -256,12 +256,12 @@ namespace FrontEnd.Controllers
             {
                 category = categoriesHelper.EditCategory(category);
                 TempData["Message"] = "Categoría editada correctamente.";
-                return View("Categories/Categories");
+                return RedirectToAction("Categories");
             }
             catch (SqlException ex)
             {
                 TempData["Error"] = "No se pudo editar la categoría. " + ex.Message;
-                return View("Categories/Categories");
+                return RedirectToAction("Categories");
             }
         }
 
@@ -281,12 +281,12 @@ namespace FrontEnd.Controllers
             {
                 category = categoriesHelper.EditSubCategory(category);
                 TempData["Message"] = "Subcategoría creado correctamente.";
-                return View("Categories/SubCategories");
+                return RedirectToAction("SubCategories");
             }
-            catch (SqlException ex)
+            catch (JsonReaderException ex)
             {
                 TempData["Error"] = "No se pudo editar la subcategoría. " + ex.Message;
-                return View("Categories/Categories");
+                return RedirectToAction("SubCategories");
             }
         }
         #endregion
@@ -307,12 +307,12 @@ namespace FrontEnd.Controllers
             {
                 category = categoriesHelper.Delete(category.CategoryId);
                 TempData["Message"] = "Categoría eliminada correctamente.";
-                return View("Categories/Categories");
+                return RedirectToAction("Categories");
             }
             catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
-                return View("Categories");
+                return RedirectToAction("Categories");
             }
         }
 
@@ -380,12 +380,13 @@ namespace FrontEnd.Controllers
             try
             {
                 appointment = appointmentsHelper.Add(appointment);
+                TempData["Message"] = "Cita creada correctamente.";
                 return RedirectToAction("Appointments");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Appointments");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Appointments");
             }
         }
         #endregion
@@ -409,12 +410,13 @@ namespace FrontEnd.Controllers
             try
             {
                 appointment = appointmentsHelper.Edit(appointment);
+                TempData["Message"] = "Cita editada correctamente.";
                 return RedirectToAction("Appointments");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Appointments");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Appointments");
             }
         }
         #endregion
@@ -435,12 +437,13 @@ namespace FrontEnd.Controllers
             try
             {
                 appointment = appointmentsHelper.Delete(appointment.AppointmentId);
+                TempData["Message"] = "Cita eliminada correctamente.";
                 return RedirectToAction("Appointments");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Appointments");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Appointments");
             }
         }
         #endregion
@@ -483,7 +486,59 @@ namespace FrontEnd.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Message"] = "No se pudo crear la especialidad: " + ex.Message.ToString();
+                TempData["Error"] = "No se pudo crear la especialidad: " + ex.Message.ToString();
+                return RedirectToAction("Specialties");
+            }
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditSpecialty(int id)
+        {
+            SpecialtyViewModel specialty = specialtiesHelper.GetViewByID(id);
+            return View("Specialties/EditSpecialty", specialty);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditSpecialty(SpecialtyViewModel specialty)
+        {
+            try
+            {
+                specialty = specialtiesHelper.Edit(specialty);
+                TempData["Message"] = "Especialidad editada correctamente.";
+                return RedirectToAction("Specialties");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "No se pudo editar la especialidad: " + ex.Message.ToString();
+                return RedirectToAction("Specialties");
+            }
+        }
+        #endregion
+
+        #region Delete
+        public ActionResult DeleteSpecialty(int id)
+        {
+            SpecialtyViewModel specialty = specialtiesHelper.GetViewByID(id);
+            return View("Appointments/DeleteSpecialty", specialty);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteSpecialty(SpecialtyViewModel specialty)
+        {
+            try
+            {
+                specialty = specialtiesHelper.Delete(specialty.SpecialtyId);
+                TempData["Message"] = "Especialidad eliminada correctamente.";
+                return RedirectToAction("Specialties");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
                 return RedirectToAction("Specialties");
             }
         }
@@ -492,6 +547,8 @@ namespace FrontEnd.Controllers
         #endregion
 
         #region Brands
+
+        #region GetAll
         public ActionResult Brands()
         {
             List<BrandViewModel> brands = brandsHelper.GetBrandsView();
@@ -503,6 +560,7 @@ namespace FrontEnd.Controllers
             BrandViewModel brand = brandsHelper.GetViewByID(id);
             return View("Brands/BrandDetails", brand);
         }
+        #endregion
 
         #region Create
         public ActionResult CreateBrand()
@@ -519,12 +577,13 @@ namespace FrontEnd.Controllers
             try
             {
                 brand = brandsHelper.Add(brand);
+                TempData["Message"] = "Marca creada correctamente.";
                 return RedirectToAction("Brands");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Brands");
+                TempData["Error"] = "No se pudo eliminar la marca: " + ex.Message;
+                return RedirectToAction("Brands");
             }
         }
         #endregion
@@ -543,12 +602,13 @@ namespace FrontEnd.Controllers
             try
             {
                 brand = brandsHelper.Edit(brand);
+                TempData["Message"] = "Marca editada correctamente.";
                 return RedirectToAction("Brands");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Brands");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Brands");
             }
         }
         #endregion
@@ -569,12 +629,13 @@ namespace FrontEnd.Controllers
             try
             {
                 brand = brandsHelper.Delete(brand.BrandId);
+                TempData["Message"] = "Marca eliminada correctamente.";
                 return RedirectToAction("Brands");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Brands");
+                TempData["Error"] = $"No se pudo eliminar la marca: {ex.Message}";
+                return RedirectToAction("Brands");
             }
         }
         #endregion
@@ -582,6 +643,8 @@ namespace FrontEnd.Controllers
         #endregion
 
         #region Doctors
+
+        #region GetAll
         public ActionResult Doctors()
         {
             List<VWDoctorViewModel> doctors = doctorsHelper.GetAllView();
@@ -593,6 +656,7 @@ namespace FrontEnd.Controllers
             VWDoctorViewModel doctor = doctorsHelper.GetViewByID(id);
             return View("Doctors/DoctorDetails", doctor);
         }
+        #endregion
 
         #region Create
         public ActionResult CreateDoctor()
@@ -626,16 +690,17 @@ namespace FrontEnd.Controllers
                 }
                 else
                 {
-                    doctor.DoctorPhoto = new byte[0];
+                    doctor.DoctorPhoto = Array.Empty<byte>();
                 }
 
                 doctor = doctorsHelper.Add(doctor);
+                TempData["Message"] = "Doctor creado correctamente.";
                 return RedirectToAction("Doctors");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Doctors");
+                TempData["Error"] = $"No se pudo crear el doctor: {ex.Message}";
+                return RedirectToAction("Doctors");
             }
         }
         #endregion
@@ -672,16 +737,17 @@ namespace FrontEnd.Controllers
                 }
                 else
                 {
-                    doctor.DoctorPhoto = new byte[0];
+                    doctor.DoctorPhoto = Array.Empty<byte>();
                 }
 
                 doctor = doctorsHelper.Edit(doctor);
+                TempData["Message"] = $"Doctor {doctor.DoctorName} {doctor.FirstName} {doctor.LastName} editado correctamente.";
                 return RedirectToAction("Doctors");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Doctors");
+                TempData["Error"] = $"No se pudo editar el doctor: {ex.Message}";
+                return RedirectToAction("Doctors");
             }
         }
         #endregion
@@ -701,13 +767,14 @@ namespace FrontEnd.Controllers
         {
             try
             {
+                TempData["Message"] = $"Doctor {doctor.DoctorName} {doctor.FirstName} {doctor.LastName} eliminado correctamente.";
                 doctor = doctorsHelper.Delete(doctor.DoctorId);
                 return RedirectToAction("Doctors");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Doctors");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Doctors");
             }
         }
         #endregion
@@ -756,15 +823,17 @@ namespace FrontEnd.Controllers
                 }
                 else
                 {
-                    product.ProductImage = new byte[0];
+                    product.ProductImage = Array.Empty<byte>();
                 }
+
                 product = productsHelper.Add(product);
+                TempData["Message"] = $"Producto {product.ProductName} creado correctamente.";
                 return RedirectToAction("Products");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Products");
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Products");
             }
         }
         #endregion
@@ -798,15 +867,16 @@ namespace FrontEnd.Controllers
                 }
                 else
                 {
-                    product.ProductImage = new byte[0];
+                    product.ProductImage = Array.Empty<byte>();
                 }
                 product = productsHelper.Edit(product);
+                TempData["Message"] = $"Producto {product.ProductName} editado correctamente.";
                 return RedirectToAction("Products");
             }
             catch (Exception ex)
             {
                 TempData["Message"] = ex.Message;
-                return View("Products");
+                return RedirectToAction("Products");
             }
         }
         #endregion
@@ -824,13 +894,14 @@ namespace FrontEnd.Controllers
         {
             try
             {
+                TempData["Message"] = $"Producto {product.ProductName} eliminado correctamente.";
                 product = productsHelper.Delete(product.ProductId);
                 return RedirectToAction("Products");
             }
             catch (Exception ex)
             {
-                TempData["Message"] = ex.Message;
-                return View("Products");
+                TempData["Error"] = $"No se pudo elimianr el producto {product.ProductName}: {ex.Message}";
+                return RedirectToAction("Products");
             }
         }
         #endregion

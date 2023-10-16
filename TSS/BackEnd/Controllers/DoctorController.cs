@@ -20,7 +20,7 @@ namespace BackEnd.Controllers
         }
 
         // GET: api/<DoctorsController>
-        [HttpGet]
+        [HttpGet("Doctors")]
         public async Task<ActionResult<IEnumerable<VwDoctor>>> SP_GetDoctorsView()
         {
             if (_context.VwDoctors == null)
@@ -30,8 +30,8 @@ namespace BackEnd.Controllers
 
             try
             {
-                var users = await _context.VwDoctors.FromSqlRaw("EXEC SP_GetDoctorsView").ToListAsync();
-                return users;
+                var doctors = await _context.VwDoctors.FromSqlRaw("EXEC SP_GetDoctorsView").ToListAsync();
+                return Ok(doctors);
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<DoctorsController>/5
-        [HttpGet("GetDoctorView/{id}")]
+        [HttpGet("DoctorInfo/{id}")]
         public async Task<ActionResult> SP_GetDoctorView(int id)
         {
             try
@@ -56,7 +56,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("GetDoctor/{id}")]
+        [HttpGet("Doctor/{id}")]
         public async Task<ActionResult> SP_GetDoctor(int id)
         {
             try
@@ -88,7 +88,7 @@ namespace BackEnd.Controllers
 
 
         // POST api/<DoctorsController>
-        [HttpPost("PostDoctors")]
+        [HttpPost("Doctor")]
         public async Task<ActionResult<Doctor>> PostDoctors([FromBody] DoctorModel entity)
         {
             try
@@ -191,8 +191,8 @@ namespace BackEnd.Controllers
         //aqui quede
 
         // PUT api/<DoctorsController>/5
-        [HttpPut("PutDoctors")]
-        public async Task<ActionResult<Doctor>> PutDoctors([FromBody] DoctorModel entity)
+        [HttpPut("Doctor")]
+        public async Task<ActionResult> PutDoctors([FromBody] DoctorModel entity)
         {
             try
             {

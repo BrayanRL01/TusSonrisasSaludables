@@ -20,28 +20,28 @@ namespace BackEnd.Controllers
         }
 
         // GET: api/<AppointmentsController>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<VwAppointment>>> SP_GetCitasView()
+        [HttpGet("UserAppointments")]
+        public async Task<JsonResult> SP_GetCitasView()
         {
             if (_context.VwAppointments == null)
             {
-                return NotFound();
+                return new JsonResult(NotFound());
             }
 
             try
             {
                 var users = await _context.VwAppointments.FromSqlRaw("EXEC SP_GetAppointmentsView").ToListAsync();
-                return users;
+                return new JsonResult(Ok(users));
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return new JsonResult(BadRequest(ex.Message));
             }
         }
 
 
-        [HttpGet("GETAdminCitas")]
-        public async Task<ActionResult<IEnumerable<VwAdminAppointment>>> SP_GetCitasAdminView()
+        [HttpGet("AdminAppointments")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> SP_GetCitasAdminView()
         {
             if (_context.VwAdminAppointments == null)
             {
@@ -51,7 +51,7 @@ namespace BackEnd.Controllers
             try
             {
                 var citas = await _context.VwAdminAppointments.FromSqlRaw("EXEC SP_GetAdminAppointmentsView").ToListAsync();
-                return citas;
+                return Ok(citas);
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<AppointmentsController>/5
-        [HttpGet("GetAppointment/{id}")]
+        [HttpGet("Appointment/{id}")]
         public async Task<ActionResult> SP_GetAppointment(int id)
         {
             try
@@ -76,7 +76,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("GetAppointmentView/{id}")]
+        [HttpGet("UserAppointment/{id}")]
         public async Task<ActionResult> SP_GetAppointmentView(int id)
         {
             try
@@ -92,7 +92,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("GetAdminAppointment/{id}")]
+        [HttpGet("AdminAppointment/{id}")]
         public async Task<ActionResult> SP_GetAdminAppointment(int id)
         {
             try
@@ -124,7 +124,7 @@ namespace BackEnd.Controllers
 
 
         // POST api/<AppointmentsController>
-        [HttpPost("PostAppointment")]
+        [HttpPost("Appointment")]
         public async Task<ActionResult<Appointment>> PostAppointment([FromBody] AppointmentModel entity)
         {
             try
@@ -176,7 +176,7 @@ namespace BackEnd.Controllers
 
         #region PutAppoiments
         // PUT api/<AppointmentsController>/5
-        [HttpPut("PutAppointment")]
+        [HttpPut("Appointment")]
         public async Task<ActionResult<Appointment>> PutAppointment([FromBody] AppointmentModel entity)
         {
             try

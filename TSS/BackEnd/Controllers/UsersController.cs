@@ -32,7 +32,7 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwUsers.FromSqlRaw("EXEC SP_GetUsersView").ToListAsync();
-                return users;
+                return Ok(users);
             }
             catch (Exception ex)
             {

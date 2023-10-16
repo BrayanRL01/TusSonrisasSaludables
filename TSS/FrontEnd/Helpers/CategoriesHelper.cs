@@ -92,9 +92,9 @@ namespace FrontEnd.Helpers
 
                 return categoryAPI;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception("Error: " + ex.Message);
+                throw;
             }
         }
 
@@ -108,9 +108,9 @@ namespace FrontEnd.Helpers
 
                 return categoryAPI;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception("Error: " + ex);
+                throw;
             }
         }
         #endregion
@@ -118,10 +118,17 @@ namespace FrontEnd.Helpers
         #region Create
         public CategoryViewModel AddCategory(CategoryViewModel category)
         {
-            HttpResponseMessage responseMessage = repository.PostResponse("api/Categories/Category", category);
-            var content = responseMessage.Content.ReadAsStringAsync().Result;
-            CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
-            return categoryAPI;
+            try
+            {
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Categories/Category", category);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
+                return categoryAPI;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public CategoryViewModel AddSubCategory(CategoryViewModel category)
@@ -137,6 +144,7 @@ namespace FrontEnd.Helpers
             {
                 throw;
             }
+
         }
         #endregion
 
@@ -149,9 +157,9 @@ namespace FrontEnd.Helpers
                 HttpResponseMessage responseMessage = repository.DeleteResponse("api/Categories/" + id);
                 return category;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                throw;
             }
         }
         #endregion

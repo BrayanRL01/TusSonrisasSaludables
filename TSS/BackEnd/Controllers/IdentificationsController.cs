@@ -19,7 +19,7 @@ namespace BackEnd.Controllers
 
         // GET: api/<IdentificationsModel>
         [HttpGet("GetIDTypesView")]
-        public async Task<ActionResult<IEnumerable<VwIdentification>>> GetProvinces()
+        public async Task<ActionResult<IEnumerable<VwIdentification>>> GetIDTypesView()
         {
             if (_context.VwIdentifications == null)
             {
