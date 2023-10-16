@@ -10,18 +10,18 @@ namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProcedureController : ControllerBase
+    public class ProceduresController : ControllerBase
     {
         private readonly TusSonrisasSaludablesContext _context;
 
-        public ProcedureController(TusSonrisasSaludablesContext context)
+        public ProceduresController(TusSonrisasSaludablesContext context)
         {
             _context = context;
         }
 
         // GET: api/<ProcedureController>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<VwProcedure>>> SP_GetProcedureView ()
+        [HttpGet("Procedures")]
+        public async Task<ActionResult<IEnumerable<VwProcedure>>> SP_GetProcedureView()
         {
             if (_context.VwProcedures == null)
             {
@@ -31,7 +31,7 @@ namespace BackEnd.Controllers
             try
             {
                 var procedures = await _context.VwProcedures.FromSqlRaw("EXEC SP_GetProceduresView ").ToListAsync();
-                return procedures;
+                return Ok(procedures);
             }
             catch (Exception ex)
             {
@@ -40,8 +40,8 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<ProcedureController>/5
-        [HttpGet("GetRecord/{id}")]
-        public async Task<ActionResult> SP_GetProcedureView (int id)
+        [HttpGet("Procedure/{id}")]
+        public async Task<ActionResult> SP_GetProcedureView(int id)
         {
             try
             {
@@ -52,12 +52,13 @@ namespace BackEnd.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "El procedimiento no existe " + ex.Message);
+                return StatusCode(500, "El procedimiento no existe: " + ex.Message);
             }
         }
 
+        #region Post
         // POST api/<ProcedureController>
-        [HttpPost("PostProcedure")]
+        [HttpPost("Procedure")]
         public async Task<ActionResult<ClinicProcedure>> PostProcedure([FromBody] ProcedureModel entity)
         {
             try
@@ -73,7 +74,7 @@ namespace BackEnd.Controllers
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.ProcedureName
                     }
-                     
+
                 };
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
@@ -86,10 +87,11 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "No se pudo crear: " + ex.Message);
             }
         }
+        #endregion
 
         #region PutProcedures
         // PUT api/<ProcedureController>/5
-        [HttpPut]
+        [HttpPut("Procedure")]
         public async Task<ActionResult<ClinicProcedure>> PutProcedure([FromBody] ProcedureModel entity)
         {
             try

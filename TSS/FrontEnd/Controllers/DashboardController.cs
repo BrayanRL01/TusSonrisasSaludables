@@ -38,6 +38,11 @@ namespace FrontEnd.Controllers
         BrandsHelper brandsHelper = new();
         #endregion
 
+        #region Records
+        RecordsHelper recordsHelper = new();
+        ProceduresHelper proceduresHelper = new();
+        #endregion
+
         #endregion
 
         public DashboardController(ILogger<DashboardController> logger)
@@ -906,6 +911,209 @@ namespace FrontEnd.Controllers
         }
         #endregion
 
+        #endregion
+
+        #region Procedures
+
+        #region GetAll
+        public ActionResult Procedures()
+        {
+            List<ProcedureViewModel> list = proceduresHelper.GetAllView();
+            return View("Procedures/Procedures", list);
+        }
+
+        public ActionResult ProcedureDetails(int id)
+        {
+            ProcedureViewModel procedure = proceduresHelper.GetByID(id);
+            return View("Procedures/ProcedureDetails", procedure);
+        }
+        #endregion
+
+        #region Create
+        public ActionResult CreateProcedure()
+        {
+            ProcedureViewModel procedure = new();
+            return View("Procedures/CreateProcedure", procedure);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateProcedure(ProcedureViewModel procedure)
+        {
+            try
+            {
+                procedure = proceduresHelper.Add(procedure);
+                TempData["Message"] = $"Procedimiento {procedure.ProcedureName} creado correctamente.";
+                return RedirectToAction("Procedures");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "No se pudo crear el procedimiento: " + ex.Message;
+                return RedirectToAction("Procedures");
+            }
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditProcedure(int id)
+        {
+            ProcedureViewModel procedure = proceduresHelper.GetByID(id);
+            return View("Procedures/EditProcedure", procedure);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProcedure(ProcedureViewModel procedure)
+        {
+            try
+            {
+                procedure = proceduresHelper.Edit(procedure);
+                TempData["Message"] = $"Procedimiento {procedure.ProcedureName} editado correctamente.";
+                return RedirectToAction("Procedures");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Procedures");
+            }
+        }
+        #endregion
+
+        #region Delete
+        // GET: UsersController/Delete/5
+        public ActionResult DeleteProcedure(int id)
+        {
+            ProcedureViewModel procedure = proceduresHelper.GetByID(id);
+            return View("Procedures/DeleteProcedure", procedure);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteProcedure(ProcedureViewModel procedure)
+        {
+            try
+            {
+                procedure = proceduresHelper.Delete(procedure.ProcedureId);
+                TempData["Message"] = "Procedimiento eliminado correctamente.";
+                return RedirectToAction("Procedures");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"No se pudo eliminar el procedimiento: {ex.Message}";
+                return RedirectToAction("Procedures");
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Records
+
+        #region GetAll
+        public ActionResult Records()
+        {
+            List<VWRecordViewModel> list = recordsHelper.GetAllView();
+            return View("Records/Records", list);
+        }
+
+        public ActionResult RecordDetails(int id)
+        {
+            VWRecordViewModel record = recordsHelper.GetViewByID(id);
+            return View("Records/RecordDetails", record);
+        }
+        #endregion
+
+        #region Create
+        public ActionResult CreateRecord()
+        {
+            RecordViewModel record = new();
+            var users = Helper.GetAllView();
+            var doctors = doctorsHelper.GetAllView();
+            var procedures = proceduresHelper.GetAllView();
+            ViewBag.Users = new SelectList(users, "UserId", "FullName");
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+            ViewBag.Procedures = new SelectList(procedures, "ProcedureId", "ProcedureName");
+            return View("Records/CreateRecord", record);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRecord(RecordViewModel record)
+        {
+            try
+            {
+                record = recordsHelper.Add(record);
+                TempData["Message"] = $"Registro creado correctamente.";
+                return RedirectToAction("Records");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "No se pudo crear el registro: " + ex.Message;
+                return RedirectToAction("Records");
+            }
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditRecord(int id)
+        {
+            RecordViewModel record = recordsHelper.GetByID(id);
+            List<VWUserViewModel> users = Helper.GetAllView();
+            List<VWDoctorViewModel> doctors = doctorsHelper.GetAllView();
+            List<ProcedureViewModel> procedures = proceduresHelper.GetAllView();
+            ViewBag.Users = new SelectList(users, "UserId", "FullName");
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+            ViewBag.Procedures = new SelectList(procedures, "ProcedureId", "ProcedureName");
+            return View("Records/EditRecord", record);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRecord(RecordViewModel record)
+        {
+            try
+            {
+                record = recordsHelper.Edit(record);
+                TempData["Message"] = "Registro editado correctamente.";
+                return RedirectToAction("Records");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Records");
+            }
+        }
+        #endregion
+
+        #region Delete
+        // GET: UsersController/Delete/5
+        public ActionResult DeleteRecord(int id)
+        {
+            VWRecordViewModel record = recordsHelper.GetViewByID(id);
+            return View("Records/DeleteRecord", record);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRecord(RecordViewModel record)
+        {
+            try
+            {
+                record = recordsHelper.Delete(record.RecordId);
+                TempData["Message"] = "Registro eliminado correctamente.";
+                return RedirectToAction("Procedures");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"No se pudo eliminar el registro: {ex.Message}";
+                return RedirectToAction("Procedures");
+            }
+        }
+        #endregion
         #endregion
 
         public IActionResult Privacy()

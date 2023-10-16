@@ -10,17 +10,16 @@ namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RecordController : ControllerBase
+    public class RecordsController : ControllerBase
     {
         private readonly TusSonrisasSaludablesContext _context;
 
-        public RecordController(TusSonrisasSaludablesContext context)
+        public RecordsController(TusSonrisasSaludablesContext context)
         {
             _context = context;
         }
 
-        // GET: api/<RecordController>
-        [HttpGet]
+        [HttpGet("Records")]
         public async Task<ActionResult<IEnumerable<VwRecord>>> SP_GetRecordView()
         {
             if (_context.VwRecords == null)
@@ -30,8 +29,8 @@ namespace BackEnd.Controllers
 
             try
             {
-                var users = await _context.VwRecords.FromSqlRaw("EXEC SP_GetRecordsView").ToListAsync();
-                return users;
+                var records = await _context.VwRecords.FromSqlRaw("EXEC SP_GetRecordsView").ToListAsync();
+                return Ok(records);
             }
             catch (Exception ex)
             {
@@ -39,16 +38,16 @@ namespace BackEnd.Controllers
             }
         }
 
-        // GET api/<RecordController>/5
-        [HttpGet("GetRecord/{id}")]
+        #region GetID
+        [HttpGet("RecordInfo/{id}")]
         public async Task<ActionResult> SP_GetRecordView(int id)
         {
             try
             {
-                var users = await _context.VwRecords.FromSqlInterpolated($"EXEC SP_GetRecordView {id}").ToListAsync();
-                var user = users.FirstOrDefault();
+                var records = await _context.VwRecords.FromSqlInterpolated($"EXEC SP_GetRecordView {id}").ToListAsync();
+                var record = records.FirstOrDefault();
 
-                return Ok(user);
+                return Ok(record);
             }
             catch (Exception ex)
             {
@@ -56,8 +55,26 @@ namespace BackEnd.Controllers
             }
         }
 
+        [HttpGet("Record/{id}")]
+        public async Task<ActionResult> SP_GetRecord(int id)
+        {
+            try
+            {
+                var records = await _context.PatientRecords.FromSqlInterpolated($"EXEC SP_GetRecord {id}").ToListAsync();
+                var record = records.FirstOrDefault();
+
+                return Ok(record);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Post
         // POST api/<RecordController>
-        [HttpPost("PostRecord")]
+        [HttpPost("Record")]
         public async Task<ActionResult<PatientRecord>> PostRecord([FromBody] RecordModel entity)
         {
             try
@@ -121,10 +138,11 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "No se pudo crear: " + ex.Message);
             }
         }
+        #endregion
 
         #region PutRecords
         // PUT api/<RecordController>/5
-        [HttpPut()]
+        [HttpPut("Record")]
         public async Task<ActionResult<PatientRecord>> PutRecord([FromBody] RecordModel entity)
         {
             try

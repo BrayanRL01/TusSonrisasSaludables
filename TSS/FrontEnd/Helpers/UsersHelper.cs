@@ -16,7 +16,7 @@ namespace FrontEnd.Helpers
         #region GetAll
         public List<VWUserViewModel> GetAllView()
         {
-            List<VWUserViewModel> list = new List<VWUserViewModel>();
+            List<VWUserViewModel> list = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Users/GetUsersView");
             if (responseMessage != null)
             {
