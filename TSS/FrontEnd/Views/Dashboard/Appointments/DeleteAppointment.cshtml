@@ -5,11 +5,11 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>DeleteAppointment</h1>
+<h1>Eliminar cita</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>¿Desea eliminar esta cita?</h3>
 <div>
-    <h4>VWAdminAppointmentViewModel</h4>
+    <h4>Citas Administrador</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -47,6 +47,6 @@
     <form asp-action="DeleteAppointment">
         @Html.HiddenFor(Model => Model.AppointmentId)
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Appointments">Volver a Citas</a>
+        <a asp-action="Appointments">Regresar a Citas</a>
     </form>
 </div>

@@ -1,0 +1,197 @@
+﻿using BackEnd.Models;
+using Entities.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace BackEnd.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class RecordController : ControllerBase
+    {
+        private readonly TusSonrisasSaludablesContext _context;
+
+        public RecordController(TusSonrisasSaludablesContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/<RecordController>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<VwRecord>>> SP_GetRecordView()
+        {
+            if (_context.VwRecords == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var users = await _context.VwRecords.FromSqlRaw("EXEC SP_GetRecordsView").ToListAsync();
+                return users;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET api/<RecordController>/5
+        [HttpGet("GetRecord/{id}")]
+        public async Task<ActionResult> SP_GetRecordView(int id)
+        {
+            try
+            {
+                var users = await _context.VwRecords.FromSqlInterpolated($"EXEC SP_GetRecordView {id}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado: " + ex.Message);
+            }
+        }
+
+        // POST api/<RecordController>
+        [HttpPost("PostRecord")]
+        public async Task<ActionResult<PatientRecord>> PostRecord([FromBody] RecordModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_CreateRecord @UserID, @DoctorID, @ProcedureID, @Diagnoses, @Symptoms, @Treatment";
+
+                var param = new SqlParameter[]
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@UserID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.UserId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@DoctorID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.DoctorId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@ProcedureID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProcedureId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Diagnoses",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Diagnoses
+                    },
+                      new SqlParameter()
+                    {
+                        ParameterName = "@Symptoms",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Symptoms
+                    },
+                       new SqlParameter()
+                    {
+                        ParameterName = "@Treatment",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Treatment
+                    },
+
+                };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo crear: " + ex.Message);
+            }
+        }
+
+        #region PutRecords
+        // PUT api/<RecordController>/5
+        [HttpPut()]
+        public async Task<ActionResult<PatientRecord>> PutRecord([FromBody] RecordModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_EditRecord @ID, @Diagnoses, @Symptoms, @Treatment";
+
+                var param = new SqlParameter[]
+               {
+                    new SqlParameter()
+                    {
+
+                        ParameterName = "@ID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.RecordId
+                    },
+                    new SqlParameter()
+                    {
+                        ParameterName = "@Diagnoses",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Diagnoses
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Symptoms",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Symptoms
+                    },
+                      new SqlParameter()
+                    {
+                        ParameterName = "@Treatment",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Treatment
+                    }
+               };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok(entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo editar: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region DeleteRecords
+        // DELETE api/<RecordController>/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteRecord(int id)
+        {
+            try
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteRecord {id}");
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo eliminar: " + ex.Message);
+            }
+        }
+        #endregion
+    }
+}
