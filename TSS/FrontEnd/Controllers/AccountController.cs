@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FrontEnd.Controllers

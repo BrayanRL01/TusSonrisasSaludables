@@ -9,6 +9,6 @@ namespace BackEnd.Models
 
         [Required, DataType(DataType.Password)]
         public string PasswordHash { get; set; } = null!;
-        public string Roles { get; set; } = null!;
+        public string Roles { get; set; } = string.Empty;
     }
 }

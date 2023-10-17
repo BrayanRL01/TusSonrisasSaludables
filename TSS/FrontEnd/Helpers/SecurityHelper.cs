@@ -16,7 +16,7 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/Login", new { usuario.Email, usuario.PasswordHash });
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/Login", usuario);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 TokenModel TokenModel = JsonConvert.DeserializeObject<TokenModel>(content);
 

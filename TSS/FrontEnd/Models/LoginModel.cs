@@ -10,7 +10,7 @@ namespace FrontEnd.Models
         [Required, Display(Name = "Contraseña")]
         [DataType(DataType.Password)]
         public string PasswordHash { get; set; } = null!;
-        public string Roles { get; set; } = null!;
+        public string Roles { get; set; } = string.Empty;
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; } = null!;
     }
