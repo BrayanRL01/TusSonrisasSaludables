@@ -7,6 +7,7 @@ using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FrontEnd.Controllers
 {
@@ -148,16 +149,25 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserViewModel user)
         {
-            try
+            user = Helper.Delete(user.UserId);
+            if (user == null)
             {
-                user = Helper.Delete(user.UserId);
                 TempData["Message"] = "Usuario eliminado correctamente.";
+
                 return RedirectToAction("Users");
+                //else
+                //{
+                //    Exception ex = new();
+                //    TempData["Message"] = $"No se ha eliminado el usuario. {ex.Message}";
+                //    return RedirectToAction("Users");
+                //}
             }
-            catch (Exception ex)
+            else
             {
-                TempData["Error"] = ex.Message;
+                Exception ex = new();
+                TempData["Error"] = "No se eliminó el usuario: " + ex.Message.ToString();
                 return RedirectToAction("Users");
+
             }
         }
         #endregion

@@ -15,10 +15,10 @@ namespace FrontEnd.Controllers
 {
     public class HomeController : Controller
     {
-        UsersHelper Helper = new();
-        GenresHelper genresHelper = new();
-        IdentificationsHelper idHelper = new();
-        ProvincesHelper provincesHelper = new();
+        //UsersHelper Helper = new();
+        //GenresHelper genresHelper = new();
+        //IdentificationsHelper idHelper = new();
+        //ProvincesHelper provincesHelper = new();
 
         private readonly ILogger<HomeController> _logger;
 
@@ -43,35 +43,6 @@ namespace FrontEnd.Controllers
         public IActionResult Login()
         {
             return View();
-        }
-
-        public ActionResult Register()
-        {
-            UserViewModel user = new();
-            var genres = genresHelper.GetAllView();
-            var ids = idHelper.GetAllView();
-            var provinces = provincesHelper.GetAllView();
-            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
-            ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
-            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
-            return View(user);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(UserViewModel user)
-        {
-            try
-            {
-                user = Helper.Add(user);
-                TempData["Success"] = "¡Usuario registrado correctamente!";
-                return RedirectToAction("Login");
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "Datos inválidos, intente de nuevo. " + ex.Message;
-                return View("Register");
-            }
         }
 
         public IActionResult Privacy()

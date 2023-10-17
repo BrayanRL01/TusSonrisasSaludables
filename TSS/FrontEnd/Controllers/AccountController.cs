@@ -5,15 +5,16 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FrontEnd.Controllers
 {
     public class AccountController : Controller
     {
-        SecurityHelper securityHelper;
-        public AccountController()
-        {
-        }
+        private SecurityHelper _securityHelper = new();
+        private GenresHelper _genresHelper = new();
+        private IdentificationsHelper _identificationsHelper = new();
+        private ProvincesHelper _provincesHelper = new();
 
         public IActionResult Login(string returnUrl = "/")
         {
@@ -27,9 +28,9 @@ namespace FrontEnd.Controllers
         {
             try
             {
-                TokenModel token = securityHelper.Login(model);
+                TokenModel token = _securityHelper.Login(model);
                 HttpContext.Session.SetString("token", token.Token);
-                var loginModel = securityHelper.GetUser(model);
+                var loginModel = _securityHelper.GetUser(model);
                 var claims = new List<Claim>() {
                         new Claim(ClaimTypes.NameIdentifier, loginModel.Email),
                         new Claim(ClaimTypes.Name, loginModel.Email)
@@ -49,15 +50,46 @@ namespace FrontEnd.Controllers
                 {
                     IsPersistent = model.RememberLogin
                 });
+                TempData["Message"] = "";
                 return RedirectToAction("Index", "Home");
                 //return RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return View(model);
+                return RedirectToAction("Login");
             }
 
+        }
+
+        public ActionResult Register()
+        {
+            UserViewModel user = new();
+            var genres = _genresHelper.GetAllView();
+            var ids = _identificationsHelper.GetAllView();
+            var provinces = _provincesHelper.GetAllView();
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
+            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
+            return View(user);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(UserViewModel user)
+        {
+            try
+            {
+                user = _securityHelper.Register(user);
+                TempData["Message"] = "Usuario creado correctamente.";
+                return RedirectToAction("Login");
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Datos brindados inválidos.";
+                return RedirectToAction("Register");
+            }
         }
 
         public async Task<IActionResult> LogOut()

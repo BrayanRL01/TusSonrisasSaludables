@@ -15,34 +15,48 @@ namespace FrontEnd.Helpers
         #region GetAll
         public List<VWAppointmentViewModel> GetAppointmentsView()
         {
-            List<VWAppointmentViewModel> list = new List<VWAppointmentViewModel>();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments");
-            if (responseMessage != null)
+            try
             {
-                var content = responseMessage.Content.ReadAsStringAsync().Result;
-                list = JsonConvert.DeserializeObject<List<VWAppointmentViewModel>>(content);
+                List<VWAppointmentViewModel> list = new List<VWAppointmentViewModel>();
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments");
+                if (responseMessage != null)
+                {
+                    var content = responseMessage.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<VWAppointmentViewModel>>(content);
+                }
+                return list;
             }
-            return list;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<VWAdminAppointmentViewModel> GetAdminAppointmentsView()
         {
-            List<VWAdminAppointmentViewModel> list = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AdminAppointments");
-            if (responseMessage != null)
+            try
             {
-                var content = responseMessage.Content.ReadAsStringAsync().Result;
-                list = JsonConvert.DeserializeObject<List<VWAdminAppointmentViewModel>>(content);
+                List<VWAdminAppointmentViewModel> list = new();
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AdminAppointments");
+                if (responseMessage != null)
+                {
+                    var content = responseMessage.Content.ReadAsStringAsync().Result;
+                    list = JsonConvert.DeserializeObject<List<VWAdminAppointmentViewModel>>(content);
+                }
+                return list;
             }
-            return list;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public VWAdminAppointmentViewModel GetViewByID(int id)
         {
+
             HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AdminAppointment/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             VWAdminAppointmentViewModel Appointment = JsonConvert.DeserializeObject<VWAdminAppointmentViewModel>(content);
-
             return Appointment;
         }
 
@@ -67,9 +81,9 @@ namespace FrontEnd.Helpers
 
                 return CitaAPI;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         #endregion
@@ -84,9 +98,9 @@ namespace FrontEnd.Helpers
                 AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
                 return CitaAPI;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         #endregion
@@ -100,9 +114,9 @@ namespace FrontEnd.Helpers
                 HttpResponseMessage responseMessage = repository.DeleteResponse("api/Appointments/" + id);
                 return Cita;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
         #endregion

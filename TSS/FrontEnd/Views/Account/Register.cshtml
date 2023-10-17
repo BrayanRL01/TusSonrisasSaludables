@@ -13,17 +13,8 @@
                 <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
                 <div class="col-lg-7">
                     <div class="p-5">
-                        @if (TempData.ContainsKey("Error"))
-                        {
-                            <div class="alert alert-danger" role="alert">
-                                @TempData["Error"]
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        }
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                            <h1 class="h4 text-gray-900 mb-4">¡Crear una cuenta!</h1>
                         </div>
                         <form asp-action="Register">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -87,24 +78,18 @@
                                 <input asp-for="PasswordHash" class="form-control" />
                                 <span asp-validation-for="PasswordHash" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary" />
+                            <div class="form-group text-center">
+                                <input type="submit" value="Registrarse" class="btn btn-primary" />
+                            </div>
+                            <div class="text-center">
+                                <a asp-action="Login">Iniciar Sesión</a>
                             </div>
                         </form>
-                        <div class="text-center">
-                            <a class="small" href="forgot-password.html">Forgot Password?</a>
-                        </div>
-                        <div class="text-center">
-                            <a asp-controller="Home" asp-action="Login">Back to List</a>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
 
 
