@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>DeleteBrand</h1>
+<h1>Eliminar Marca</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Esta seguro de eliminar esta Marca?</h3>
 <div>
     <h4>BrandViewModel</h4>
     <hr />
@@ -23,6 +23,6 @@
     <form asp-action="DeleteBrand">
         @Html.HiddenFor(Model => Model.BrandId)
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Volver a Marcas</a>
     </form>
 </div>
