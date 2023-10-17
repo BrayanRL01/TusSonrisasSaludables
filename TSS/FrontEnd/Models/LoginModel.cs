@@ -12,6 +12,6 @@ namespace FrontEnd.Models
         public string PasswordHash { get; set; } = null!;
         public string Roles { get; set; } = string.Empty;
         public bool RememberLogin { get; set; }
-        public string ReturnUrl { get; set; } = null!;
+        public string ReturnUrl { get; set; } = string.Empty;
     }
 }

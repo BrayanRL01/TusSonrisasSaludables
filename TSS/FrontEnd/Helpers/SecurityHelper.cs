@@ -39,16 +39,24 @@ namespace FrontEnd.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception(ex.Source);
             }
         }
 
         public LoginModel GetUser(LoginModel usuario)
         {
-            HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/GetUser", new { usuario.Email, usuario.PasswordHash });
+            HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/GetUser", usuario);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             LoginModel loginModel = JsonConvert.DeserializeObject<LoginModel>(content);
             return loginModel;
+        }
+
+        public UserViewModel GetByEmail(string email)
+        {
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/EditEmail/" + email);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
+            return Usuario;
         }
     }
 }

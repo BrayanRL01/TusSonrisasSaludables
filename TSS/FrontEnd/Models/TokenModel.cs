@@ -2,7 +2,7 @@
 {
     public class TokenModel
     {
-        public string Token { get; set; } = null!;
-        public string Expiration { get; set; } = null!;
+        public string Token { get; set; }
+        public string Expiration { get; set; }
     }
 }

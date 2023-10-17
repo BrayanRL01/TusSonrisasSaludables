@@ -2,15 +2,14 @@
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Data.SqlTypes;
 using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FrontEnd.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DashboardController : Controller
     {
         private readonly ILogger<DashboardController> _logger;
@@ -18,10 +17,10 @@ namespace FrontEnd.Controllers
         #region Helpers
 
         #region Users
-        UsersHelper Helper = new();
-        GenresHelper genresHelper = new();
-        IdentificationsHelper idHelper = new();
-        ProvincesHelper provincesHelper = new();
+        private UsersHelper Helper = new();
+        private GenresHelper genresHelper = new();
+        private IdentificationsHelper idHelper = new();
+        private ProvincesHelper provincesHelper = new();
         #endregion
 
         #region Appointments
@@ -1129,6 +1128,37 @@ namespace FrontEnd.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult EditAdmin(string email)
+        {
+            SecurityHelper securityHelper = new SecurityHelper();
+            UserViewModel user = securityHelper.GetByEmail(email);
+            var genres = genresHelper.GetAllView();
+            var ids = idHelper.GetAllView();
+            var provinces = provincesHelper.GetAllView();
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
+            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
+            return View("EditAdmin", user);
+        }
+
+        // POST: UsersController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditAdmin(UserViewModel user)
+        {
+            try
+            {
+                user = Helper.Edit(user);
+                TempData["Message"] = "Usuario modificado correctamente.";
+                return RedirectToAction("Users");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = new Exception("Hubo un error: " + ex);
+                return RedirectToAction("Users");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

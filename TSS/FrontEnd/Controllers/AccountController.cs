@@ -15,10 +15,12 @@ namespace FrontEnd.Controllers
         private IdentificationsHelper _identificationsHelper = new();
         private ProvincesHelper _provincesHelper = new();
 
-        public IActionResult Login(string returnUrl = "/")
+        public IActionResult Login(string Url = "/")
         {
-            LoginModel model = new();
-            model.ReturnUrl = returnUrl;
+            LoginModel model = new()
+            {
+                ReturnUrl = Url
+            };
             return View(model);
         }
 
@@ -31,16 +33,10 @@ namespace FrontEnd.Controllers
                 HttpContext.Session.SetString("token", token.Token);
                 var loginModel = _securityHelper.GetUser(model);
                 var claims = new List<Claim>() {
-                        new Claim(ClaimTypes.NameIdentifier, loginModel.Email),
-                        new Claim(ClaimTypes.Name, loginModel.Email)
+                    new Claim(ClaimTypes.NameIdentifier, loginModel.Email),
+                    new Claim(ClaimTypes.Name, loginModel.Email),
+                    new Claim(ClaimTypes.Role, loginModel.Roles)
                  };
-
-                foreach (var item in loginModel.Roles)
-                {
-                    claims.Add(
-                          new Claim(ClaimTypes.Role, item.ToString())
-                        );
-                }
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
@@ -49,13 +45,21 @@ namespace FrontEnd.Controllers
                 {
                     IsPersistent = model.RememberLogin
                 });
-                TempData["Message"] = "";
+
+                if (loginModel.Roles == "Admin")
+                {
+                    TempData["Message"] = $"Bienvenido/a {loginModel.Email}";
+                    return RedirectToAction("Index", "Dashboard");
+                }
+                else if (loginModel.Roles == "User")
+                {
+                    TempData["Message"] = $"Bienvenido/a {loginModel.Email}";
+                }
                 return RedirectToAction("Index", "Home");
-                //return RedirectToAction("Index", "Home");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["Error"] = ex.Message;
+                TempData["Error"] = "Datos inválidos, intente de nuevo.";
                 return RedirectToAction("Login");
             }
 
@@ -70,7 +74,7 @@ namespace FrontEnd.Controllers
             ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
             ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
             ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
-            return View(user);
+            return View("Register", user);
         }
 
         // POST: UsersController/Create
@@ -84,9 +88,9 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Usuario creado correctamente.";
                 return RedirectToAction("Login");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["Error"] = "Datos brindados inválidos.";
+                TempData["Error"] = "Datos brindados inválidos. " + ex.Message;
                 return RedirectToAction("Register");
             }
         }

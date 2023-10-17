@@ -7,13 +7,13 @@ namespace FrontEnd.Models
         public int UserId { get; set; }
         public int RoleId { get; set; }
 
-        [Display(Name = "Tipo de Identificación")]
+        [Required(ErrorMessage = "El tipo de identificación es necesaria."), Display(Name = "Tipo de Identificación")]
         public int TypeId { get; set; }
 
-        [Display(Name = "Género")]
+        [Required(ErrorMessage = "El género es necesario."), Display(Name = "Género")]
         public int GenreId { get; set; }
 
-        [Display(Name = "Provincia de Residencia")]
+        [Required(ErrorMessage = "La provincia es necesaria."), Display(Name = "Provincia de Residencia")]
         public int ProvinceId { get; set; }
 
         [Required(ErrorMessage = "El número de cédula es requerido."), Display(Name = "Número de Identificación")]
@@ -52,8 +52,5 @@ namespace FrontEnd.Models
         [RegularExpression(@"^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$", ErrorMessage = "La contraseña debe cumplir con 8 caractéres, un número, " +
             "una letra mayúscula y un caractér especial.")]
         public string PasswordHash { get; set; } = null!;
-
-        //public bool RememberLogin { get; set; }
-        //public string ReturnUrl { get; set; } = null!;
     }
 }
