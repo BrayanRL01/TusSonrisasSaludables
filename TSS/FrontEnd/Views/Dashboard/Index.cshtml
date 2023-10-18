@@ -2,17 +2,45 @@
     Layout = "_DashLayout";
 }
 
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-        </a>
+       <button id="generarPDF">Generar PDF</button>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+    document.getElementById("generarPDF").addEventListener("click", function() {
+        const divContent = document.getElementById("contenidoParaPDF").innerHTML;
+        // Enviar el contenido del div al controlador para generar el PDF
+        fetch('/Pdf/GenerarPDF', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ contenido: divContent })
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Dashboard.pdf';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
+    });
+</script>
+
+
+  <div id="contenidoParaPDF">
     <!-- Content Row -->
     <div class="row">
 
@@ -344,6 +372,8 @@
 
         </div>
     </div>
+
+  </div>
 
 </div>
 <!-- /.container-fluid -->
