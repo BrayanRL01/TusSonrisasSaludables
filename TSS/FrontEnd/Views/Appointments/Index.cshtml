@@ -46,11 +46,11 @@
                 <td>
                     @if (item.PacientName == "Espacio libre")
                     {
-                        <button> @Html.ActionLink("Confirmar Cita", "Confirm", new { /* id=item.PrimaryKey */ })</button>
+                        <button> @Html.ActionLink("Confirmar Cita", "Confirmar", new { /* id=item.PrimaryKey */ })</button>
                     }
                     else
                     {
-                        <button> @Html.ActionLink("Cita Reservada", "Cancel", new { /* id=item.PrimaryKey */ })</button>
+                        <button> @Html.ActionLink("Cita Reservada", "Cancelar", new { /* id=item.PrimaryKey */ })</button>
                     }
                 </td>
             </tr>
