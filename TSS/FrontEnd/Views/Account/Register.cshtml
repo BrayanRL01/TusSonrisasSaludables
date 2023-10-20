@@ -1,0 +1,103 @@
+﻿@model FrontEnd.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+@if (TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">¡Crear una cuenta!</h1>
+                        </div>
+                        <form asp-action="Register">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="TypeId" class="form-label"></label>
+                                @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo", new { @class = "form-control" })
+                                <span asp-validation-for="TypeId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="GenreId" class="form-label"></label>
+                                @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
+                                <span asp-validation-for="GenreId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProvinceId" class="form-label"></label>
+                                @Html.DropDownListFor(model => model.ProvinceId, (SelectList)ViewBag.Provinces, "Seleccione una provincia", new { @class = "form-control" })
+                                <span asp-validation-for="ProvinceId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="IdNumber" class="form-label"></label>
+                                <input asp-for="IdNumber" class="form-control" />
+                                <span asp-validation-for="IdNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="UserName" class="form-label"></label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="FirstName" class="form-label"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LastName" class="form-label"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BirthDate" class="form-label"></label>
+                                <input asp-for="BirthDate" class="form-control" />
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="form-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="UserAddress" class="form-label"></label>
+                                <input asp-for="UserAddress" class="form-control" />
+                                <span asp-validation-for="UserAddress" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PasswordHash" class="form-label"></label>
+                                <input asp-for="PasswordHash" class="form-control" />
+                                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                            </div>
+                            <div class="form-group text-center">
+                                <input type="submit" value="Registrarse" class="btn btn-primary" />
+                            </div>
+                            <div class="text-center">
+                                <a asp-action="Login">Iniciar Sesión</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

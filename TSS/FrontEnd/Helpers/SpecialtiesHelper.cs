@@ -5,7 +5,7 @@ namespace FrontEnd.Helpers
 {
     public class SpecialtiesHelper
     {
-        ServiceRepository repository;
+        private ServiceRepository repository;
 
         public SpecialtiesHelper()
         {
@@ -16,7 +16,7 @@ namespace FrontEnd.Helpers
         public List<SpecialtyViewModel> GetAllView()
         {
             List<SpecialtyViewModel> list = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Specialties/");
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Specialties/Specialties/");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
@@ -27,11 +27,9 @@ namespace FrontEnd.Helpers
 
         public SpecialtyViewModel GetViewByID(int id)
         {
-            SpecialtyViewModel Specialty = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Specialties/GetSpecialties/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Specialties/Specialty/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Specialty = JsonConvert.DeserializeObject<SpecialtyViewModel>(content);
-
+            SpecialtyViewModel Specialty = JsonConvert.DeserializeObject<SpecialtyViewModel>(content);
             return Specialty;
         }
         #endregion
@@ -39,7 +37,7 @@ namespace FrontEnd.Helpers
         #region Update
         public SpecialtyViewModel Edit(SpecialtyViewModel Specialty)
         {
-            HttpResponseMessage responseMessage = repository.PutResponse("api/Specialties/PutSpecialty/", Specialty);
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Specialties/Specialty/", Specialty);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             SpecialtyViewModel SpecialtyAPI = JsonConvert.DeserializeObject<SpecialtyViewModel>(content);
 
@@ -52,7 +50,7 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Specialties/PostSpecialties", specialty);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Specialties/Specialty", specialty);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 SpecialtyViewModel SpecialtyAPI = JsonConvert.DeserializeObject<SpecialtyViewModel>(content);
                 return SpecialtyAPI;

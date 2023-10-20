@@ -21,7 +21,7 @@ namespace BackEnd.Controllers
 
         #region GetUsers
         // GET: api/<UsersController>
-        [HttpGet("GetUsersView")]
+        [HttpGet("Users")]
         public async Task<ActionResult<IEnumerable<VwUser>>> SP_GetUsersView()
         {
             if (_context.VwUsers == null)
@@ -32,7 +32,7 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwUsers.FromSqlRaw("EXEC SP_GetUsersView").ToListAsync();
-                return users;
+                return Ok(users);
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("GetUserView/{id}")]
+        [HttpGet("UserInfo/{id}")]
         public async Task<ActionResult> SP_GetUserView(int id)
         {
             try
@@ -57,7 +57,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<UserController>/5
-        [HttpGet("GetUser/{id}")]
+        [HttpGet("User/{id}")]
         public async Task<ActionResult> SP_GetUser(int id)
         {
             try
@@ -89,7 +89,7 @@ namespace BackEnd.Controllers
         #endregion
 
         #region PostUsers
-        [HttpPost("PostAdminUser")]
+        [HttpPost("AdminUser")]
         public async Task<ActionResult<User>> PostAdminUser([FromBody] UserModel entity)
         {
             try
@@ -196,120 +196,11 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "No se pudo crear el usuario: " + ex.Message);
             }
         }
-
-        // POST api/<UserController>
-        [HttpPost("PostUser")]
-        public async Task<ActionResult<User>> PostUser([FromBody] UserModel entity)
-        {
-            try
-            {
-                string Query = "EXEC SP_CreateUser @TypeID, @GenreID, @ProvinceID, @IDNumber, @Username," +
-                    "@FirstName, @LastName, @BirthDate, @Email," +
-                    "@Phone, @UserAddress, @Password";
-
-                var param = new SqlParameter[]
-                {
-                    new SqlParameter()
-                    {
-                        ParameterName = "@TypeID",
-                        SqlDbType = System.Data.SqlDbType.Int,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.TypeId
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@GenreID",
-                        SqlDbType = System.Data.SqlDbType.Int,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.GenreId
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@ProvinceID",
-                        SqlDbType = System.Data.SqlDbType.Int,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.ProvinceId
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@IDNumber",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.IdNumber
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@Username",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.UserName
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@FirstName",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.FirstName
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@LastName",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.LastName
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@BirthDate",
-                        SqlDbType  = System.Data.SqlDbType.Date,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.BirthDate
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@Email",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.Email
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@Phone",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.PhoneNumber
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@UserAddress",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.UserAddress
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@Password",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.PasswordHash
-                    }
-                };
-
-                await _context.Database.ExecuteSqlRawAsync(Query, param);
-                await _context.SaveChangesAsync();
-
-                return Ok(entity);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "No se pudo crear el usuario: " + ex.Message);
-            }
-        }
         #endregion
 
         #region PutUsers
         // PUT api/<UserController>/5
-        [HttpPut("PutUser")]
+        [HttpPut("User")]
         public async Task<ActionResult<User>> PutUser([FromBody] UserModel entity)
         {
             try

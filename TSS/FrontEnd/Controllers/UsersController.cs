@@ -27,35 +27,35 @@ namespace FrontEnd.Controllers
         }
 
         // GET: UsersController/Create
-        public ActionResult Create()
-        {
-            UserViewModel user = new();
-            var genres = genresHelper.GetAllView();
-            var ids = idHelper.GetAllView();
-            var provinces = provincesHelper.GetAllView();
-            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
-            ViewBag.IDTypes = new SelectList(ids, "TypeId", "Idtype");
-            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
-            return View(user);
-        }
+        //public ActionResult Create()
+        //{
+        //    UserViewModel user = new();
+        //    var genres = genresHelper.GetAllView();
+        //    var ids = idHelper.GetAllView();
+        //    var provinces = provincesHelper.GetAllView();
+        //    ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+        //    ViewBag.IDTypes = new SelectList(ids, "TypeId", "Idtype");
+        //    ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
+        //    return View(user);
+        //}
 
-        // POST: UsersController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(UserViewModel user)
-        {
-            try
-            {
-                user = Helper.Add(user);
-                ViewBag.Message = true;
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                ViewBag.Message = false;
-                return View();
-            }
-        }
+        //// POST: UsersController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(UserViewModel user)
+        //{
+        //    try
+        //    {
+        //        user = Helper.Add(user);
+        //        ViewBag.Message = true;
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        ViewBag.Message = false;
+        //        return View();
+        //    }
+        //}
 
         public ActionResult CreateAdmin()
         {

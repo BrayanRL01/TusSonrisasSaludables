@@ -20,7 +20,7 @@ namespace BackEnd.Controllers
         }
 
         // GET: api/<BrandsController>
-        [HttpGet("GetBrandsView")]
+        [HttpGet("Brands")]
         public async Task<ActionResult<IEnumerable<VwBrand>>> SP_GetBrandsView()
         {
             if (_context.VwBrands == null)
@@ -31,7 +31,7 @@ namespace BackEnd.Controllers
             try
             {
                 var brands = await _context.VwBrands.FromSqlRaw("EXEC SP_GetBrandsView").ToListAsync();
-                return brands;
+                return Ok(brands);
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<BrandsController>/5
-        [HttpGet("GetBrandView/{id}")]
+        [HttpGet("Brand/{id}")]
         public async Task<ActionResult> SP_GetBrandView(int id)
         {
             if (_context.VwBrands == null)
@@ -63,7 +63,7 @@ namespace BackEnd.Controllers
         }
 
         // POST api/<BrandsController>
-        [HttpPost("PostBrand")]
+        [HttpPost("Brand")]
         public async Task<ActionResult<Brand>> PostBrand([FromBody] BrandModel entity)
         {
             try
@@ -93,7 +93,7 @@ namespace BackEnd.Controllers
         }
 
         // PUT api/<BrandsController>/5
-        [HttpPut("PutBrand")]
+        [HttpPut("Brand")]
         public async Task<ActionResult<Brand>> PutBrand([FromBody] BrandModel entity)
         {
             try

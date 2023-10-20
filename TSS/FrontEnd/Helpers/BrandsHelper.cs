@@ -18,7 +18,7 @@ namespace FrontEnd.Helpers
             try
             {
                 List<BrandViewModel> list = new();
-                HttpResponseMessage responseMessage = repository.GetResponse("api/Brands/GetBrandsView");
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Brands/Brands");
                 if (responseMessage != null)
                 {
                     var content = responseMessage.Content.ReadAsStringAsync().Result;
@@ -26,9 +26,9 @@ namespace FrontEnd.Helpers
                 }
                 return list;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return null;
+                throw;
             }
         }
         #endregion
@@ -36,11 +36,9 @@ namespace FrontEnd.Helpers
         #region GetByID
         public BrandViewModel GetViewByID(int id)
         {
-            BrandViewModel Brand = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Brands/GetBrandView/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Brands/Brand/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Brand = JsonConvert.DeserializeObject<BrandViewModel>(content);
-
+            BrandViewModel Brand = JsonConvert.DeserializeObject<BrandViewModel>(content);
             return Brand;
         }
         #endregion
@@ -48,7 +46,7 @@ namespace FrontEnd.Helpers
         #region Create
         public BrandViewModel Add(BrandViewModel Brand)
         {
-            HttpResponseMessage responseMessage = repository.PostResponse("api/Brands/PostBrand/", Brand);
+            HttpResponseMessage responseMessage = repository.PostResponse("api/Brands/Brand/", Brand);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             BrandViewModel BrandAPI = JsonConvert.DeserializeObject<BrandViewModel>(content);
             return BrandAPI;
@@ -58,10 +56,9 @@ namespace FrontEnd.Helpers
         #region Update
         public BrandViewModel Edit(BrandViewModel Brand)
         {
-            HttpResponseMessage responseMessage = repository.PutResponse("api/Brands/PutBrand/", Brand);
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Brands/Brand/", Brand);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             BrandViewModel BrandAPI = JsonConvert.DeserializeObject<BrandViewModel>(content);
-
             return BrandAPI;
         }
         #endregion

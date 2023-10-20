@@ -40,7 +40,7 @@
                     <div class="p-3" style="max-width: 900px;">
                         <h5 class="text-white text-uppercase mb-3 animated slideInDown">Una sonrisa saludable es tu mejor accesorio.</h5>
                         <h1 class="display-1 text-white mb-md-4 animated zoomIn">La confianza y la experiencia se unen en cada tratamiento que ofrecemos.</h1>
-                        <a href="appointment.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Citas</a>
+                        <a asp-action="Appointments" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Citas</a>
                         <a href="" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Contacto</a>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                         <h6 class="text-white mb-0">Domingos</h6>
                         <p class="mb-0"> Cerrados</p>
                     </div>
-                    <a class="btn btn-light" href="">Citas</a>
+                    <a class="btn btn-light" asp-controller="Appointments" asp-action="Index">Citas</a>
                 </div>
             </div>
             <div class="col-lg-4 wow zoomIn" data-wow-delay="0.3s">

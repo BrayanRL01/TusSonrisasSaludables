@@ -5,18 +5,29 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<p>
-    <a asp-action="CreateSpecialty">Crear nueva especialidad</a>
-</p>
 @if (TempData.ContainsKey("Message"))
 {
-    <div class="alert success-danger" role="alert">
+    <div class="alert alert-success" role="alert">
         @TempData["Message"]
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 }
+else if (TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<p>
+    <a asp-action="CreateSpecialty">Crear nueva especialidad</a>
+</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -40,9 +51,9 @@
                     @Html.DisplayFor(modelItem => item.SpecialtyName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Edit", "EditSpecialty", new { id=item.SpecialtyId }) |
                     @Html.ActionLink("Details", "SpecialtyDetails", new { id=item.SpecialtyId }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Delete", "DeleteSpecialty", new { id=item.SpecialtyId })
                 </td>
             </tr>
         }

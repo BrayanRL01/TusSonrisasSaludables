@@ -21,7 +21,7 @@ namespace BackEnd.Controllers
 
         #region GetCategories
         // GET: api/<CategoriesController>
-        [HttpGet("GetCategoriesView")]
+        [HttpGet("Categories")]
         public async Task<ActionResult<IEnumerable<VwCategory>>> SP_GetCategoriesView()
         {
             if (_context.VwCategories == null)
@@ -40,7 +40,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("GetSubCategoriesView")]
+        [HttpGet("SubCategories")]
         public async Task<ActionResult<IEnumerable<VwSubCategory>>> SP_GetSubCategoriesView()
         {
             if (_context.VwSubCategories == null)
@@ -60,7 +60,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<CategoriesController>/5
-        [HttpGet("GetCategoryView/{id}")]
+        [HttpGet("Category/{id}")]
         public async Task<ActionResult> SP_GetCategoryView(int id)
         {
             try
@@ -76,7 +76,23 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("GetSubCategoryView/{id}")]
+        [HttpGet("GetCategory/{id}")]
+        public async Task<ActionResult> SP_GetCategory(int id)
+        {
+            try
+            {
+                var categories = await _context.Categories.FromSqlInterpolated($"EXEC SP_GetCategory {id}").ToListAsync();
+                var category = categories.FirstOrDefault();
+
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado la categoría: " + ex.Message);
+            }
+        }
+
+        [HttpGet("SubCategory/{id}")]
         public async Task<ActionResult> SP_GetSubCategoryView(int id)
         {
             try
@@ -95,7 +111,7 @@ namespace BackEnd.Controllers
 
         #region PostCategories
         // POST api/<CategoriesController>
-        [HttpPost("PostCategory")]
+        [HttpPost("Category")]
         public async Task<ActionResult<Category>> PostCategory([FromBody] CategoryModel entity)
         {
             try
@@ -124,7 +140,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpPost("PostSubCategory")]
+        [HttpPost("SubCategory")]
         public async Task<ActionResult<Category>> PostSubCategory([FromBody] CategoryModel entity)
         {
             try
@@ -163,8 +179,8 @@ namespace BackEnd.Controllers
 
         #region PutCategories
         // PUT api/<CategoriesController>/5
-        [HttpPut("PutCategory")]
-        public async Task<ActionResult<Category>> PutCategory([FromBody] CategoryModel entity)
+        [HttpPut("Category")]
+        public async Task<JsonResult> PutCategory([FromBody] CategoryModel entity)
         {
             try
             {
@@ -191,15 +207,15 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return new JsonResult(Ok(entity));
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "No se pudo editar la categoría: " + ex.Message);
+                return new JsonResult(StatusCode(500, "No se pudo editar la categoría: " + ex.Message));
             }
         }
 
-        [HttpPut("PutSubCategory")]
+        [HttpPut("SubCategory")]
         public async Task<ActionResult<Category>> PutSubCategory([FromBody] CategoryModel entity)
         {
             try
@@ -246,7 +262,7 @@ namespace BackEnd.Controllers
         #region DeleteCategories
         // DELETE api/<CategoriesController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteBrand(int id)
+        public async Task<ActionResult> DeleteCategory(int id)
         {
             try
             {
