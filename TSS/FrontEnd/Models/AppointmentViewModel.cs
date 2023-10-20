@@ -1,5 +1,4 @@
-﻿using FrontEnd.Filters;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FrontEnd.Models
 {
@@ -14,12 +13,10 @@ namespace FrontEnd.Models
         [Display(Name = "Especialidad")]
         public int SpecialtyId { get; set; }
 
-        [UniqueStartTime(ErrorMessage = "Ya está ocupada esa hora.")]
         [Display(Name = "Hora de Inicio")]
         [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; } = DateTime.Now.Date;
 
-        [UniqueEndTime(ErrorMessage = "Ya está ocupada esa hora.")]
         [Display(Name = "Hora de Fin")]
         [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; } = DateTime.Now.Date;

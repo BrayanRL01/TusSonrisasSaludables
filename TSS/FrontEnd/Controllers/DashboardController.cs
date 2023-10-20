@@ -95,9 +95,9 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Usuario creado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                TempData["Error"] = ex.Message;
+                TempData["Error"] = "No se ha creado el usuario. " + ex.Message;
                 return RedirectToAction("Users");
             }
         }
@@ -152,23 +152,13 @@ namespace FrontEnd.Controllers
             if (user == null)
             {
                 TempData["Message"] = "Usuario eliminado correctamente.";
-
                 return RedirectToAction("Users");
-                //else
-                //{
-                //    Exception ex = new();
-                //    TempData["Message"] = $"No se ha eliminado el usuario. {ex.Message}";
-                //    return RedirectToAction("Users");
-                //}
             }
-            else
-            {
-                Exception ex = new();
-                TempData["Error"] = "No se eliminó el usuario: " + ex.Message.ToString();
-                return RedirectToAction("Users");
 
-            }
+            TempData["Error"] = "No se eliminó el usuario:";
+            return RedirectToAction("Users");
         }
+
         #endregion
 
         #endregion
@@ -1130,10 +1120,10 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public IActionResult EditAdmin(string email)
+        public IActionResult EditAdmin(LoginModel model)
         {
             SecurityHelper securityHelper = new SecurityHelper();
-            UserViewModel user = securityHelper.GetByEmail(email);
+            UserViewModel user = securityHelper.GetByEmail(model);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();

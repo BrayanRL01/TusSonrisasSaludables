@@ -39,7 +39,7 @@ namespace FrontEnd.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Source);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -51,9 +51,9 @@ namespace FrontEnd.Helpers
             return loginModel;
         }
 
-        public UserViewModel GetByEmail(string email)
+        public UserViewModel GetByEmail(LoginModel model)
         {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/EditEmail/" + email);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/EditEmail/" + model.Email);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
             return Usuario;

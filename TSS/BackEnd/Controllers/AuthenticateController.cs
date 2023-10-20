@@ -252,13 +252,13 @@ namespace BackEnd.Controllers
         }
 
         [HttpGet]
-        [Route("EditEmail/{email}")]
-        public async Task<IActionResult> EditEmail(string email)
+        [Route("EditEmail")]
+        public async Task<IActionResult> EditEmail(LoginModel model)
         {
             try
             {
                 var users = await _context.Users.
-                    FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
+                    FromSqlInterpolated($"EXEC SP_EditUserEmail {model.Email}").ToListAsync();
                 var user = users.FirstOrDefault();                 
 
                 return Ok(user);
