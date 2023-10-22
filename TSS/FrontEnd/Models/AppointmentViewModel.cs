@@ -7,10 +7,10 @@ namespace FrontEnd.Models
         public int AppointmentId { get; set; }
         public int? UserId { get; set; }
 
-        [Display(Name = "Doctor a Asignar")]
+        [Required(ErrorMessage = "El doctor/a es requerido."), Display(Name = "Doctor a Asignar")]
         public int? DoctorId { get; set; }
 
-        [Display(Name = "Especialidad")]
+        [Required(ErrorMessage = "La especialidad es requerida."), Display(Name = "Especialidad")]
         public int SpecialtyId { get; set; }
 
         [Display(Name = "Hora de Inicio")]

@@ -1120,10 +1120,11 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public IActionResult EditAdmin(LoginModel model)
+        public IActionResult EditAdmin()
         {
             SecurityHelper securityHelper = new SecurityHelper();
-            UserViewModel user = securityHelper.GetByEmail(model);
+            string email = securityHelper.GetEmail();
+            UserViewModel user = securityHelper.GetByEmail(email);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();

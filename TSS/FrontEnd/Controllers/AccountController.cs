@@ -43,7 +43,7 @@ namespace FrontEnd.Controllers
                 var loginModel = _securityHelper.GetUser(model);
                 var claims = new List<Claim>() {
                     new Claim(ClaimTypes.NameIdentifier, loginModel.Email),
-                    new Claim(ClaimTypes.Name, loginModel.Email),
+                    new Claim(ClaimTypes.Email, loginModel.Email),
                     new Claim(ClaimTypes.Role, loginModel.Roles)
                  };
 
