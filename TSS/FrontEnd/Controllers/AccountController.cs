@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace FrontEnd.Controllers
 {
@@ -14,6 +15,14 @@ namespace FrontEnd.Controllers
         private GenresHelper _genresHelper = new();
         private IdentificationsHelper _identificationsHelper = new();
         private ProvincesHelper _provincesHelper = new();
+
+        private readonly IConfiguration _configuration;
+
+        public AccountController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
 
         public IActionResult Login(string Url = "/")
         {
@@ -34,7 +43,7 @@ namespace FrontEnd.Controllers
                 var loginModel = _securityHelper.GetUser(model);
                 var claims = new List<Claim>() {
                     new Claim(ClaimTypes.NameIdentifier, loginModel.Email),
-                    new Claim(ClaimTypes.Name, loginModel.Email),
+                    new Claim(ClaimTypes.Email, loginModel.Email),
                     new Claim(ClaimTypes.Role, loginModel.Roles)
                  };
 
@@ -49,7 +58,7 @@ namespace FrontEnd.Controllers
                 if (loginModel.Roles == "Admin")
                 {
                     TempData["Message"] = $"Bienvenido/a {loginModel.Email}";
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Dashboard", model);
                 }
                 else if (loginModel.Roles == "User")
                 {
@@ -60,7 +69,7 @@ namespace FrontEnd.Controllers
             catch (Exception)
             {
                 TempData["Error"] = "Datos inválidos, intente de nuevo.";
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", model);
             }
 
         }
@@ -74,23 +83,29 @@ namespace FrontEnd.Controllers
             ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
             ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
             ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
-            return View("Register", user);
+
+            string SiteKey = _configuration["RecaptchaSettings:SiteKey"];
+            ViewData["Key"] = SiteKey;
+            return View(user);
         }
 
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(UserViewModel user)
+        public async Task<ActionResult> Register(UserViewModel user)
         {
-            try
+            var gRecaptchaResponse = Request.Form["g-recaptcha-response"];
+            if (await IsReCaptchaPassedAsync(gRecaptchaResponse) && ModelState.IsValid)
             {
                 user = _securityHelper.Register(user);
                 TempData["Message"] = "Usuario creado correctamente.";
                 return RedirectToAction("Login");
             }
-            catch (Exception ex)
+            else
             {
-                TempData["Error"] = "Datos brindados inválidos. " + ex.Message;
+                //catch (Exception ex)
+                //{              
+                TempData["Error"] = "No se ha creado el usuario.";
                 return RedirectToAction("Register");
             }
         }
@@ -99,6 +114,40 @@ namespace FrontEnd.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return LocalRedirect("/");
+        }
+
+        public async Task<bool> IsReCaptchaPassedAsync(string gRecaptchaResponse)
+        {
+            if (string.IsNullOrEmpty(gRecaptchaResponse))
+            {
+                return false;
+            }
+
+            using (var httpClient = new HttpClient())
+            {
+                var secretKey = _configuration["RecaptchaSettings:SecretKey"];
+                var googleVerificationUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={gRecaptchaResponse}";
+
+                var httpResponseMessage = await httpClient.GetAsync(googleVerificationUrl);
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
+                    var reCaptchaResponse = JsonConvert.DeserializeObject<ReCaptchaResponse>(jsonResponse);
+
+                    return reCaptchaResponse.Success;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public class ReCaptchaResponse
+        {
+            [JsonProperty("success")]
+            public bool Success { get; set; }
         }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using BackEnd.Models;
 using Entities.Entities;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Protocol;
-using NuGet.Protocol.Plugins;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -251,15 +248,23 @@ namespace BackEnd.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("GetEmail")]
+        public IActionResult GetEmail()
+        {
+            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            return Ok(email);
+        }
+
         [HttpGet]
-        [Route("EditEmail/{email}")]
-        public async Task<IActionResult> EditEmail(string email)
+        [Route("UserEmail/{email}")]
+        public async Task<IActionResult> GetUserEmail(string email)
         {
             try
             {
                 var users = await _context.Users.
                     FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
-                var user = users.FirstOrDefault();                 
+                var user = users.FirstOrDefault();
 
                 return Ok(user);
             }
