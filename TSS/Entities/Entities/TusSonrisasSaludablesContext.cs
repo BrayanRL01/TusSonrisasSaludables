@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Entities.Entities
 {
@@ -56,10 +53,10 @@ namespace Entities.Entities
         {
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.HasIndex(e => e.StartTime, "UQ__Appointm__18D8086C5617E6FC")
+                entity.HasIndex(e => e.StartTime, "UQ__Appointm__18D8086C6C95736E")
                     .IsUnique();
 
-                entity.HasIndex(e => e.EndTime, "UQ__Appointm__C7752F0ECD81EAD4")
+                entity.HasIndex(e => e.EndTime, "UQ__Appointm__C7752F0E21D70158")
                     .IsUnique();
 
                 entity.Property(e => e.AppointmentId).HasColumnName("AppointmentID");
@@ -97,7 +94,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Brand>(entity =>
             {
-                entity.HasIndex(e => e.BrandName, "UQ__Brands__2206CE9BF3D258F4")
+                entity.HasIndex(e => e.BrandName, "UQ__Brands__2206CE9B66977A0E")
                     .IsUnique();
 
                 entity.Property(e => e.BrandId).HasColumnName("BrandID");
@@ -109,7 +106,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E05542E249")
+                entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E0F8C3BBBD")
                     .IsUnique();
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -124,9 +121,9 @@ namespace Entities.Entities
             modelBuilder.Entity<ClinicProcedure>(entity =>
             {
                 entity.HasKey(e => e.ProcedureId)
-                    .HasName("PK__ClinicPr__54C2E50DEC979702");
+                    .HasName("PK__ClinicPr__54C2E50DE941AB5C");
 
-                entity.HasIndex(e => e.ProcedureName, "UQ__ClinicPr__3950E7D47F472CD0")
+                entity.HasIndex(e => e.ProcedureName, "UQ__ClinicPr__3950E7D40FA2D6AA")
                     .IsUnique();
 
                 entity.Property(e => e.ProcedureId).HasColumnName("ProcedureID");
@@ -138,13 +135,13 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Doctor>(entity =>
             {
-                entity.HasIndex(e => e.IdNumber, "UQ__Doctors__62DF803374A95E5D")
+                entity.HasIndex(e => e.IdNumber, "UQ__Doctors__62DF80334452C573")
                     .IsUnique();
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__Doctors__85FB4E38C027983F")
+                entity.HasIndex(e => e.PhoneNumber, "UQ__Doctors__85FB4E381ED87396")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Doctors__A9D10534AE3EA1F6")
+                entity.HasIndex(e => e.Email, "UQ__Doctors__A9D1053491A47026")
                     .IsUnique();
 
                 entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
@@ -206,7 +203,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Genre>(entity =>
             {
-                entity.HasIndex(e => e.GenreName, "UQ__Genres__BBE1C3392208E554")
+                entity.HasIndex(e => e.GenreName, "UQ__Genres__BBE1C33963F8E25B")
                     .IsUnique();
 
                 entity.Property(e => e.GenreId).HasColumnName("GenreID");
@@ -219,9 +216,9 @@ namespace Entities.Entities
             modelBuilder.Entity<IdentificationType>(entity =>
             {
                 entity.HasKey(e => e.TypeId)
-                    .HasName("PK__Identifi__516F0395F687F827");
+                    .HasName("PK__Identifi__516F0395C8B3E4E4");
 
-                entity.HasIndex(e => e.IdType, "UQ__Identifi__9A39EABD61CE2DA4")
+                entity.HasIndex(e => e.IdType, "UQ__Identifi__9A39EABD17DB67AC")
                     .IsUnique();
 
                 entity.Property(e => e.TypeId).HasColumnName("TypeID");
@@ -234,7 +231,7 @@ namespace Entities.Entities
             modelBuilder.Entity<PatientRecord>(entity =>
             {
                 entity.HasKey(e => e.RecordId)
-                    .HasName("PK__PatientR__FBDF78C9D084EDC6");
+                    .HasName("PK__PatientR__FBDF78C9F84C74FB");
 
                 entity.Property(e => e.RecordId).HasColumnName("RecordID");
 
@@ -281,7 +278,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasIndex(e => e.ProductName, "UQ__Products__DD5A978A62DAF637")
+                entity.HasIndex(e => e.ProductName, "UQ__Products__DD5A978A2DE5DCE4")
                     .IsUnique();
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
@@ -317,7 +314,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Province>(entity =>
             {
-                entity.HasIndex(e => e.ProvinceName, "UQ__Province__B27F23728B5CC445")
+                entity.HasIndex(e => e.ProvinceName, "UQ__Province__B27F2372DA3659D9")
                     .IsUnique();
 
                 entity.Property(e => e.ProvinceId).HasColumnName("ProvinceID");
@@ -329,7 +326,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.HasIndex(e => e.RoleType, "UQ__Roles__5D0A2E946E2560AC")
+                entity.HasIndex(e => e.RoleType, "UQ__Roles__5D0A2E941A69001C")
                     .IsUnique();
 
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
@@ -342,7 +339,7 @@ namespace Entities.Entities
             modelBuilder.Entity<ShoppingCart>(entity =>
             {
                 entity.HasKey(e => e.CartId)
-                    .HasName("PK__Shopping__51BCD7975AAB58A1");
+                    .HasName("PK__Shopping__51BCD797A98F7DBB");
 
                 entity.Property(e => e.CartId).HasColumnName("CartID");
 
@@ -363,7 +360,7 @@ namespace Entities.Entities
             modelBuilder.Entity<ShoppingDetail>(entity =>
             {
                 entity.HasKey(e => e.DetailId)
-                    .HasName("PK__Shopping__135C314D837BCC32");
+                    .HasName("PK__Shopping__135C314D9886AEF4");
 
                 entity.Property(e => e.DetailId).HasColumnName("DetailID");
 
@@ -390,7 +387,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Specialty>(entity =>
             {
-                entity.HasIndex(e => e.SpecialtyName, "UQ__Specialt__7DCA5748DF993201")
+                entity.HasIndex(e => e.SpecialtyName, "UQ__Specialt__7DCA57485B537CCB")
                     .IsUnique();
 
                 entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
@@ -402,13 +399,13 @@ namespace Entities.Entities
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.IdNumber, "UQ__Users__62DF80332F92CA15")
+                entity.HasIndex(e => e.IdNumber, "UQ__Users__62DF8033D43CDA27")
                     .IsUnique();
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__Users__85FB4E382C03D18A")
+                entity.HasIndex(e => e.PhoneNumber, "UQ__Users__85FB4E38A51CA435")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D1053453B7B458")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534A67F1669")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
@@ -485,7 +482,7 @@ namespace Entities.Entities
             modelBuilder.Entity<UsersTrigger>(entity =>
             {
                 entity.HasKey(e => e.TriggerId)
-                    .HasName("PK__UsersTri__11321F022CE7B530");
+                    .HasName("PK__UsersTri__11321F02F5B68745");
 
                 entity.Property(e => e.TriggerId).HasColumnName("TriggerID");
 

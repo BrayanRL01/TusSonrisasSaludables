@@ -20,7 +20,7 @@ namespace BackEnd.Controllers
         }
 
         // GET: api/<SpecialtiesController>
-        [HttpGet]
+        [HttpGet("Specialties")]
         public async Task<ActionResult<IEnumerable<VwSpecialty>>> SP_GetSpecialtiesView()
         {
             if (_context.VwSpecialties == null)
@@ -30,8 +30,8 @@ namespace BackEnd.Controllers
 
             try
             {
-                var users = await _context.VwSpecialties.FromSqlRaw("EXEC SP_GetSpecialtiesView").ToListAsync();
-                return users;
+                var specialties = await _context.VwSpecialties.FromSqlRaw("EXEC SP_GetSpecialtiesView").ToListAsync();
+                return Ok(specialties);
             }
             catch (Exception ex)
             {
@@ -41,8 +41,8 @@ namespace BackEnd.Controllers
 
 
         // GET api/<SpecialtiesController>/5
-        [HttpGet("GetSpecialties/{id}")]
-        public async Task<ActionResult> SP_GetSpecialties(int id)
+        [HttpGet("Specialty/{id}")]
+        public async Task<ActionResult> SP_GetSpecialty(int id)
         {
             try
             {
@@ -58,8 +58,8 @@ namespace BackEnd.Controllers
         }
 
         // POST api/<SpecialtiesController>
-        [HttpPost("PostSpecialties")]
-        public async Task<ActionResult<Specialty>> PostAppointment([FromBody] SpecialtyModel entity)
+        [HttpPost("Specialty")]
+        public async Task<ActionResult<Specialty>> PostSpecialty([FromBody] SpecialtyModel entity)
         {
             try
             {
@@ -88,9 +88,9 @@ namespace BackEnd.Controllers
         }
 
         // PUT api/<SpecialtiesController>/5
-        [HttpPut("PutSpecialty")]
+        [HttpPut("Specialty")]
 
-        public async Task<ActionResult<Specialty>> PutAppointment([FromBody] SpecialtyModel entity)
+        public async Task<ActionResult<Specialty>> PutSpecialty([FromBody] SpecialtyModel entity)
         {
             try
             {
@@ -129,8 +129,7 @@ namespace BackEnd.Controllers
         #region DeleteAppointments
         // DELETE api/<SpecialtiesController>/5
         [HttpDelete("{id}")]
-
-        public async Task<ActionResult> DeleteSpecialties(int id)
+        public async Task<ActionResult> DeleteSpecialty(int id)
         {
             {
                 try

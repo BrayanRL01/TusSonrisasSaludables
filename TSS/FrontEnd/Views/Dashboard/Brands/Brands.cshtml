@@ -5,33 +5,57 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>Marcas</h1>
+@if (TempData.ContainsKey("Message"))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["Error"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 
-<p>
-    <a asp-action="CreateBrand">Crear Nueva</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BrandName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BrandName)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "EditBrand", new { id=item.BrandId }) |
-                    @Html.ActionLink("Details", "BrandDetails", new { id=item.BrandId }) |
-                    @Html.ActionLink("Delete", "DeleteBrand", new { id=item.BrandId })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Lista de Marcas</h6>
+    <br />
+    <a class="m-0 font-weight-bold text-primary" asp-action="CreateBrand">Crear Marca</a>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BrandName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrandName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "EditBrand", new { id=item.BrandId }) |
+                            @Html.ActionLink("Details", "BrandDetails", new { id=item.BrandId }) |
+                            @Html.ActionLink("Delete", "DeleteBrand", new { id=item.BrandId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>

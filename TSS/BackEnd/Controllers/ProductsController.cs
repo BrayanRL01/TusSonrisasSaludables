@@ -1,5 +1,6 @@
 ﻿using BackEnd.Models;
 using Entities.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace BackEnd.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = "Admin")]
     public class ProductsController : ControllerBase
     {
 
@@ -21,7 +23,7 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
-        [HttpGet("GetProductsView")]
+        [HttpGet("Products")]
         public async Task<ActionResult<IEnumerable<VwProduct>>> SP_GetProductsView()
         {
             if (_context.VwProducts == null)
@@ -42,7 +44,7 @@ namespace BackEnd.Controllers
         }
 
         // GET api/<ProductssController>/5
-        [HttpGet("GetProductView/{id}")]
+        [HttpGet("Product/{id}")]
         public async Task<ActionResult> SP_GetProductView(int id)
         {
             if (_context.VwProducts == null)
@@ -84,7 +86,7 @@ namespace BackEnd.Controllers
 
         }
 
-        [HttpPost("PostProduct")]
+        [HttpPost("Product")]
         public async Task<ActionResult<Product>> PostProduct([FromBody] ProductModel entity)
         {
             try
@@ -173,7 +175,7 @@ namespace BackEnd.Controllers
         }
 
         // PUT api/<ProductsController>/5
-        [HttpPut("PutProduct")]
+        [HttpPut("Product")]
         public async Task<ActionResult<Product>> PutProduct([FromBody] ProductModel entity)
         {
             try

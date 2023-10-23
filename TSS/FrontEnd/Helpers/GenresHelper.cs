@@ -15,7 +15,7 @@ namespace FrontEnd.Helpers
         public List<GenreViewModel> GetAllView()
         {
             List<GenreViewModel> list = new List<GenreViewModel>();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Genres/GetGenresView");
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Genres/Genres");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;

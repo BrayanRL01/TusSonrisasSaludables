@@ -2169,6 +2169,11 @@ textarea.form-control {
 
 .form-group {
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
 }
 
 .form-text {
@@ -10305,6 +10310,13 @@ button.bg-dark:focus {
 .text-center {
     text-align: center !important;
 }
+
+/*.form-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}*/
 
 @media (min-width: 576px) {
     .text-sm-left {

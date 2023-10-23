@@ -1,4 +1,6 @@
-﻿namespace BackEnd.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BackEnd.Models
 {
     public class UserModel
     {
@@ -11,6 +13,7 @@
         public string UserName { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;

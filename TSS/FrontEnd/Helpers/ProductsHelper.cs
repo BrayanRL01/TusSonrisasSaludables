@@ -14,8 +14,8 @@ namespace FrontEnd.Helpers
 
         public List<VWProductViewModel> GetAllView()
         {
-            List<VWProductViewModel> list = new List<VWProductViewModel>();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Products/GetProductsView");
+            List<VWProductViewModel> list = new();
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Products/Products");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
@@ -28,20 +28,18 @@ namespace FrontEnd.Helpers
         #region GetByID
         public VWProductViewModel GetViewByID(int id)
         {
-            VWProductViewModel Product = new();
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Products/GetProductView/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Products/Product/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Product = JsonConvert.DeserializeObject<VWProductViewModel>(content);
+            VWProductViewModel Product = JsonConvert.DeserializeObject<VWProductViewModel>(content);
 
             return Product;
         }
 
         public ProductViewModel GetByID(int id)
         {
-            ProductViewModel Product = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Products/GetProduct/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            Product = JsonConvert.DeserializeObject<ProductViewModel>(content);
+            ProductViewModel Product = JsonConvert.DeserializeObject<ProductViewModel>(content);
 
             return Product;
         }
@@ -50,7 +48,7 @@ namespace FrontEnd.Helpers
         #region Update
         public ProductViewModel Edit(ProductViewModel Product)
         {
-            HttpResponseMessage responseMessage = repository.PutResponse("api/Products/PutProduct/", Product);
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Products/Product/", Product);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             ProductViewModel ProductAPI = JsonConvert.DeserializeObject<ProductViewModel>(content);
 
@@ -63,7 +61,7 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Products/PostProduct", Product);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Products/Product", Product);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 ProductViewModel ProductAPI = JsonConvert.DeserializeObject<ProductViewModel>(content);
                 return ProductAPI;
