@@ -8,9 +8,21 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.ReCaptcha" Version="1.7.0" />
+		<PackageReference Include="Aspose.PDF" Version="23.10.0" />
+		<PackageReference Include="DinkToPdf" Version="1.0.8" />
+		<PackageReference Include="HtmlRenderer.PdfSharp" Version="1.5.0.6" />
+		<PackageReference Include="IronPdf" Version="2023.10.3" />
+		<PackageReference Include="itextsharp.xmlworker" Version="5.5.13.3" />
+		<PackageReference Include="LibWkHtmlToX-32" Version="0.12.6.1" />
+		<PackageReference Include="Markdig" Version="0.33.0" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+		<PackageReference Include="PDFsharp-gdi" Version="1.50.5147" />
+		<PackageReference Include="Rotativa" Version="1.7.3" />
+		<PackageReference Include="WkHtmlToPdf" Version="1.0.2" />
+		<PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.2" />
+		<PackageReference Include="WkHtmlToXSharp" Version="1.2.36" />
 	</ItemGroup>
 
 	<ItemGroup>

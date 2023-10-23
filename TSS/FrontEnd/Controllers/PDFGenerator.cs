@@ -1,6 +1,8 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
 
+namespace FrontEnd.Controllers
+{
     public class PDFGenerator
     {
         private IConverter _converter;
@@ -30,3 +32,4 @@ using DinkToPdf.Contracts;
             return _converter.Convert(document);
         }
     }
+}

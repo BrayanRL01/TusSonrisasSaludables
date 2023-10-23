@@ -1,30 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using IronPdf;
 using System.Net.Mime;
 
-public class PdfController : Controller
+
+namespace FrontEnd.Controllers
 {
-    [HttpPost]
-    public IActionResult GenerarPDF([FromBody] PdfRequest request)
+    public class PdfController : Controller
     {
-        var contenidoHtml = request.Contenido;
+        [HttpPost]
+        public IActionResult GenerarPDF([FromBody] PdfRequest request)
+        {
+            var contenidoHtml = request.Contenido;
 
-        // Genera el PDF y lo convierte en bytes
-        byte[] pdfBytes = GenerarPDFDesdeHTML(contenidoHtml);
+            // Genera el PDF y lo convierte en bytes
+            byte[] pdfBytes = GenerarPDFDesdeHTML(contenidoHtml);
 
-        // Devuelve el PDF como una descarga
-        return File(pdfBytes, MediaTypeNames.Application.Pdf, "mi-archivo.pdf");
+            // Devuelve el PDF como una descarga
+            return File(pdfBytes, MediaTypeNames.Application.Pdf, "mi-archivo.pdf");
+        }
+
+        private byte[] GenerarPDFDesdeHTML(string html)
+        {
+            var renderer = new HtmlToPdf();
+            var pdf = renderer.RenderHtmlAsPdf(html);
+            return pdf.BinaryData;
+        }
     }
 
-    private byte[] GenerarPDFDesdeHTML(string html)
+    public class PdfRequest
     {
-        var renderer = new IronPdf.HtmlToPdf();
-        var pdf = renderer.RenderHtmlAsPdf(html);
-        return pdf.BinaryData;
+        public string Contenido { get; set; }
     }
-}
-
-public class PdfRequest
-{
-    public string Contenido { get; set; }
 }
