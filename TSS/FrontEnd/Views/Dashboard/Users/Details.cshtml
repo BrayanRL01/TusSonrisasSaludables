@@ -5,10 +5,10 @@
     Layout = "_DashLayout";
 }
 
-<h1>Detalles</h1>
+<center><h1>Detalle Usuario</h1></center>
 
 <div>
-    <h4>VWUserViewModel</h4>
+  @*  <h4>VWUserViewModel</h4>*@
     <hr />
     <dl class="row">
         @Html.HiddenFor(Model => Model.UserId)
@@ -57,6 +57,12 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.UserId }) |
-    <a asp-action="Index">Volver a Usuario</a>
+ 
+    <div class="form-group text-center">
+        @Html.ActionLink("Editar", "Edit", new { id = Model.UserId }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Volver a Usuarios", "Index", new { id = Model.UserId }, new { @class = "btn btn-primary" })
+    </div>
+
+   @* @Html.ActionLink("Edit", "Edit", new { id = Model.UserId }) |
+    <a asp-action="Index">Volver a Usuario</a>*@
 </div>
