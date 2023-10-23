@@ -1,5 +1,4 @@
 ﻿using FrontEnd.Models;
-using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers

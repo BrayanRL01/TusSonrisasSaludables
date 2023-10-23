@@ -6,7 +6,7 @@
 }
 
 <center><h1> Bienvenido a la Creación de Administradores </h1></center>
-<br /> 
+<br />
 <div class="row">
     <div class="col">
         <form asp-action="CreateAdmin">
@@ -19,70 +19,79 @@
             <br />
 
             <div class="form-group">
-             @*   <label asp-for="GenreId" class="form-label"></label>*@
+                @*   <label asp-for="GenreId" class="form-label"></label>*@
                 @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
                 <span asp-validation-for="GenreId" class="text-danger"></span>
             </div>
-            <br /> 
-           
+            <br />
+
             <div class="form-group">
                 @*<label asp-for="ProvinceId" class="form-label"></label>*@
                 @Html.DropDownListFor(model => model.ProvinceId, (SelectList)ViewBag.Provinces, "Seleccione una provincia", new { @class = "form-control" })
                 <span asp-validation-for="ProvinceId" class="text-danger"></span>
             </div>
             <br />
-          
+
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Nombre">
+                    <input asp-for="UserName" class="form-control" placeholder="Nombre">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <br />
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Apellidos">
-                </div>
-            </div>
-            <br/>
-
-            <div class="row">
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Correo">
-                </div>
-     
-                <div class="col">
-                    <input type="text" class="form-control" placeholder="Nombre de Usuario">
+                    <input asp-for="UserAddress" class="form-control" placeholder="Dirección">
+                    <span asp-validation-for="UserAddress" class="text-danger"></span>
                 </div>
             </div>
             <br />
-     
+
             <div class="row">
                 <div class="col">
-                    <input type="email" class="form-control" placeholder="UserAdress">
+                    <input asp-for="FirstName" class="form-control" placeholder="Primer Apellido">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <div class="col">
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Contraseña">
-                </div>
-            </div>
 
+                <div class="col">
+                    @*                     <label asp-for="BirthDate" class="form-label"></label>
+                    *@                    <input asp-for="BirthDate" class="form-control" placeholder="Fecha de Nacimiento">
+                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                </div>
+                <
+            </div>
             <br />
 
             <div class="row">
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Identificación">
+                    <input asp-for="LastName" class="form-control" placeholder="Segundo Apellido">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input asp-for="PasswordHash" class="form-control" id="inputPassword4" placeholder="Contraseña">
+                    <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col">
+                    <input asp-for="IdNumber" class="form-control" placeholder="Identificación">
+                    <span asp-validation-for="IdNumber" class="text-danger"></span>
                 </div>
                 <br />
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Número Telefónico">
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Número Telefónico">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
             </div>
 
             <br />
 
-
-            <div class="form-group">
-                <label asp-for="BirthDate" class="form-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
+            @*             <div class="form-group">
+            <label asp-for="BirthDate" class="form-label"></label>
+            <input asp-for="BirthDate" class="form-control" />
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div> *@
 
 
             <br />
@@ -92,15 +101,10 @@
                 <button class="btn btn-primary" asp-action="Users">Volver a Usuarios</button>
             </div>
 
-
-
             @*<div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <button class="btn btn-primary" asp-action="Users">Volver a Usuarios</button>
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <button class="btn btn-primary" asp-action="Users">Volver a Usuarios</button>
             </div>*@
-
-
-
         </form>
     </div>
 </div>
@@ -115,76 +119,3 @@
     }
 }
 
-
-<section class="vh-1000 gradient-custom">
-    <div class="container py-5 h-100">
-        <div class="row justify-content-center align-items-center h-1000">
-            <div class="col-12 col-lg-9 col-xl-7">
-                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
-                    <div class="card-body p-4 p-md-5">
-                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
-                        <form>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-
-                                    <div class="form-outline">
-                                        <input type="text" id="firstName" class="form-control form-control-lg" />
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 mb-4">
-
-                                    <div class="form-outline">
-                                        <input type="text" id="lastName" class="form-control form-control-lg" />
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-4 d-flex align-items-center">
-
-                                    <div class="form-outline datepicker w-100">
-                                        <input type="text" class="form-control form-control-lg" id="birthdayDate" />
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-4 pb-2">
-
-                                    <div class="form-outline">
-                                        <input type="email" id="emailAddress" class="form-control form-control-lg" />
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 mb-4 pb-2">
-
-                                    <div class="form-outline">
-                                        <input type="tel" id="phoneNumber" class="form-control form-control-lg" />
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-
-                                    <select class="select form-control-lg">
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="mt-4 pt-2">
-                                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
