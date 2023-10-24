@@ -15,29 +15,34 @@
                 @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Seleccione un doctor", new { @class = "form-control" })
                 <span asp-validation-for="DoctorId" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="SpecialtyId" class="control-label"></label>
                 @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
                 <span asp-validation-for="SpecialtyId" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
                 <input asp-for="StartTime" class="form-control" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="EndTime" class="control-label"></label>
                 <input asp-for="EndTime" class="form-control" />
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
+            <br /> 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Crear" class="btn btn-primary" />
+                <button class="btn btn-primary" asp-action="Appointments">Regresar a Citas</button>
             </div>
         </form>
     </div>
 </div>
-
+@*
 <div>
     <a asp-action="Appointments">Regresar a Citas</a>
 </div>
-
+*@
