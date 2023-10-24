@@ -6,7 +6,7 @@ namespace FrontEnd.Models
     {
         public int BrandId { get; set; }
 
-        [Required(ErrorMessage = "El nombre de la marca es requerido."), Display(Name = "Nombre de Marca")]
+        [Required(ErrorMessage = "El nombre de la marca es requerido."), Display(Name = "Nombre de Marca"), StringLength(20)]
         public string BrandName { get; set; } = null!;
     }
 }

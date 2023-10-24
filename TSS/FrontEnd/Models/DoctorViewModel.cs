@@ -22,20 +22,20 @@ namespace FrontEnd.Models
      ErrorMessage = "El número de cédula debe tener el siguiente formato: 1-1111-1111")]
         public string IdNumber { get; set; } = null!;
 
-        [Required(ErrorMessage = "El nombre es requerido."), Display(Name = "Nombre")]
+        [Required(ErrorMessage = "El nombre es requerido."), Display(Name = "Nombre"), StringLength(30)]
         public string DoctorName { get; set; } = null!;
 
-        [Required(ErrorMessage = "El primer apellido es requerido."), Display(Name = "Primer Apellido")]
+        [Required(ErrorMessage = "El primer apellido es requerido."), Display(Name = "Primer Apellido"), StringLength(20)]
         public string FirstName { get; set; } = null!;
 
-        [Required(ErrorMessage = "El segundo apellido es requerido."), Display(Name = "Segundo Apellido")]
+        [Required(ErrorMessage = "El segundo apellido es requerido."), Display(Name = "Segundo Apellido"), StringLength(20)]
         public string LastName { get; set; } = null!;
 
-        [Required(ErrorMessage = "La fecha de nacimiento es requerida."), Display(Name = "Fecha de Nacimiento")]
+        [Required(ErrorMessage = "La fecha de nacimiento es requerida."), Display(Name = "Fecha de Nacimiento"), StringLength(20)]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
-        [Required(ErrorMessage = "El correo electrónico es requerido."), Display(Name = "Correo Electrónico")]
+        [Required(ErrorMessage = "El correo electrónico es requerido."), Display(Name = "Correo Electrónico"), StringLength(30)]
         [EmailAddress(ErrorMessage = "El correo electrónico debe ser válido.")]
         public string Email { get; set; } = null!;
 
