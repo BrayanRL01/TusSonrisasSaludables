@@ -3,9 +3,10 @@ using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
-using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using NuGet.Protocol.Core.Types;
+using System.Security.Claims;
 
 namespace FrontEnd.Controllers
 {
@@ -15,6 +16,9 @@ namespace FrontEnd.Controllers
         private readonly ILogger<DashboardController> _logger;
 
         #region Helpers
+        private ServiceRepository repository = new();
+        private SecurityHelper securityHelper = new SecurityHelper();
+
 
         #region Users
         private UsersHelper Helper = new();
@@ -52,6 +56,8 @@ namespace FrontEnd.Controllers
 
         public IActionResult Index()
         {
+            var token = HttpContext.Session.GetString("token");
+            repository = new(token);
             return View();
         }
 
@@ -95,9 +101,9 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Usuario creado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                TempData["Error"] = ex.Message;
+                TempData["Error"] = "No se ha creado el usuario. " + ex.Message;
                 return RedirectToAction("Users");
             }
         }
@@ -148,27 +154,18 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserViewModel user)
         {
-            user = Helper.Delete(user.UserId);
-            if (user == null)
+            try
             {
+                user = Helper.Delete(user.UserId);
                 TempData["Message"] = "Usuario eliminado correctamente.";
-
-                return RedirectToAction("Users");
-                //else
-                //{
-                //    Exception ex = new();
-                //    TempData["Message"] = $"No se ha eliminado el usuario. {ex.Message}";
-                //    return RedirectToAction("Users");
-                //}
             }
-            else
+            catch (Exception ex)
             {
-                Exception ex = new();
-                TempData["Error"] = "No se eliminó el usuario: " + ex.Message.ToString();
-                return RedirectToAction("Users");
-
+                TempData["Error"] = "No se eliminó el usuario. " + ex.Message;
             }
+            return RedirectToAction("Users");
         }
+
         #endregion
 
         #endregion
@@ -272,7 +269,7 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Categoría editada correctamente.";
                 return RedirectToAction("Categories");
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = "No se pudo editar la categoría. " + ex.Message;
                 return RedirectToAction("Categories");
@@ -1130,10 +1127,10 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public IActionResult EditAdmin(string email)
+        public IActionResult EditAdmin()
         {
-            SecurityHelper securityHelper = new SecurityHelper();
-            UserViewModel user = securityHelper.GetByEmail(email);
+            string email = User.FindFirst(ClaimTypes.Name)?.Value;
+            UserViewModel user = securityHelper.GetEmail(email);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
@@ -1148,16 +1145,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditAdmin(UserViewModel user)
         {
-            try
+            if (ModelState.IsValid)
             {
                 user = Helper.Edit(user);
                 TempData["Message"] = "Usuario modificado correctamente.";
-                return RedirectToAction("Users");
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            else
             {
-                TempData["Error"] = new Exception("Hubo un error: " + ex);
-                return RedirectToAction("Users");
+                TempData["Error"] = "No se editó el usuario.";
+                return RedirectToAction("Index");
             }
         }
 

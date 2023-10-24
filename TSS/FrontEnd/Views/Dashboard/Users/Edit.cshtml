@@ -17,7 +17,7 @@
             @Html.HiddenFor(Model => Model.UserId)
             @Html.HiddenFor(Model => Model.RoleId)
             <div class="form-group row">
-                <label asp-for="TypeId" class="control-label" align="center"></label>
+                <label asp-for="TypeId" readonly class="control-label" align="center"></label>
                 @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo", new { @class = "form-control" })
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>

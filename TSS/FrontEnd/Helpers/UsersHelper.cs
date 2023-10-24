@@ -64,7 +64,7 @@ namespace FrontEnd.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception("Error: " + ex);
+                throw new Exception("Error: " + ex.Message);
             }
         }
         #endregion
@@ -81,7 +81,7 @@ namespace FrontEnd.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Source);
+                throw new Exception(ex.Message);
             }
         }
         #endregion
@@ -91,13 +91,13 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                UserViewModel User = new UserViewModel();
+                UserViewModel User = new();
                 HttpResponseMessage responseMessage = repository.DeleteResponse("api/Users/" + id);
                 return User;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Source);
+                throw new Exception(ex.Message);
             }
         }
         #endregion

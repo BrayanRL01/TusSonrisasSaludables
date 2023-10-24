@@ -1,5 +1,4 @@
-﻿using FrontEnd.Filters;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FrontEnd.Models
 {
@@ -8,18 +7,16 @@ namespace FrontEnd.Models
         public int AppointmentId { get; set; }
         public int? UserId { get; set; }
 
-        [Display(Name = "Doctor a Asignar")]
+        [Required(ErrorMessage = "El doctor/a es requerido."), Display(Name = "Doctor a Asignar")]
         public int? DoctorId { get; set; }
 
-        [Display(Name = "Especialidad")]
+        [Required(ErrorMessage = "La especialidad es requerida."), Display(Name = "Especialidad")]
         public int SpecialtyId { get; set; }
 
-        [UniqueStartTime(ErrorMessage = "Ya está ocupada esa hora.")]
         [Display(Name = "Hora de Inicio")]
         [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; } = DateTime.Now.Date;
 
-        [UniqueEndTime(ErrorMessage = "Ya está ocupada esa hora.")]
         [Display(Name = "Hora de Fin")]
         [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; } = DateTime.Now.Date;

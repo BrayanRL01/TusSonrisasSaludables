@@ -1,13 +1,10 @@
 ﻿using BackEnd.Models;
 using Entities.Entities;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Protocol;
-using NuGet.Protocol.Plugins;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -251,23 +248,36 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("EditEmail/{email}")]
-        public async Task<IActionResult> EditEmail(string email)
+        //[Authorize]
+        [HttpGet("GetEmail/{email}")]
+        public async Task<IActionResult> GetEmail(string email)
         {
-            try
-            {
-                var users = await _context.Users.
-                    FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
-                var user = users.FirstOrDefault();                 
-
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized(ex.Message);
-            }
+            //string? email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var users = await _context.Users.
+                               FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
+            var user = users.FirstOrDefault();
+            return Ok(user);
         }
+
+        //[HttpGet("Test/{token}")]
+        //public async Task<IActionResult> AlmacenarEmailDeToken(string token)
+        //{
+        //    var handler = new JwtSecurityTokenHandler();
+        //    var jwtToken = handler.ReadJwtToken(token);
+
+        //    // Obtén el claim del correo electrónico
+        //    var emailClaim = jwtToken.Claims.First(claim => claim.Type == "Name");
+
+        //    // Almacena el correo electrónico en una variable string
+        //    string email = emailClaim?.Value;
+
+        //    var users = await _context.Users.
+        //              FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
+        //    var user = users.FirstOrDefault();
+        //    return Ok(user);
+        //    // Ahora puedes usar la variable email en tu código
+        //}
+
     }
 }
 

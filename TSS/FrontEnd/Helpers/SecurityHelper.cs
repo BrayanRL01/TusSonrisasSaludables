@@ -1,4 +1,5 @@
 ﻿using FrontEnd.Models;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers
@@ -39,7 +40,7 @@ namespace FrontEnd.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Source);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -51,12 +52,20 @@ namespace FrontEnd.Helpers
             return loginModel;
         }
 
-        public UserViewModel GetByEmail(string email)
+        public UserViewModel GetEmail(string email)
         {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/EditEmail/" + email);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/GetEmail/" + email);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
-            return Usuario;
+            UserViewModel user = JsonConvert.DeserializeObject<UserViewModel>(content);
+            return user;
         }
+
+        //public UserViewModel GetByEmail(string email)
+        //{
+        //    HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/UserEmail/" + email);
+        //    string content = responseMessage.Content.ReadAsStringAsync().Result;
+        //    UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
+        //    return Usuario;
+        //}
     }
 }
