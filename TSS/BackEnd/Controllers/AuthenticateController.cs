@@ -248,11 +248,10 @@ namespace BackEnd.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("GetEmail")]
         public IActionResult GetEmail()
         {
-            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            string email = User.FindFirst(ClaimTypes.Name)?.Value;
             return Ok(email);
         }
 
