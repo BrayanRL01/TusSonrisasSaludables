@@ -7,10 +7,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Filters\**" />
+	  <Content Remove="Filters\**" />
+	  <EmbeddedResource Remove="Filters\**" />
+	  <None Remove="Filters\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AspNetCore.ReCaptcha" Version="1.7.0" />
+		<PackageReference Include="Aspose.PDF" Version="23.10.0" />
+		<PackageReference Include="DinkToPdf" Version="1.0.8" />
+		<PackageReference Include="IronPdf" Version="2023.10.3" />
+		<PackageReference Include="LibWkHtmlToX-32" Version="0.12.6.1" />
+		<PackageReference Include="Markdig" Version="0.33.0" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+		<PackageReference Include="WkHtmlToPdf" Version="1.0.2" />
+		<PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

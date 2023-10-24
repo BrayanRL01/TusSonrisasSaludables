@@ -5,7 +5,13 @@
     Layout = "~/Views/Shared/Authorize/_RegisterLayout.cshtml";
 }
 
-
+<style>
+    .text-center {
+        align-items: center !important;
+        justify-content: center;
+        align-content: center;
+    }
+</style>
 
 <div class="card o-hidden border-0 shadow-lg my-5">
     <div class="card-body p-0">
@@ -88,13 +94,14 @@
                             <input asp-for="PasswordHash" class="form-control form-control-user" />
                             <span asp-validation-for="PasswordHash" class="text-danger"></span>
                         </div>
-                        <div class="g-recaptcha" data-sitekey="@ViewData["Key"]" data-callback="recaptcha_callback"></div>
+                        <div class="g-recaptcha text-center" data-sitekey="@ViewData["Key"]" data-callback="recaptcha_callback"></div>
+                        <br />
                         <div class="form-group">
-                            <input type="submit" id="login" value="Crear Usuario" class="btn btn-primary" />
+                            <input type="submit" id="login" value="Crear Usuario" class="btn btn-primary text-center" />
                         </div>
                     </form>
                     <div class="text-center">
-                        <a class="small" href="forgot-password.html">¿Olvido su contraseña?</a>
+                        <a class="small" href="#">¿Olvido su contraseña?</a>
                     </div>
                     <div class="text-center">
                         <a class="small" asp-controller="Account" asp-action="Login">¿Ya tiene una cuenta? ¡Ingrese aqui!</a>

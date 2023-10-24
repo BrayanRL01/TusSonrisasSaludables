@@ -3,7 +3,6 @@ using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
-using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 
@@ -148,14 +147,15 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserViewModel user)
         {
-            user = Helper.Delete(user.UserId);
-            if (user == null)
+            try
             {
+                user = Helper.Delete(user.UserId);
                 TempData["Message"] = "Usuario eliminado correctamente.";
-                return RedirectToAction("Users");
             }
-
-            TempData["Error"] = "No se eliminó el usuario:";
+            catch (Exception ex)
+            {
+                TempData["Error"] = "No se eliminó el usuario. " + ex.Message;
+            }
             return RedirectToAction("Users");
         }
 
@@ -262,7 +262,7 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Categoría editada correctamente.";
                 return RedirectToAction("Categories");
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = "No se pudo editar la categoría. " + ex.Message;
                 return RedirectToAction("Categories");

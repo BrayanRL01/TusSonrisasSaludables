@@ -24,6 +24,33 @@
     <!-- Custom styles for this page -->
     <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+        document.getElementById("generarPDF").addEventListener("click", function () {
+            const divContent = document.getElementById("contenidoParaPDF").innerHTML;
+            // Enviar el contenido del div al controlador para generar el PDF
+            fetch('/Pdf/GenerarPDF', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ contenido: divContent })
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Dashboard.pdf';
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                });
+        });
+    </script>
+
 </head>
 
 <body id="page-top">

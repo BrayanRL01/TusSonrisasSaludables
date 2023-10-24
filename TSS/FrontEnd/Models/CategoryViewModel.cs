@@ -7,7 +7,7 @@ namespace FrontEnd.Models
         public int CategoryId { get; set; }
         [Display(Name = "Categoría Madre")]
         public int? MainCategoryId { get; set; }
-        [Required(ErrorMessage = "El nombre es requerido"), Display(Name = "Nombre de Categoría/Subcategoría")]
+        [Required(ErrorMessage = "El nombre es requerido"), Display(Name = "Nombre de Categoría/Subcategoría"), StringLength(20)]
         public string CategoryName { get; set; } = null!;
     }
 }
