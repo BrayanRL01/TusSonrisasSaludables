@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using NuGet.Protocol.Core.Types;
+using System.Security.Claims;
 
 namespace FrontEnd.Controllers
 {
@@ -14,6 +16,9 @@ namespace FrontEnd.Controllers
         private readonly ILogger<DashboardController> _logger;
 
         #region Helpers
+        private ServiceRepository repository = new();
+        private SecurityHelper securityHelper = new SecurityHelper();
+
 
         #region Users
         private UsersHelper Helper = new();
@@ -51,6 +56,8 @@ namespace FrontEnd.Controllers
 
         public IActionResult Index()
         {
+            var token = HttpContext.Session.GetString("token");
+            repository = new(token);
             return View();
         }
 
@@ -1122,9 +1129,8 @@ namespace FrontEnd.Controllers
 
         public IActionResult EditAdmin()
         {
-            SecurityHelper securityHelper = new SecurityHelper();
-            string email = securityHelper.GetEmail();
-            UserViewModel user = securityHelper.GetByEmail(email);
+            string email = User.FindFirst(ClaimTypes.Name)?.Value;
+            UserViewModel user = securityHelper.GetEmail(email);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
@@ -1139,16 +1145,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditAdmin(UserViewModel user)
         {
-            try
+            if (ModelState.IsValid)
             {
                 user = Helper.Edit(user);
                 TempData["Message"] = "Usuario modificado correctamente.";
-                return RedirectToAction("Users");
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            else
             {
-                TempData["Error"] = new Exception("Hubo un error: " + ex);
-                return RedirectToAction("Users");
+                TempData["Error"] = "No se editó el usuario.";
+                return RedirectToAction("Index");
             }
         }
 
