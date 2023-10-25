@@ -50,9 +50,9 @@
                                 @Html.DisplayFor(modelItem => item.ProcedureName)
                             </td>
                             <td>
-                                <button>@Html.ActionLink("Edit", "EditProcedure", new { id=item.ProcedureId })</button> |
-                                @Html.ActionLink("Details", "ProcedureDetails", new { id=item.ProcedureId }) |
-                                @Html.ActionLink("Delete", "DeleteProcedure", new { id=item.ProcedureId })
+                                @Html.ActionLink("Editar", "EditProcedure", new { id=item.ProcedureId }, new {@class="btn btn-warning" } ) ) 
+                                @Html.ActionLink("Detalles", "ProcedureDetails", new { id=item.ProcedureId },new {@class="btn btn-info" } ) 
+                                @Html.ActionLink("Elimianr", "DeleteProcedure", new { id=item.ProcedureId },new {@class="btn btn-danger" } )
                             </td>
                         </tr>
                     }

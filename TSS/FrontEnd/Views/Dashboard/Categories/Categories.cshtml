@@ -50,7 +50,7 @@ else if (TempData.ContainsKey("Error"))
                             <td>
                                 @Html.ActionLink("Edit", "EditCategory", new { id=item.CategoryId }) |
                                 @Html.ActionLink("Details", "CategoryDetails", new { id=item.CategoryId }) |
-                                @Html.ActionLink("Delete", "DeleteCategory", new { id=item.CategoryId })
+                                @Html.ActionLink("Delete", "DeleteCategory", new { id=item.CategoryId },new {@class="btn btn-danger" } )
                             </td>
                         </tr>
                     }

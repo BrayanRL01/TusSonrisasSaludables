@@ -51,9 +51,9 @@ else if (TempData.ContainsKey("Error"))
                     @Html.DisplayFor(modelItem => item.SpecialtyName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditSpecialty", new { id=item.SpecialtyId }) |
-                    @Html.ActionLink("Details", "SpecialtyDetails", new { id=item.SpecialtyId }) |
-                    @Html.ActionLink("Delete", "DeleteSpecialty", new { id=item.SpecialtyId })
+                    @Html.ActionLink("Editar", "EditSpecialty", new { id=item.SpecialtyId }, new {@class="btn btn-warning" } ) 
+                    @Html.ActionLink("Detalles", "SpecialtyDetails", new { id=item.SpecialtyId },new {@class="btn btn-info" } ) 
+                    @Html.ActionLink("Eliminar", "DeleteSpecialty", new { id=item.SpecialtyId },new {@class="btn btn-danger" } )
                 </td>
             </tr>
         }
