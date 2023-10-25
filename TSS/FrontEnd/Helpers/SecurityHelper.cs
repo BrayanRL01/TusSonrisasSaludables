@@ -52,20 +52,20 @@ namespace FrontEnd.Helpers
             return loginModel;
         }
 
-        public string GetEmail()
+        public UserViewModel GetEmail(string email)
         {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/GetEmail/");
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/GetEmail/" + email);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            string email = JsonConvert.DeserializeObject<string>(content);
-            return email;
+            UserViewModel user = JsonConvert.DeserializeObject<UserViewModel>(content);
+            return user;
         }
 
-        public UserViewModel GetByEmail(string email)
-        {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/UserEmail/" + email);
-            string content = responseMessage.Content.ReadAsStringAsync().Result;
-            UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
-            return Usuario;
-        }
+        //public UserViewModel GetByEmail(string email)
+        //{
+        //    HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/UserEmail/" + email);
+        //    string content = responseMessage.Content.ReadAsStringAsync().Result;
+        //    UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
+        //    return Usuario;
+        //}
     }
 }

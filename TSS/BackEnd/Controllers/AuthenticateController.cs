@@ -248,30 +248,36 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("GetEmail")]
-        public IActionResult GetEmail()
+        //[Authorize]
+        [HttpGet("GetEmail/{email}")]
+        public async Task<IActionResult> GetEmail(string email)
         {
-            string email = User.FindFirst(ClaimTypes.Name)?.Value;
-            return Ok(email);
+            //string? email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var users = await _context.Users.
+                               FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
+            var user = users.FirstOrDefault();
+            return Ok(user);
         }
 
-        [HttpGet]
-        [Route("UserEmail/{email}")]
-        public async Task<IActionResult> GetUserEmail(string email)
-        {
-            try
-            {
-                var users = await _context.Users.
-                    FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
-                var user = users.FirstOrDefault();
+        //[HttpGet("Test/{token}")]
+        //public async Task<IActionResult> AlmacenarEmailDeToken(string token)
+        //{
+        //    var handler = new JwtSecurityTokenHandler();
+        //    var jwtToken = handler.ReadJwtToken(token);
 
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-        }
+        //    // Obtén el claim del correo electrónico
+        //    var emailClaim = jwtToken.Claims.First(claim => claim.Type == "Name");
+
+        //    // Almacena el correo electrónico en una variable string
+        //    string email = emailClaim?.Value;
+
+        //    var users = await _context.Users.
+        //              FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
+        //    var user = users.FirstOrDefault();
+        //    return Ok(user);
+        //    // Ahora puedes usar la variable email en tu código
+        //}
+
     }
 }
 
