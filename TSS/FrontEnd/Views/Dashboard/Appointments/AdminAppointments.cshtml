@@ -73,9 +73,9 @@ else if (TempData.ContainsKey("Error"))
                                 @Html.DisplayFor(modelItem => item.EndTime)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "EditAppointment", new { id=item.AppointmentId }) |
-                                @Html.ActionLink("Details", "AppointmentDetails", new { id=item.AppointmentId }) |
-                                @Html.ActionLink("Delete", "DeleteAppointment", new { id=item.AppointmentId })
+                                @Html.ActionLink("Editar", "EditAppointment", new { id=item.AppointmentId }, new {@class="btn btn-warning" } ) 
+                                @Html.ActionLink("Detalles", "AppointmentDetails", new { id=item.AppointmentId },new {@class="btn btn-info" } ) 
+                                @Html.ActionLink("Eliminar", "DeleteAppointment", new { id=item.AppointmentId },new {@class="btn btn-danger" } )
                             </td>
                         </tr>
                     }
