@@ -17,7 +17,7 @@ namespace FrontEnd.Controllers
 
         #region Helpers
         private ServiceRepository repository = new();
-        private SecurityHelper securityHelper = new SecurityHelper();
+        private SecurityHelper securityHelper = new();
 
 
         #region Users
@@ -78,7 +78,7 @@ namespace FrontEnd.Controllers
         #endregion
 
         #region Create
-        public ActionResult CreateAdmin()
+        public IActionResult CreateAdmin()
         {
             UserViewModel user = new();
             var genres = genresHelper.GetAllView();
@@ -93,7 +93,7 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAdmin(UserViewModel user)
+        public IActionResult CreateAdmin(UserViewModel user)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace FrontEnd.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = new Exception("Hubo un error: " + ex);
+                TempData["Error"] = new Exception("Hubo un error: " + ex.Message);
                 return RedirectToAction("Users");
             }
         }
@@ -1127,9 +1127,9 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public IActionResult EditAdmin()
+        public ActionResult EditProfile()
         {
-            string email = User.FindFirst(ClaimTypes.Name)?.Value;
+            string email = User.FindFirst(ClaimTypes.Email)?.Value;
             UserViewModel user = securityHelper.GetEmail(email);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
@@ -1143,7 +1143,7 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditAdmin(UserViewModel user)
+        public ActionResult EditProfile(UserViewModel user)
         {
             if (ModelState.IsValid)
             {
@@ -1153,7 +1153,7 @@ namespace FrontEnd.Controllers
             }
             else
             {
-                TempData["Error"] = "No se editó el usuario.";
+                TempData["Error"] = "No se modificó el usuario.";
                 return RedirectToAction("Index");
             }
         }

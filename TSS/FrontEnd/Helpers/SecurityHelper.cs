@@ -6,18 +6,18 @@ namespace FrontEnd.Helpers
 {
     public class SecurityHelper
     {
-        private ServiceRepository repository;
+        private ServiceRepository _repository;
 
         public SecurityHelper()
         {
-            repository = new ServiceRepository();
+            _repository = new ServiceRepository();
         }
 
         public TokenModel Login(LoginModel usuario)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/Login", usuario);
+                HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Login", usuario);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 TokenModel TokenModel = JsonConvert.DeserializeObject<TokenModel>(content);
 
@@ -33,7 +33,7 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/Register", Usuario);
+                HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Register", Usuario);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 UserViewModel UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
                 return UsuarioAPI;
@@ -44,28 +44,28 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public LoginModel GetUser(LoginModel usuario)
+        public UserViewModel GetUser(LoginModel usuario)
         {
-            HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/GetUser", usuario);
+            HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/GetUser", usuario);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
-            LoginModel loginModel = JsonConvert.DeserializeObject<LoginModel>(content);
+            UserViewModel loginModel = JsonConvert.DeserializeObject<UserViewModel>(content);
             return loginModel;
+        }
+
+        public string GetRole(LoginModel usuario)
+        {
+            HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/GetRole", usuario);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string Roles = content;
+            return Roles;
         }
 
         public UserViewModel GetEmail(string email)
         {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/GetEmail/" + email);
+            HttpResponseMessage responseMessage = _repository.GetResponse("api/Authenticate/GetEmail/" + email);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             UserViewModel user = JsonConvert.DeserializeObject<UserViewModel>(content);
             return user;
         }
-
-        //public UserViewModel GetByEmail(string email)
-        //{
-        //    HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/UserEmail/" + email);
-        //    string content = responseMessage.Content.ReadAsStringAsync().Result;
-        //    UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
-        //    return Usuario;
-        //}
     }
 }

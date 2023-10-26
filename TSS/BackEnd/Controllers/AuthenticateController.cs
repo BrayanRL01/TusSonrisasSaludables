@@ -1,10 +1,12 @@
 ﻿using BackEnd.Models;
 using Entities.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Protocol;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -34,39 +36,13 @@ namespace BackEnd.Controllers
                 var user = await _context.Database.
                      ExecuteSqlInterpolatedAsync($"EXEC SP_AuthenticateUser {login.Email}, {login.PasswordHash}");
 
-                SqlParameter param1 = new()
-                {
-                    ParameterName = "@Email",
-                    SqlDbType = System.Data.SqlDbType.VarChar,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = login.Email
-                };
-
-                SqlParameter param2 = new()
-                {
-                    ParameterName = "@Password",
-                    SqlDbType = System.Data.SqlDbType.VarChar,
-                    Direction = System.Data.ParameterDirection.Input,
-                    Value = login.PasswordHash
-                };
-
-                SqlParameter outputParam = new()
-                {
-                    ParameterName = "@Role",
-                    SqlDbType = System.Data.SqlDbType.VarChar,
-                    Size = 30,
-                    Direction = System.Data.ParameterDirection.Output,
-                };
-
-                await _context.Database.ExecuteSqlInterpolatedAsync($"EXECUTE SP_GetRoleUser {param1}, {param2}, {outputParam} OUTPUT");
-
-                login.Roles = (string)outputParam.Value;
+                login.Roles = await GetRole(login);
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, login.Email),
+                    new Claim(ClaimTypes.Email, login.Email),
                     new Claim(ClaimTypes.Role, login.Roles),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
@@ -74,7 +50,7 @@ namespace BackEnd.Controllers
                 var token = new JwtSecurityToken(
                     issuer: config["JWT:ValidIssuer"],
                     audience: config["JWT:ValidAudience"],
-                    expires: DateTime.Now.AddHours(3),
+                    expires: DateTime.Now.AddHours(1),
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha512Signature)
                     );
@@ -201,50 +177,63 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost]
-        [Route("GetUser")]
-        public async Task<IActionResult> GetUser([FromBody] LoginModel model)
+        [Route("GetRole")]
+        public async Task<string> GetRole([FromBody] LoginModel model)
         {
             try
             {
-                var user = await _context.Database.
-                    ExecuteSqlInterpolatedAsync($"EXEC SP_GetEmailUser {model.Email}, {model.PasswordHash}");
-
-                if (user.ToString() != null)
+                SqlParameter param1 = new()
                 {
-                    SqlParameter param1 = new()
-                    {
-                        ParameterName = "@Email",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = model.Email
-                    };
+                    ParameterName = "@Email",
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = model.Email
+                };
 
-                    SqlParameter param2 = new()
-                    {
-                        ParameterName = "@Password",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = model.PasswordHash
-                    };
+                SqlParameter param2 = new()
+                {
+                    ParameterName = "@Password",
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                    Direction = System.Data.ParameterDirection.Input,
+                    Value = model.PasswordHash
+                };
 
-                    SqlParameter outputParam = new()
-                    {
-                        ParameterName = "@Role",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Size = 30,
-                        Direction = System.Data.ParameterDirection.Output,
-                    };
+                SqlParameter outputParam = new()
+                {
+                    ParameterName = "@Role",
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                    Size = 30,
+                    Direction = System.Data.ParameterDirection.Output,
+                };
 
-                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXECUTE SP_GetRoleUser {param1}, {param2}, {outputParam} OUTPUT");
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXECUTE SP_GetRoleUser {param1}, {param2}, {outputParam} OUTPUT");
 
-                    model.Roles = (string)outputParam.Value;
-                }
+                model.Roles = (string)outputParam.Value;
 
-                return Ok(model);
+                return model.Roles;
+
             }
             catch (Exception ex)
             {
-                return Unauthorized(ex.Message);
+                return ex.Message;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetUser")]
+        public async Task<ActionResult> GetUser([FromBody] LoginModel model)
+        {
+            try
+            {
+                var users = await _context.Users.FromSqlInterpolated
+                    ($"EXEC SP_GetEmailUser {model.Email}, {model.PasswordHash}").ToListAsync();
+                var user = users.FirstOrDefault();
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Hubo un error: " + ex.Message);
             }
         }
 
@@ -252,57 +241,18 @@ namespace BackEnd.Controllers
         [HttpGet("GetEmail/{email}")]
         public async Task<IActionResult> GetEmail(string email)
         {
-            //string? email = User.FindFirst(ClaimTypes.Name)?.Value;
-            var users = await _context.Users.
-                               FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
-            var user = users.FirstOrDefault();
-            return Ok(user);
+            try
+            {
+                var users = await _context.Users.
+                                   FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
+                var user = users.FirstOrDefault();
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Hubo un error: " + ex.Message);
+            }
         }
-
-        //[HttpGet("Test/{token}")]
-        //public async Task<IActionResult> AlmacenarEmailDeToken(string token)
-        //{
-        //    var handler = new JwtSecurityTokenHandler();
-        //    var jwtToken = handler.ReadJwtToken(token);
-
-        //    // Obtén el claim del correo electrónico
-        //    var emailClaim = jwtToken.Claims.First(claim => claim.Type == "Name");
-
-        //    // Almacena el correo electrónico en una variable string
-        //    string email = emailClaim?.Value;
-
-        //    var users = await _context.Users.
-        //              FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
-        //    var user = users.FirstOrDefault();
-        //    return Ok(user);
-        //    // Ahora puedes usar la variable email en tu código
-        //}
-
     }
 }
 
-// Código del JWT #1
-//var keyBytes = Encoding.ASCII.GetBytes(config["JWT:Secret"]);
-//var claims = new ClaimsIdentity();
-
-//claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, login.Email));
-//claims.AddClaim(new Claim(ClaimTypes.Role, roles.ToString()));
-
-
-//var tokenDescriptor = new SecurityTokenDescriptor
-//{
-//    Subject = claims,
-//    Expires = DateTime.UtcNow.AddHours(1),
-//    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha512Signature)
-//};
-
-//var tokenHandler = new JwtSecurityTokenHandler();
-//var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
-
-//string tokenCreated = tokenHandler.WriteToken(tokenConfig);
-//DateTime expiration = tokenConfig.ValidTo;
-
-//return Ok("token: " + tokenCreated + ", expiration: " + expiration);
-
-
-// Código del JWT #2

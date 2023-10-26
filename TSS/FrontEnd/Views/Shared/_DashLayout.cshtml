@@ -1,6 +1,6 @@
 ﻿@using System.Security.Claims;
 @{
-    string? user = User.FindFirst(ClaimTypes.Name)?.Value;
+    string? user = User.FindFirst(ClaimTypes.Name)?.Value + " " + User.FindFirst(ClaimTypes.Surname)?.Value;
 }
 
 <!DOCTYPE html>

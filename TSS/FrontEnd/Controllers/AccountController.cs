@@ -40,10 +40,15 @@ namespace FrontEnd.Controllers
             {
                 TokenModel token = _securityHelper.Login(model);
                 HttpContext.Session.SetString("token", token.Token);
+
                 var loginModel = _securityHelper.GetUser(model);
+                loginModel.Roles = _securityHelper.GetRole(model);
                 var claims = new List<Claim>() {
-                    new Claim(ClaimTypes.NameIdentifier, loginModel.Email),
-                    new Claim(ClaimTypes.Name, loginModel.Email),
+                    new Claim(ClaimTypes.NameIdentifier, loginModel.IdNumber),
+                    new Claim(ClaimTypes.Name, loginModel.UserName),
+                    new Claim(ClaimTypes.Surname, loginModel.FirstName),
+                    new Claim(ClaimTypes.GivenName, loginModel.LastName),
+                    new Claim(ClaimTypes.Email, loginModel.Email),
                     new Claim(ClaimTypes.Role, loginModel.Roles)
                  };
 
@@ -57,19 +62,19 @@ namespace FrontEnd.Controllers
 
                 if (loginModel.Roles == "Admin")
                 {
-                    TempData["Message"] = $"Bienvenido/a {loginModel.Email}";
+                    TempData["Message"] = $"Bienvenido/a {loginModel.UserName} {loginModel.FirstName}.";
                     return RedirectToAction("Index", "Dashboard", model);
                 }
                 else if (loginModel.Roles == "User")
                 {
-                    TempData["Message"] = $"Bienvenido/a {loginModel.Email}";
+                    TempData["Message"] = $"Bienvenido/a {loginModel.UserName} {loginModel.FirstName}.";
                 }
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception)
             {
                 TempData["Error"] = "Datos inválidos, intente de nuevo.";
-                return RedirectToAction("Login", model);
+                return RedirectToAction("Login");
             }
 
         }
