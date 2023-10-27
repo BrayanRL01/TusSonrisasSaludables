@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>EditSubCategory</h1>
+<center><h1>Editar SubCategory</h1></center>
 
-<h4>CategoryViewModel</h4>
+@*<h4>CategoryViewModel</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,14 +24,15 @@
                 <input asp-for="CategoryName" class="form-control" />
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div style="text-align: center;">
                 <input type="submit" value="Modificar" class="btn btn-primary" />
+                <a asp-action="SubCategories">Volver a Subcategorías</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
+@*<div>
     <a asp-action="SubCategories">Volver a Subcategorías</a>
 </div>
-
+*@

@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>RecordDetails</h1>
+<center><h1>Registro de Pacientes</h1></center>
 
 <div>
-    <h4>VWRecordViewModel</h4>
+@*    <h4>VWRecordViewModel</h4>*@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -55,7 +55,7 @@
         </dd>
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Edit", "EditRecord", new { id = Model.RecordId }) |
+<div style="text-align: center;">
+    @Html.ActionLink("Editar", "EditRecord", new { id = Model.RecordId }) |
     <a asp-action="Records">Regresar a Registros</a>
 </div>

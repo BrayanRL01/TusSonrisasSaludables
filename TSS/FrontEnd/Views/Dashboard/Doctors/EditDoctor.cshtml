@@ -7,7 +7,7 @@
 
 <h1>Editar Doctor</h1>
 
-<h4>DoctorViewModel</h4>
+@*<h4>DoctorViewModel</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -70,14 +70,16 @@
             </div>
             <partial name="Photo/_DoctorPhoto" model="Model" />
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div style="text-align: center;">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <button class="btn btn-primary" asp-action="Appointments">Regresar a Doctores</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
+@*<div>
     <a asp-action="Doctors">Volver a Doctores</a>
 </div>
 
+*@

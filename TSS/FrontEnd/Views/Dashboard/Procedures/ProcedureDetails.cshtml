@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>ProcedureDetails</h1>
+<center><h1>Registro de Procedimientos</h1></center>
 
 <div>
     <hr />
@@ -18,7 +18,7 @@
         </dd>
     </dl>
 </div>
-<div>
+<div style="text-align: center;">
     @Html.ActionLink("Edit", "EditProcedure", new {  id = Model.ProcedureId }) |
     <a asp-action="Procedures">Regresar a Procedimientos</a>
 </div>

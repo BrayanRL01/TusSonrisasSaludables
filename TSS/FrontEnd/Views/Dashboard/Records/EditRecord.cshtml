@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>EditRecord</h1>
+<center><h1>Editar Record</h1></center>
 
-<h4>RecordViewModel</h4>
+@*<h4>RecordViewModel</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -49,14 +49,15 @@
                 <input asp-for="RecordDate" class="form-control" />
                 <span asp-validation-for="RecordDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div style="text-align: center;">
                 <input type="submit" value="Modificar" class="btn btn-primary" />
-            </div>
+                <button class="btn btn-primary" asp-action="Records">Regresar a Registros</button>
+            </>
         </form>
     </div>
 </div>
 
-<div>
+@*<div>
     <a asp-action="Records">Regresar a Registros</a>
-</div>
+</div>*@
 
