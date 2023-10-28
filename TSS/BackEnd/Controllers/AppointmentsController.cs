@@ -281,19 +281,19 @@ namespace BackEnd.Controllers
         }
 
         [HttpPut("CancelAppointment")]
-        public async Task<ActionResult> CancelAppointment(int id, string email)
+        public async Task<ActionResult> CancelAppointment([FromBody] AppointmentModel model)
         {
             try
             {
-                if (email == null)
+                if (model.Email == null)
                 {
                     return BadRequest();
                 }
                 else
                 {
-                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CancelAppointment {id}, {email}");
+                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CancelAppointment {model.AppointmentId}, {model.Email}");
                     await _context.SaveChangesAsync();
-                    return Ok("Cita cancelada correctamente.");
+                    return Ok(model);
                 }
             }
             catch (Exception ex)

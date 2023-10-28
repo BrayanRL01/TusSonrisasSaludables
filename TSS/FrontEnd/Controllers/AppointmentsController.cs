@@ -1,4 +1,5 @@
-﻿using FrontEnd.Helpers;
+﻿using Aspose.Pdf.Operators;
+using FrontEnd.Helpers;
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,7 @@ namespace FrontEnd.Controllers
         }
 
         // GET: AppointmentsController/Edit/5
+        [Authorize]
         public ActionResult Confirm(int id)
         {
             AppointmentViewModel model = appointmentsHelper.GetByID(id);
@@ -41,6 +43,35 @@ namespace FrontEnd.Controllers
             {
                 model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
                 appointmentsHelper.Confirm(model);
+                TempData["Message"] = "Cita confirmada correctamente.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Usted no es la persona a nombre de esta cita. " + ex.Message;
+                return View("Index");
+            }
+        }
+
+        [Authorize]
+        public ActionResult Cancel(int id)
+        {
+            AppointmentViewModel model = appointmentsHelper.GetByID(id);
+            return View(model);
+        }
+
+        // POST: AppointmentsController/Edit/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cancel(AppointmentViewModel model)
+        {
+            try
+            {
+                model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
+                appointmentsHelper.Cancel(model);
+                TempData["Message"] = "Cita cancelada correctamente.";
+
                 return RedirectToAction(nameof(Index));
             }
             catch

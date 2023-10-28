@@ -138,6 +138,22 @@ namespace FrontEnd.Helpers
                 throw new Exception(ex.Message);
             }
         }
+
+        public AppointmentViewModel Cancel(AppointmentViewModel model)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/CancelAppointment/", model);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+
+                return CitaAPI;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
     }
 }
