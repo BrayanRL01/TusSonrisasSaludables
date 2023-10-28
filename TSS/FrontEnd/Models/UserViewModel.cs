@@ -52,6 +52,6 @@ namespace FrontEnd.Models
         [RegularExpression(@"^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$", ErrorMessage = "La contraseña debe cumplir con 8 caractéres, un número, " +
             "una letra mayúscula y un caractér especial.")]
         public string PasswordHash { get; set; } = null!;
-        public string Roles { get; set; }
+        public string Roles { get; set; } = string.Empty;
     }
 }

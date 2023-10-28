@@ -19,6 +19,7 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
+        #region GetAppointments
         // GET: api/<AppointmentsController>
         [HttpGet("UserAppointments")]
         public async Task<JsonResult> SP_GetCitasView()
@@ -121,8 +122,9 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "No se ha encontrado la cita: " + ex.Message);
             }
         }
+        #endregion
 
-
+        #region PostAppointments
         // POST api/<AppointmentsController>
         [HttpPost("Appointment")]
         public async Task<ActionResult<Appointment>> PostAppointment([FromBody] AppointmentModel entity)
@@ -173,6 +175,7 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "No se pudo crear la cita: " + ex.Message);
             }
         }
+        #endregion
 
         #region PutAppoiments
         // PUT api/<AppointmentsController>/5
@@ -250,6 +253,52 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "No se pudo eliminar la cita: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Confirm and Cancel
+        [HttpPut("ConfirmAppointment")]
+        public async Task<ActionResult> ConfirmAppointment([FromBody] AppointmentModel model)
+        {
+            try
+            {
+                if (model.Email == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ConfirmAppointment {model.AppointmentId}, {model.Email}");
+                    await _context.SaveChangesAsync();
+                    return Ok(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"No se ha podido confirmar la cita: {ex.Message}");
+            }
+        }
+
+        [HttpPut("CancelAppointment")]
+        public async Task<ActionResult> CancelAppointment(int id, string email)
+        {
+            try
+            {
+                if (email == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CancelAppointment {id}, {email}");
+                    await _context.SaveChangesAsync();
+                    return Ok("Cita cancelada correctamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"No se ha podido confirmar la cita: {ex.Message}");
             }
         }
         #endregion

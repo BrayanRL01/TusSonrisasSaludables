@@ -1129,7 +1129,7 @@ namespace FrontEnd.Controllers
 
         public ActionResult EditProfile()
         {
-            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
             UserViewModel user = securityHelper.GetEmail(email);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
@@ -1137,7 +1137,7 @@ namespace FrontEnd.Controllers
             ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
             ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
             ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
-            return View("EditAdmin", user);
+            return View("EditProfile", user);
         }
 
         // POST: UsersController/Edit/5
@@ -1153,7 +1153,7 @@ namespace FrontEnd.Controllers
             }
             else
             {
-                TempData["Error"] = "No se modificó el usuario.";
+                TempData["Error"] = "No se modificó el usuario, compruebe sus validaciones e intentelo de nuevo.";
                 return RedirectToAction("Index");
             }
         }

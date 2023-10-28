@@ -1,0 +1,32 @@
+﻿@model FrontEnd.Models.AppointmentViewModel
+
+@{
+    ViewData["Title"] = "Confirm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Confirm</h1>
+
+<h4>AppointmentViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Confirm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h3>Desea reservar esta cita?</h3>
+            @Html.HiddenFor(Model => Model.AppointmentId)
+            @Html.HiddenFor(Model => Model.DoctorId)
+            @Html.HiddenFor(Model => Model.SpecialtyId)
+            @Html.HiddenFor(Model => Model.StartTime)
+            @Html.HiddenFor(Model => Model.EndTime)
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

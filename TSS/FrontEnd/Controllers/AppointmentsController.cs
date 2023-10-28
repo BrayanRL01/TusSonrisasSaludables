@@ -1,7 +1,9 @@
 ﻿using FrontEnd.Helpers;
 using FrontEnd.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FrontEnd.Controllers
 {
@@ -22,40 +24,23 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        // GET: AppointmentsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: AppointmentsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: AppointmentsController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Confirm(int id)
         {
-            return View();
+            AppointmentViewModel model = appointmentsHelper.GetByID(id);
+            return View(model);
         }
 
         // POST: AppointmentsController/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Confirm(AppointmentViewModel model)
         {
             try
             {
+                model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
+                appointmentsHelper.Confirm(model);
                 return RedirectToAction(nameof(Index));
             }
             catch

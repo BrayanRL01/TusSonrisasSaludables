@@ -21,6 +21,6 @@ namespace BackEnd.Models
         public string UserAddress { get; set; } = null!;
         [DataType(DataType.Password)]
         public string PasswordHash { get; set; } = null!;
-        public string Roles { get; set; }
+        public string Roles { get; set; } = string.Empty;
     }
 }

@@ -1,4 +1,5 @@
-﻿using FrontEnd.Models;
+﻿using Aspose.Foundation.UriResolver.RequestResponses;
+using FrontEnd.Models;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers
@@ -113,6 +114,24 @@ namespace FrontEnd.Helpers
                 AppointmentViewModel Cita = new();
                 HttpResponseMessage responseMessage = repository.DeleteResponse("api/Appointments/" + id);
                 return Cita;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Confirm and Cancel
+        public AppointmentViewModel Confirm(AppointmentViewModel model)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/ConfirmAppointment/", model);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+
+                return CitaAPI;
             }
             catch (Exception ex)
             {

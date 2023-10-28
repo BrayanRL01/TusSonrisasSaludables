@@ -1,59 +1,64 @@
-﻿@model IEnumerable<FrontEnd.Models.VWAdminAppointmentViewModel>
+﻿@using System.Security.Claims;
+@using FrontEnd.Helpers;
+@model IEnumerable<FrontEnd.Models.VWAdminAppointmentViewModel>
 
 @{
+    AppointmentsHelper helper = new();
+    string? email = User.FindFirst(ClaimTypes.Email)?.Value;
     ViewData["Title"] = "Appointments";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Appointments</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Doctor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpecialtyName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayName("Estado")
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div style="padding: 30px; padding-bottom: 60px;">
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Doctor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SpecialtyName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    @if (item.PacientName == "Espacio libre")
-                    {
-                        <button> @Html.ActionLink("Confirmar Cita", "Confirmar", new { /* id=item.PrimaryKey */ })</button>
-                    }
-                    else
-                    {
-                        <button> @Html.ActionLink("Cita Reservada", "Cancelar", new { /* id=item.PrimaryKey */ })</button>
-                    }
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Doctor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SpecialtyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </th>
+                <th>
+                    @Html.DisplayName("Estado")
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Doctor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SpecialtyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        @if (item.PacientName == "Espacio libre")
+                        {
+                            <button> @Html.ActionLink("Reservar Cita", "Confirm", new { id=item.AppointmentId })</button>
+                        }
+                        else
+                        {
+                            <button> @Html.ActionLink("Cita Reservada", "Cancelar", new { /* id=item.PrimaryKey */ })</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
