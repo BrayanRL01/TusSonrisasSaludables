@@ -30,4 +30,8 @@
 		<Folder Include="wwwroot\img\Dash\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Include="wwwroot\images\.DS_Store" />
+	</ItemGroup>
+
 </Project>
