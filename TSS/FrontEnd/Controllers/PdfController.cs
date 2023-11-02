@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
-
 namespace FrontEnd.Controllers
 {
     public class PdfController : Controller

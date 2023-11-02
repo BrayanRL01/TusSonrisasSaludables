@@ -1,5 +1,4 @@
-﻿using Aspose.Foundation.UriResolver.RequestResponses;
-using FrontEnd.Models;
+﻿using FrontEnd.Models;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers
@@ -18,8 +17,8 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                List<VWAppointmentViewModel> list = new List<VWAppointmentViewModel>();
-                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments");
+                List<VWAppointmentViewModel> list = new();
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/Appointments");
                 if (responseMessage != null)
                 {
                     var content = responseMessage.Content.ReadAsStringAsync().Result;
@@ -63,11 +62,26 @@ namespace FrontEnd.Helpers
 
         public AppointmentViewModel GetByID(int id)
         {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/Appointment/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AppointmentInfo/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             AppointmentViewModel Appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
 
             return Appointment;
+        }
+
+        public List<VWAdminAppointmentViewModel> GetUserAppointments(string email)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments/" + email);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                List<VWAdminAppointmentViewModel> Appointment = JsonConvert.DeserializeObject<List<VWAdminAppointmentViewModel>>(content);
+                return Appointment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         #endregion
 
@@ -90,14 +104,14 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Add
-        public AppointmentViewModel Add(AppointmentViewModel Cita)
+        public AppointmentViewModel Add(AppointmentViewModel appointment)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Appointments/Appointment", Cita);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Appointments/Appointment", appointment);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
-                return CitaAPI;
+                AppointmentViewModel appointmentAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+                return appointmentAPI;
             }
             catch (Exception ex)
             {

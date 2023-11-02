@@ -15,7 +15,7 @@ namespace FrontEnd.Controllers
         // GET: AppointmentsController
         public ActionResult Index()
         {
-            List<VWAdminAppointmentViewModel> Appointments = appointmentsHelper.GetAdminAppointmentsView();
+            List<VWAppointmentViewModel> Appointments = appointmentsHelper.GetAppointmentsView();
             return View(Appointments);
         }
 
@@ -29,7 +29,7 @@ namespace FrontEnd.Controllers
         [Authorize]
         public ActionResult Confirm(int id)
         {
-            AppointmentViewModel model = appointmentsHelper.GetByID(id);
+            AppointmentViewModel? model = appointmentsHelper.GetByID(id);
             return View(model);
         }
 
@@ -56,7 +56,7 @@ namespace FrontEnd.Controllers
         [Authorize]
         public ActionResult Cancel(int id)
         {
-            AppointmentViewModel model = appointmentsHelper.GetByID(id);
+            AppointmentViewModel? model = appointmentsHelper.GetByID(id);
             return View(model);
         }
 
@@ -76,28 +76,8 @@ namespace FrontEnd.Controllers
             }
             catch
             {
-                return View();
-            }
-        }
-
-        // GET: AppointmentsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: AppointmentsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                TempData["Error"] = "No se pudo cancelar la cita, intente de nuevo.";
+                return View("Index");
             }
         }
     }

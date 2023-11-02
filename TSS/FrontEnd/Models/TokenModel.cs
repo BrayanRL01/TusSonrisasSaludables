@@ -2,7 +2,7 @@
 {
     public class TokenModel
     {
-        public string Token { get; set; }
-        public string Expiration { get; set; }
+        public string Token { get; set; } = string.Empty;
+        public string Expiration { get; set; } = string.Empty;
     }
 }

@@ -19,6 +19,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <!-- Libraries Stylesheet -->
     <link href="~/lib/UI/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="~/lib/UI/animate/animate.min.css" rel="stylesheet">
@@ -93,6 +96,23 @@
                         <a asp-controller="Account" asp-action="LogOut" class="dropdown-item">Cerrar Sesión</a>
                     </div>
                 </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perfil</a>
+                    <div class="dropdown-menu m-0">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Account" asp-action="EditProfile" class="dropdown-item">Mí Información</a>
+                            <a asp-controller="Account" asp-action="MyAppointments" class="dropdown-item">Mis Citas</a>
+                            <a asp-controller="Account" asp-action="MyRecords" class="dropdown-item">Mis Registros</a>
+                            <a asp-controller="Account" asp-action="LogOut" class="dropdown-item">Cerrar Sesión</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="dropdown-item">Iniciar Sesión</a>
+                            <a asp-controller="Account" asp-action="Register" class="dropdown-item">Registrarse</a>
+                        }
+                    </div>
+                </div>
                 <a href="contact.html" class="nav-item nav-link">Contacto</a>
             </div>
             <button type="button" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
@@ -103,7 +123,7 @@
     @RenderBody()
     <!-- Newsletter End -->
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light py-5 wow fadeInUp" data-wow-delay="0.3s" style="margin-top: 50px;">
+    <div class="container-fluid bg-dark text-light py-5 wow fadeInUp" data-wow-delay="0.3s" style="margin-top: 200px;">
         <div class="container pt-5">
             <div class="row g-5 pt-4">
                 <div class="col-lg-3 col-md-6">
@@ -148,13 +168,7 @@
         <div class="container">
             <div class="row g-0">
                 <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-md-0">&copy; <a class="text-white border-bottom" href="#">Sonrisas Saludables</a>. Todos los derechos reservados.</p>
-                </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p class="mb-0">
-                        Designed by <a class="text-white border-bottom" href="https://htmlcodex.com">HTML Codex</a><br>
-                        Distributed by <a class="text-white border-bottom" href="https://themewagon.com">ThemeWagon</a>
-                    </p>
+                    <p class="mb-md-0">&copy; <a class="text-white border-bottom" href="#">Sonrisas Saludables @DateTime.Now.Year</a>. Todos los derechos reservados.</p>
                 </div>
             </div>
         </div>

@@ -21,28 +21,27 @@ namespace BackEnd.Controllers
 
         #region GetAppointments
         // GET: api/<AppointmentsController>
-        [HttpGet("UserAppointments")]
-        public async Task<JsonResult> SP_GetCitasView()
+        [HttpGet("Appointments")]
+        public async Task<ActionResult<IEnumerable<VwAppointment>>> SP_GetCitasView()
         {
             if (_context.VwAppointments == null)
             {
-                return new JsonResult(NotFound());
+                return NotFound();
             }
 
             try
             {
                 var users = await _context.VwAppointments.FromSqlRaw("EXEC SP_GetAppointmentsView").ToListAsync();
-                return new JsonResult(Ok(users));
+                return Ok(users);
             }
             catch (Exception ex)
             {
-                return new JsonResult(BadRequest(ex.Message));
+                return BadRequest(ex.Message);
             }
         }
 
-
         [HttpGet("AdminAppointments")]
-        public async Task<ActionResult<IEnumerable<Appointment>>> SP_GetCitasAdminView()
+        public async Task<ActionResult<IEnumerable<VwAdminAppointment>>> SP_GetCitasAdminView()
         {
             if (_context.VwAdminAppointments == null)
             {
@@ -59,9 +58,11 @@ namespace BackEnd.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
 
+        #region GetBy
         // GET api/<AppointmentsController>/5
-        [HttpGet("Appointment/{id}")]
+        [HttpGet("AppointmentInfo/{id}")]
         public async Task<ActionResult> SP_GetAppointment(int id)
         {
             try
@@ -77,7 +78,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("UserAppointment/{id}")]
+        [HttpGet("Appointment/{id}")]
         public async Task<ActionResult> SP_GetAppointmentView(int id)
         {
             try
@@ -109,12 +110,12 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("FindAppointment/{data}")]
-        public async Task<ActionResult> SP_FindAppointment(int data)
+        [HttpGet("UserAppointments/{email}")]
+        public async Task<ActionResult> SP_UserAppointments(string email)
         {
             try
             {
-                var users = await _context.VwAppointments.FromSqlInterpolated($"EXEC SP_FindAppointmentView {data}").ToListAsync();
+                var users = await _context.VwAdminAppointments.FromSqlInterpolated($"EXEC SP_GetUserAppointments {email}").ToListAsync();
                 return Ok(users);
             }
             catch (Exception ex)

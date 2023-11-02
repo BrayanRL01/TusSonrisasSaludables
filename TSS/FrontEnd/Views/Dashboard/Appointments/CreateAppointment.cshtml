@@ -5,6 +5,9 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
+<h1>CreateAppointment</h1>
+
+<h4>AppointmentViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -21,28 +24,21 @@
                 @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
                 <span asp-validation-for="SpecialtyId" class="text-danger"></span>
             </div>
-            <br />
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
                 <input asp-for="StartTime" class="form-control" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
-            <br />
             <div class="form-group">
                 <label asp-for="EndTime" class="control-label"></label>
                 <input asp-for="EndTime" class="form-control" />
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
-            <br /> 
             <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-                <button class="btn btn-primary" asp-action="Appointments">Regresar a Citas</button>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-@*
-<div>
-    <a asp-action="Appointments">Regresar a Citas</a>
-</div>
-*@
+
+

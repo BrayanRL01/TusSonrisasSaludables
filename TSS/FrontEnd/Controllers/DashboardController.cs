@@ -16,7 +16,7 @@ namespace FrontEnd.Controllers
         private readonly ILogger<DashboardController> _logger;
 
         #region Helpers
-        private ServiceRepository repository = new();
+        ServiceRepository repository = new();
         private SecurityHelper securityHelper = new();
 
 
@@ -56,8 +56,6 @@ namespace FrontEnd.Controllers
 
         public IActionResult Index()
         {
-            var token = HttpContext.Session.GetString("token");
-            repository = new(token);
             return View();
         }
 
@@ -394,9 +392,9 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Cita creada correctamente.";
                 return RedirectToAction("Appointments");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["Error"] = ex.Message;
+                TempData["Error"] = "No se ha podido crear la cita.";
                 return RedirectToAction("Appointments");
             }
         }
@@ -1052,7 +1050,7 @@ namespace FrontEnd.Controllers
             try
             {
                 record = recordsHelper.Add(record);
-                TempData["Message"] = $"Registro creado correctamente.";
+                TempData["Message"] = "Registro creado correctamente.";
                 return RedirectToAction("Records");
             }
             catch (Exception ex)

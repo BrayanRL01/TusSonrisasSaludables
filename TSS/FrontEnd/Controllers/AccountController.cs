@@ -6,15 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FrontEnd.Controllers
 {
     public class AccountController : Controller
     {
+        private AppointmentsHelper _appointmentsHelper = new();
+        private RecordsHelper _recordsHelper = new();
         private SecurityHelper _securityHelper = new();
         private GenresHelper _genresHelper = new();
         private IdentificationsHelper _identificationsHelper = new();
         private ProvincesHelper _provincesHelper = new();
+        private UsersHelper usersHelper = new();
 
         private readonly IConfiguration _configuration;
 
@@ -115,12 +119,14 @@ namespace FrontEnd.Controllers
             }
         }
 
+        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return LocalRedirect("/");
         }
 
+        #region ReCaptcha
         public async Task<bool> IsReCaptchaPassedAsync(string gRecaptchaResponse)
         {
             if (string.IsNullOrEmpty(gRecaptchaResponse))
@@ -149,11 +155,64 @@ namespace FrontEnd.Controllers
             }
         }
 
-        public class ReCaptchaResponse
+        private class ReCaptchaResponse
         {
             [JsonProperty("success")]
             public bool Success { get; set; }
         }
+        #endregion
+
+        #region UserActions
+        [Authorize]
+        public ActionResult MyAppointments()
+        {
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            List<VWAdminAppointmentViewModel> model = _appointmentsHelper.GetUserAppointments(email);
+            return View(model);
+        }
+
+        [Authorize]
+        public ActionResult MyRecords()
+        {
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            List<VWRecordViewModel> model = _recordsHelper.GetUserRecords(email);
+            return View(model);
+        }
+
+        [Authorize]
+        public ActionResult EditProfile()
+        {
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            UserViewModel user = _securityHelper.GetEmail(email);
+            var genres = _genresHelper.GetAllView();
+            var ids = _identificationsHelper.GetAllView();
+            var provinces = _provincesHelper.GetAllView();
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
+            ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
+            return View(user);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(UserViewModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                user = usersHelper.Edit(user);
+                TempData["Message"] = "Perfil editado correctamente.";
+                return RedirectToAction("Home", "Index", user);
+            }
+            else
+            {
+                TempData["Error"] = "Perfil no editado.";
+                return RedirectToAction("Home", "Index", user);
+            }
+        }
+
+        #endregion
+
     }
 }
 

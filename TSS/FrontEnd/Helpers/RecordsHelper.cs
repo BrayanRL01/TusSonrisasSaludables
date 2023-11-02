@@ -5,7 +5,7 @@ namespace FrontEnd.Helpers
 {
     public class RecordsHelper
     {
-        private ServiceRepository repository;
+        ServiceRepository repository;
 
         public RecordsHelper()
         {
@@ -44,6 +44,21 @@ namespace FrontEnd.Helpers
 
             return record;
         }
+
+        public List<VWRecordViewModel> GetUserRecords(string email)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Records/UserRecords/" + email);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                List<VWRecordViewModel> Appointment = JsonConvert.DeserializeObject<List<VWRecordViewModel>>(content);
+                return Appointment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Update
@@ -65,11 +80,11 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Add
-        public RecordViewModel Add(RecordViewModel Procedure)
+        public RecordViewModel Add(RecordViewModel record)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Records/Record", Procedure);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Records/Record", record);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 RecordViewModel recordAPI = JsonConvert.DeserializeObject<RecordViewModel>(content);
                 return recordAPI;
