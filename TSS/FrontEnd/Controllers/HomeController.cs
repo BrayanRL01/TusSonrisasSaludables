@@ -25,7 +25,7 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Blog()
         {
             return View();
         }

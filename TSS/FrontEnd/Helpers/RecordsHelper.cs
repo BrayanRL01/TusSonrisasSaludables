@@ -5,7 +5,7 @@ namespace FrontEnd.Helpers
 {
     public class RecordsHelper
     {
-        ServiceRepository repository;
+        private ServiceRepository repository;
 
         public RecordsHelper()
         {

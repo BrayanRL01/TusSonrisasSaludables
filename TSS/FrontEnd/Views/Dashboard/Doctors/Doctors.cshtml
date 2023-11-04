@@ -85,9 +85,9 @@ else if (TempData.ContainsKey("Error"))
                                 <partial name="Photo/_DoctorPhotoView" model="item" />
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "EditDoctor", new { id=item.DoctorId } , new {@class="btn btn-warning" } )|
-                                @Html.ActionLink("Details", "DoctorDetails", new { id=item.DoctorId },new {@class="btn btn-info" } )
-                                @Html.ActionLink("Delete", "DeleteDoctor", new { id=item.DoctorId },new {@class="btn btn-danger" } )
+                                @Html.ActionLink("Editar", "EditDoctor", new { id=item.DoctorId } , new {@class="btn btn-warning" } )|
+                                @Html.ActionLink("Detalles", "DoctorDetails", new { id=item.DoctorId },new {@class="btn btn-info" } )
+                                @Html.ActionLink("Eliminar", "DeleteDoctor", new { id=item.DoctorId },new {@class="btn btn-danger" } )
                             </td>
                         </tr>
                     }

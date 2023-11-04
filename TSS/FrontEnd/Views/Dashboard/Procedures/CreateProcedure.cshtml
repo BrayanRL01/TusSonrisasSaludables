@@ -13,8 +13,8 @@
         <form asp-action="CreateProcedure">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-              @*  <label asp-for="ProcedureName" class="control-label"></label>*@
-                <input asp-for="ProcedureName" class="form-control" placeholder="Nombre del Procedimiento"/>
+                @*  <label asp-for="ProcedureName" class="control-label"></label>*@
+                <input asp-for="ProcedureName" class="form-control" placeholder="Nombre del Procedimiento" />
                 <span asp-validation-for="ProcedureName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,8 +24,4 @@
         </form>
     </div>
 </div>
-
-@*<div>
-    <a asp-action="Procedures">Regresar a Procedimientos</a>
-</div>*@
 

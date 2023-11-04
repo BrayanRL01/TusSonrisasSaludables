@@ -31,7 +31,7 @@
                             </div>
                         }
                         <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Crear Cuenta!</h1>
+                            <h1 class="h4 text-gray-900 mb-4">¡Crear Cuenta!</h1>
                         </div>
                         <form asp-action="Register" id="Registration">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -108,7 +108,7 @@
                             <a class="small" asp-controller="Account" asp-action="Login">¿Ya tiene una cuenta? ¡Ingrese aqui!</a>
                         </div>
                         <div>
-                            <a class="small" asp-action="Index">Regresar al Menú Principal</a>
+                            <a class="small" asp-controller="Home" asp-action="Index">Regresar al Menú Principal</a>
                         </div>
                     </div>
                 </div>
@@ -116,11 +116,6 @@
         </div>
     </div>
 </center>
-
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 <script type="text/javascript">
     function recaptcha_callback() {

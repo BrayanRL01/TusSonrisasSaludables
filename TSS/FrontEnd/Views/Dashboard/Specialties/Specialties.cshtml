@@ -32,9 +32,6 @@ else if (TempData.ContainsKey("Error"))
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SpecialtyId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.SpecialtyName)
             </th>
             <th></th>
@@ -45,14 +42,11 @@ else if (TempData.ContainsKey("Error"))
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SpecialtyId)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.SpecialtyName)
                 </td>
                 <td>
-                    @Html.ActionLink("Editar", "EditSpecialty", new { id=item.SpecialtyId }, new {@class="btn btn-warning" } ) 
-                    @Html.ActionLink("Detalles", "SpecialtyDetails", new { id=item.SpecialtyId },new {@class="btn btn-info" } ) 
+                    @Html.ActionLink("Editar", "EditSpecialty", new { id=item.SpecialtyId }, new {@class="btn btn-warning" } )
+                    @Html.ActionLink("Detalles", "SpecialtyDetails", new { id=item.SpecialtyId },new {@class="btn btn-info" } )
                     @Html.ActionLink("Eliminar", "DeleteSpecialty", new { id=item.SpecialtyId },new {@class="btn btn-danger" } )
                 </td>
             </tr>

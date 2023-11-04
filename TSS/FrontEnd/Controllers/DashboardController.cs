@@ -288,11 +288,14 @@ namespace FrontEnd.Controllers
         {
             try
             {
-                category = categoriesHelper.EditSubCategory(category);
-                TempData["Message"] = "Subcategoría creado correctamente.";
+                if (ModelState.IsValid)
+                {
+                    category = categoriesHelper.EditSubCategory(category);
+                    TempData["Message"] = "Subcategoría creado correctamente.";
+                }
                 return RedirectToAction("SubCategories");
             }
-            catch (JsonReaderException ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = "No se pudo editar la subcategoría. " + ex.Message;
                 return RedirectToAction("SubCategories");
@@ -490,7 +493,7 @@ namespace FrontEnd.Controllers
             try
             {
                 specialty = specialtiesHelper.Add(specialty);
-                TempData["Message"] = "Especialidad creada.";
+                TempData["Message"] = "Especialidad creada correctamente.";
                 return RedirectToAction("Specialties");
             }
             catch (Exception ex)
@@ -1109,15 +1112,16 @@ namespace FrontEnd.Controllers
             {
                 record = recordsHelper.Delete(record.RecordId);
                 TempData["Message"] = "Registro eliminado correctamente.";
-                return RedirectToAction("Procedures");
+                return RedirectToAction("Records");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = $"No se pudo eliminar el registro: {ex.Message}";
-                return RedirectToAction("Procedures");
+                return RedirectToAction("Records");
             }
         }
         #endregion
+
         #endregion
 
         public IActionResult Privacy()
@@ -1128,7 +1132,7 @@ namespace FrontEnd.Controllers
         public ActionResult EditProfile()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            UserViewModel user = securityHelper.GetEmail(email);
+            UserViewModel user = securityHelper.GetEmail(email!);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();

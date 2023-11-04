@@ -167,7 +167,7 @@ namespace FrontEnd.Controllers
         public ActionResult MyAppointments()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            List<VWAdminAppointmentViewModel> model = _appointmentsHelper.GetUserAppointments(email);
+            List<VWAdminAppointmentViewModel> model = _appointmentsHelper.GetUserAppointments(email!);
             return View(model);
         }
 
@@ -175,7 +175,7 @@ namespace FrontEnd.Controllers
         public ActionResult MyRecords()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            List<VWRecordViewModel> model = _recordsHelper.GetUserRecords(email);
+            List<VWRecordViewModel> model = _recordsHelper.GetUserRecords(email!);
             return View(model);
         }
 
@@ -183,7 +183,7 @@ namespace FrontEnd.Controllers
         public ActionResult EditProfile()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            UserViewModel user = _securityHelper.GetEmail(email);
+            UserViewModel user = _securityHelper.GetEmail(email!);
             var genres = _genresHelper.GetAllView();
             var ids = _identificationsHelper.GetAllView();
             var provinces = _provincesHelper.GetAllView();
@@ -202,12 +202,12 @@ namespace FrontEnd.Controllers
             {
                 user = usersHelper.Edit(user);
                 TempData["Message"] = "Perfil editado correctamente.";
-                return RedirectToAction("Home", "Index", user);
+                return RedirectToAction("Index", "Home");
             }
             else
             {
                 TempData["Error"] = "Perfil no editado.";
-                return RedirectToAction("Home", "Index", user);
+                return RedirectToAction("Index", "Home");
             }
         }
 
