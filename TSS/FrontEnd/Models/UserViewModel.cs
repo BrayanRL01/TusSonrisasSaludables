@@ -35,7 +35,7 @@ namespace FrontEnd.Models
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; } = DateTime.Now;
 
-        [Required(ErrorMessage = "El correo electrónico es requerido."), Display(Name = "Correo Electrónico"), StringLength(20)]
+        [Required(ErrorMessage = "El correo electrónico es requerido."), Display(Name = "Correo Electrónico"), StringLength(50)]
         [EmailAddress(ErrorMessage = "El correo electrónico debe ser válido.")]
         public string Email { get; set; } = null!;
 

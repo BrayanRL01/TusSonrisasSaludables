@@ -1,4 +1,4 @@
-using BackEnd.Middleware;
+global using BackEnd.Services.EmailServices;
 using Entities.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 #region ConnectionString
 builder.Services.AddDbContext<TusSonrisasSaludablesContext>(options => options.UseSqlServer

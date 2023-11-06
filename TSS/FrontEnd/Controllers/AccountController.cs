@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using AspNetCore.ReCaptcha;
 
 namespace FrontEnd.Controllers
 {
@@ -21,10 +22,12 @@ namespace FrontEnd.Controllers
         private UsersHelper usersHelper = new();
 
         private readonly IConfiguration _configuration;
+        //private readonly IReCaptchaService _reCaptchaService;
 
         public AccountController(IConfiguration configuration)
         {
             _configuration = configuration;
+            //_reCaptchaService = reCaptchaService;
         }
 
 
@@ -42,7 +45,7 @@ namespace FrontEnd.Controllers
         {
             try
             {
-                TokenModel token = _securityHelper.Login(model);
+                TokenModel? token = _securityHelper.Login(model);
                 HttpContext.Session.SetString("token", token.Token);
 
                 var loginModel = _securityHelper.GetUser(model);
@@ -80,7 +83,6 @@ namespace FrontEnd.Controllers
                 TempData["Error"] = "Datos inválidos, intente de nuevo.";
                 return RedirectToAction("Login");
             }
-
         }
 
         public ActionResult Register()
@@ -101,10 +103,12 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(UserViewModel user)
+        public async Task<ActionResult> Register(UserViewModel? user)
         {
+            //var gRecaptchaResponse = await _reCaptchaService.VerifyAsync(Request.Form["g-recaptcha-response"]);
             var gRecaptchaResponse = Request.Form["g-recaptcha-response"];
-            if (await IsReCaptchaPassedAsync(gRecaptchaResponse) && ModelState.IsValid)
+            bool response = await IsReCaptchaPassedAsync(gRecaptchaResponse);
+            if (response && ModelState.IsValid)
             {
                 user = _securityHelper.Register(user);
                 TempData["Message"] = "Usuario creado correctamente.";
@@ -112,8 +116,6 @@ namespace FrontEnd.Controllers
             }
             else
             {
-                //catch (Exception ex)
-                //{              
                 TempData["Error"] = "No se ha creado el usuario.";
                 return RedirectToAction("Register");
             }
@@ -134,24 +136,22 @@ namespace FrontEnd.Controllers
                 return false;
             }
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var secretKey = _configuration["RecaptchaSettings:SecretKey"];
+            var googleVerificationUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={gRecaptchaResponse}";
+
+            var httpResponseMessage = await httpClient.GetAsync(googleVerificationUrl);
+
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                var secretKey = _configuration["RecaptchaSettings:SecretKey"];
-                var googleVerificationUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={gRecaptchaResponse}";
+                var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
+                var reCaptchaResponse = JsonConvert.DeserializeObject<ReCaptchaResponse>(jsonResponse);
 
-                var httpResponseMessage = await httpClient.GetAsync(googleVerificationUrl);
-
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
-                    var reCaptchaResponse = JsonConvert.DeserializeObject<ReCaptchaResponse>(jsonResponse);
-
-                    return reCaptchaResponse.Success;
-                }
-                else
-                {
-                    return false;
-                }
+                return reCaptchaResponse.Success;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -196,7 +196,7 @@ namespace FrontEnd.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile(UserViewModel user)
+        public ActionResult EditProfile([FromBody] UserViewModel user)
         {
             if (ModelState.IsValid)
             {

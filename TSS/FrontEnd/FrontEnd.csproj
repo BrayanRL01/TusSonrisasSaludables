@@ -20,6 +20,7 @@
 		<PackageReference Include="IronPdf" Version="2023.10.3" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+		<PackageReference Include="RecaptchaNet" Version="3.1.0" />
 		<PackageReference Include="WkHtmlToPdf" Version="1.0.2" />
 		<PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.2" />
 	</ItemGroup>

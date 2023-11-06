@@ -1,3 +1,5 @@
+using AspNetCore.ReCaptcha;
+using Aspose.Pdf.LogicalStructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,11 @@ builder.Services.AddSession();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//builder.Services.AddReCaptcha(options =>
+//{
+//    options.SiteKey = configuration["RecaptchaSettings:SiteKey"];
+//    options.SecretKey = configuration["RecaptchaSettings:SecretKey"];
+//});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(x => x.LoginPath = "/Account/Login");

@@ -13,13 +13,13 @@ namespace FrontEnd.Helpers
             _repository = new ServiceRepository();
         }
 
-        public TokenModel Login(LoginModel usuario)
+        public TokenModel? Login(LoginModel usuario)
         {
             try
             {
                 HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Login", usuario);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                TokenModel TokenModel = JsonConvert.DeserializeObject<TokenModel>(content);
+                TokenModel? TokenModel = JsonConvert.DeserializeObject<TokenModel?>(content);
 
                 return TokenModel;
             }
@@ -29,13 +29,13 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public UserViewModel Register(UserViewModel Usuario)
+        public UserViewModel? Register(UserViewModel? Usuario)
         {
             try
             {
                 HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Register", Usuario);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                UserViewModel UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
+                UserViewModel? UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel?>(content);
                 return UsuarioAPI;
             }
             catch (Exception ex)

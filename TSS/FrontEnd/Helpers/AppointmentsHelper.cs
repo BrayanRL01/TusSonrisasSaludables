@@ -13,16 +13,16 @@ namespace FrontEnd.Helpers
         }
 
         #region GetAll
-        public List<VWAppointmentViewModel> GetAppointmentsView()
+        public List<VWAppointmentViewModel>? GetAppointmentsView()
         {
             try
             {
-                List<VWAppointmentViewModel> list = new();
+                List<VWAppointmentViewModel>? list = new();
                 HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/Appointments");
                 if (responseMessage != null)
                 {
                     var content = responseMessage.Content.ReadAsStringAsync().Result;
-                    list = JsonConvert.DeserializeObject<List<VWAppointmentViewModel>>(content);
+                    list = JsonConvert.DeserializeObject<List<VWAppointmentViewModel>?>(content);
                 }
                 return list;
             }
