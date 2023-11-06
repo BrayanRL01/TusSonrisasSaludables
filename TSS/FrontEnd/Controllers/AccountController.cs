@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Http;
 using AspNetCore.ReCaptcha;
 
 namespace FrontEnd.Controllers
@@ -22,12 +23,10 @@ namespace FrontEnd.Controllers
         private UsersHelper usersHelper = new();
 
         private readonly IConfiguration _configuration;
-        //private readonly IReCaptchaService _reCaptchaService;
 
         public AccountController(IConfiguration configuration)
         {
             _configuration = configuration;
-            //_reCaptchaService = reCaptchaService;
         }
 
 
@@ -105,9 +104,9 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(UserViewModel? user)
         {
-            //var gRecaptchaResponse = await _reCaptchaService.VerifyAsync(Request.Form["g-recaptcha-response"]);
             var gRecaptchaResponse = Request.Form["g-recaptcha-response"];
-            bool response = await IsReCaptchaPassedAsync(gRecaptchaResponse);
+            var secretKey = _configuration["RecaptchaSettings:SecretKey"];
+            bool response = await IsReCaptchaPassedAsync(gRecaptchaResponse, secretKey);
             if (response && ModelState.IsValid)
             {
                 user = _securityHelper.Register(user);
@@ -129,7 +128,7 @@ namespace FrontEnd.Controllers
         }
 
         #region ReCaptcha
-        public async Task<bool> IsReCaptchaPassedAsync(string gRecaptchaResponse)
+        public static async Task<bool> IsReCaptchaPassedAsync(string gRecaptchaResponse, string secretKey)
         {
             if (string.IsNullOrEmpty(gRecaptchaResponse))
             {
@@ -137,7 +136,6 @@ namespace FrontEnd.Controllers
             }
 
             using var httpClient = new HttpClient();
-            var secretKey = _configuration["RecaptchaSettings:SecretKey"];
             var googleVerificationUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={gRecaptchaResponse}";
 
             var httpResponseMessage = await httpClient.GetAsync(googleVerificationUrl);
@@ -146,6 +144,11 @@ namespace FrontEnd.Controllers
             {
                 var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
                 var reCaptchaResponse = JsonConvert.DeserializeObject<ReCaptchaResponse>(jsonResponse);
+
+                if (reCaptchaResponse == null)
+                {
+                    return false;
+                }
 
                 return reCaptchaResponse.Success;
             }
@@ -158,7 +161,7 @@ namespace FrontEnd.Controllers
         private class ReCaptchaResponse
         {
             [JsonProperty("success")]
-            public bool Success { get; set; }
+            public bool Success { get; set; } = false;
         }
         #endregion
 
@@ -215,56 +218,3 @@ namespace FrontEnd.Controllers
 
     }
 }
-
-
-
-
-
-
-//try
-//{
-//    if (model != null)
-//    {
-
-//        TokenModel tokenModel = _seguridadHelper.Login(model);
-//        HttpContext.Session.SetString("token", tokenModel.Token);
-//        var EsValido = false;
-
-//        if (tokenModel != null)
-//        {
-//            EsValido = true;
-
-//        }
-//        if (!EsValido)
-//        {
-//            ViewBag.Message = "Invalid Credentials";
-//            return View(model);
-//        }
-//        var loginModel = _seguridadHelper.GetUser(model);
-//        var claims = new List<Claim>() {
-//                                 new Claim(ClaimTypes.NameIdentifier, loginModel.Email),
-//                                 new Claim(ClaimTypes.Name, loginModel.Email)
-//                    };
-
-//        foreach (var item in loginModel.Roles)
-//        {
-//            claims.Add(
-//                  new Claim(ClaimTypes.Role, item.ToString())
-//                );
-//        }
-
-//        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-//        var principal = new ClaimsPrincipal(identity);
-//        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties()
-
-//        {
-//            IsPersistent = model.RememberLogin
-//        });
-//        return LocalRedirect(model.ReturnUrl);
-//    }
-//    return View(model);
-//}
-//catch (Exception)
-//{
-//    return View("AccessDenied");
-//}

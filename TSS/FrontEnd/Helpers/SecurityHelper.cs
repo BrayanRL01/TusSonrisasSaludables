@@ -33,7 +33,7 @@ namespace FrontEnd.Helpers
         {
             try
             {
-                HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Register", Usuario);
+                HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Register", Usuario!);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
                 UserViewModel? UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel?>(content);
                 return UsuarioAPI;

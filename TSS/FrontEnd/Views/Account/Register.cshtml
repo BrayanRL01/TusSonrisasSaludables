@@ -94,7 +94,7 @@
                             <input asp-for="PasswordHash" class="form-control form-control-user" />
                             <span asp-validation-for="PasswordHash" class="text-danger"></span>
                         </div>
-                        <div class="g-recaptcha" data-sitekey="6Le3arIoAAAAAJoncEtbEWG7cKMb9Jrp0qZw-iAj" data-callback="recaptcha_callback"></div>
+                        <div class="g-recaptcha" data-sitekey="6LeEVPsoAAAAAIV04PkyxMomhwV6AFnFQXdfoyp5"></div>
                         <br />
                         <div class="form-group text-center">
                             <input type="submit" id="login" value="Crear Usuario" class="btn btn-primary text-center" />
@@ -110,10 +110,4 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    function recaptcha_callback() {
-        $('#login').show();
-    }
-</script>
 
