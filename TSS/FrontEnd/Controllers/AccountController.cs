@@ -136,9 +136,14 @@ namespace FrontEnd.Controllers
             }
 
             using var httpClient = new HttpClient();
-            var googleVerificationUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={gRecaptchaResponse}";
+            var googleVerificationUrl = $"https://www.google.com/recaptcha/api/siteverify";
+            var postData = new List<KeyValuePair<string, string>>
+            {
+              new KeyValuePair<string, string>("secret", secretKey),
+              new KeyValuePair<string, string>("response", gRecaptchaResponse)
+            };
 
-            var httpResponseMessage = await httpClient.GetAsync(googleVerificationUrl);
+            var httpResponseMessage = await httpClient.PostAsync(googleVerificationUrl, new FormUrlEncodedContent(postData));
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
@@ -214,6 +219,29 @@ namespace FrontEnd.Controllers
             }
         }
 
+        public IActionResult ResetPassword()
+        {
+            EmailModel model = new();
+            return View(model);
+        }
+
+        //[AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ResetPassword(EmailModel user)
+        {
+            if (user.To != null)
+            {
+                string message = _securityHelper.ForgotPassword(user);
+                TempData["Message"] = message;
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                TempData["Error"] = "Correo electrónico inválido.";
+                return RedirectToAction("ResetPassword");
+            }
+        }
         #endregion
 
     }

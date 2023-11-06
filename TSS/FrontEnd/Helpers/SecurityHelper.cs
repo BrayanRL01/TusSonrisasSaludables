@@ -1,12 +1,13 @@
 ﻿using FrontEnd.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers
 {
     public class SecurityHelper
     {
-        private ServiceRepository _repository;
+        ServiceRepository _repository;
 
         public SecurityHelper()
         {
@@ -66,6 +67,21 @@ namespace FrontEnd.Helpers
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             UserViewModel user = JsonConvert.DeserializeObject<UserViewModel>(content);
             return user;
+        }
+
+        public string ForgotPassword(EmailModel model)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = _repository.PutResponse("api/Email/ResetPassword/", model);
+                string content = responseMessage.Content.ReadAsStringAsync().Result;
+                string message = content;
+                return message;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

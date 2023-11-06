@@ -1,14 +1,16 @@
-﻿namespace FrontEnd.Helpers
+﻿using NuGet.Common;
+
+namespace FrontEnd.Helpers
 {
     public class ServiceRepository
     {
         public HttpClient Client { get; set; }
 
         public ServiceRepository()
-        {
+        {     
             Client = new()
             {
-                BaseAddress = new Uri("https://localhost:7091")
+                BaseAddress = new Uri("https://localhost:7091/")
             };
             Client.DefaultRequestHeaders.Add("ApiKey", "56CGE54GS94FS65V46F5BS6B1");
         }
@@ -42,6 +44,11 @@
         public HttpResponseMessage DeleteResponse(string url)
         {
             return Client.DeleteAsync(url).Result;
+        }
+
+        public HttpResponseMessage PatchResponse(string url, HttpContent content)
+        {
+            return Client.PatchAsync(url, content).Result;
         }
     }
 }

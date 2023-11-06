@@ -14,7 +14,7 @@
         @Html.HiddenFor(Model => Model.UserId)
         @Html.HiddenFor(Model => Model.RoleId)
         <div class="col-md-6">
-            @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo de identificación", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo de identificación", new { @class = "form-control readonly"})
             <span asp-validation-for="TypeId" class="text-danger"></span>
         </div>
         <div class="col-md-6">
@@ -46,7 +46,7 @@
             <span asp-validation-for="BirthDate" class="text-danger"></span>
         </div>
         <div class="col-6">
-            <input asp-for="Email" class="form-control" placeholder="Correo Electrónico">
+            <input asp-for="Email" class="form-control" placeholder="Correo Electrónico" readonly>
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="col-md-6">

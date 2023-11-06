@@ -49,29 +49,29 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpPut("ResetPassword/{email}")]
-        public async Task<IActionResult> ResetPassword(string email)
+        [HttpPut("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] EmailModel model)
         {
             try
             {
-                if (email != null)
+                if (model.To != null)
                 {
                     string password = RandomPassword();
                     var message = new MimeMessage();
                     message.From.Add(MailboxAddress.Parse(_configuration["EmailInfo:Email"]));
-                    message.To.Add(MailboxAddress.Parse(email));
-                    message.Subject = "Cambio de Contraseña";
+                    message.To.Add(MailboxAddress.Parse(model.To));
+                    message.Subject = "Sonrisas Saludables - Cambio de Contraseña";
                     message.Body = new TextPart("plain")
                     {
                         Text = "Tenga un cordial saludo, este correo es para efectuar el cambio de contraseña que solicitó, su nueva contraseña para el " +
-                        "correo " + email + " es: " + password + "."
+                        "correo " + model.To + " es: " + password + "."
                     };
 
                     using (var client = new SmtpClient())
                     {
                         await client.ConnectAsync(_configuration["EmailInfo:Host"], int.Parse(_configuration["EmailInfo:Port"]), bool.Parse(_configuration["EmailInfo:EnableSsl"]));
                         await client.AuthenticateAsync(_configuration["EmailInfo:Email"], _configuration["EmailInfo:Password"]);
-                        await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ResetPassword {email}, {password}");
+                        await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ResetPassword {model.To}, {password}");
                         await _context.SaveChangesAsync();
                         await client.SendAsync(message);
                         await client.DisconnectAsync(true);
