@@ -5,42 +5,102 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-       <button id="generarPDF">Generar PDF</button>
+        <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Cita
+        </button>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Formulario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formulario">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edad">Edad:</label>
+                            <input type="number" class="form-control" id="edad" name="edad" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="correo">Correo:</label>
+                            <input type="email" class="form-control" id="correo" name="correo" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" form="formulario" class="btn btn-primary">Enviar</button>
+                    <button id="generarInforme">Generar Informe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <script>
-    document.getElementById("generarPDF").addEventListener("click", function() {
-        const divContent = document.getElementById("contenidoParaPDF").innerHTML;
-        // Enviar el contenido del div al controlador para generar el PDF
-        fetch('/Pdf/GenerarPDF', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ contenido: divContent })
-        })
-        .then(response => response.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Dashboard.pdf';
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
+    document.addEventListener("DOMContentLoaded", function () {
+        // Maneja el clic en el botón para generar el informe
+        document.getElementById("generarInforme").addEventListener("click", function () {
+            // Obtén los datos del formulario
+            var nombre = document.getElementById("nombre").value;
+            var edad = document.getElementById("edad").value;
+            var fecha = document.getElementById("fecha").value;
+            var correo = document.getElementById("correo").value;
+
+            // Crea un objeto con los datos del formulario
+            var formData = {
+                Nombre: nombre,
+                Edad: edad,
+                Fecha: fecha,
+                Correo: correo
+            };
+
+            // Realiza una solicitud AJAX para generar el informe PDF
+            fetch('/Pdf/GenerarPDF', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Informe.pdf';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            });
         });
     });
 </script>
 
 
-  <div id="contenidoParaPDF">
+
+
     <!-- Content Row -->
     <div class="row">
 
@@ -373,7 +433,7 @@
         </div>
     </div>
 
-  </div>
+  
 
 </div>
 <!-- /.container-fluid -->
