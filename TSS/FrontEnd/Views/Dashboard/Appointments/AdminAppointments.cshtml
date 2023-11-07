@@ -35,6 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -55,7 +56,7 @@
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "EditAppointment", new { id=item.AppointmentId }) |
-                                @Html.ActionLink("Details", "AppointmentDetails", new { id=item.AppointmentId }) |
+                                @Html.ActionLink("Reporte", "AppointmentDetails", new {id=item.AppointmentId}) |
                                 @Html.ActionLink("Delete", "DeleteAppointment", new { id=item.AppointmentId })
                             </td>
                         </tr>
