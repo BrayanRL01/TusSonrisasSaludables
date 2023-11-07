@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "apis1": {
-      "apiEndpoint": "https://tsswebapi.azure-api.net/tssapi",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/TSSWebApi/apis/TSSApi",
-      "type": "apis.azure"
-    }
-  }
-}
