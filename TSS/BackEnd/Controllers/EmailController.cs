@@ -77,7 +77,7 @@ namespace BackEnd.Controllers
                         await client.DisconnectAsync(true);
                     }
                 }
-                return Ok("Contraseña editada correctamente.");
+                return Ok("Se ha enviado correctamente un correo con su nueva contraseña.");
             }
             catch (Exception ex)
             {
