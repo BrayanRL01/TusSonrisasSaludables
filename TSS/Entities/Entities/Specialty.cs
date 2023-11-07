@@ -9,6 +9,7 @@ namespace Entities.Entities
         {
             Appointments = new HashSet<Appointment>();
             Doctors = new HashSet<Doctor>();
+            Recomendations = new HashSet<Recomendation>();
         }
 
         public int SpecialtyId { get; set; }
@@ -16,5 +17,6 @@ namespace Entities.Entities
 
         public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<Doctor> Doctors { get; set; }
+        public virtual ICollection<Recomendation> Recomendations { get; set; }
     }
 }
