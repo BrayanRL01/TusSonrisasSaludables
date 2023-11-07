@@ -1,4 +1,3 @@
-global using BackEnd.Services.EmailServices;
 using Entities.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +13,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IEmailService, EmailService>();
 
 #region ConnectionString
 builder.Services.AddDbContext<TusSonrisasSaludablesContext>(options => options.UseSqlServer
@@ -47,7 +45,7 @@ builder.Services.AddAuthentication(options =>
 #region Authorize JWT
 builder.Services.AddSwaggerGen(option =>
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "TusSonrisasSaludables API", Version = "v1" });
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "TSSApi", Version = "v1" });
     option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -76,22 +74,20 @@ builder.Services.AddSwaggerGen(option =>
 
 var app = builder.Build();
 
-app.UseSwagger(options =>
-{
-    options.SerializeAsV2 = true;
-});
-
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;
-});
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "TSSApi");
+        options.RoutePrefix = "api/docs";
+    });
 }
 
 app.UseHttpsRedirection();
