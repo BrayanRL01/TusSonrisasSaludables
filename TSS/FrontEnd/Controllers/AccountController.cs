@@ -7,8 +7,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-using System.Net.Http;
-using AspNetCore.ReCaptcha;
 
 namespace FrontEnd.Controllers
 {

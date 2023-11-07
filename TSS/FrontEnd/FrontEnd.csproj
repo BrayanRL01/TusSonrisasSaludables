@@ -14,14 +14,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.ReCaptcha" Version="1.7.0" />
-		<PackageReference Include="Aspose.PDF" Version="23.10.0" />
 		<PackageReference Include="DinkToPdf" Version="1.0.8" />
 		<PackageReference Include="IronPdf" Version="2023.10.3" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
-		<PackageReference Include="WkHtmlToPdf" Version="1.0.2" />
-		<PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

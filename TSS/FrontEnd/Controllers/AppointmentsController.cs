@@ -1,8 +1,6 @@
-﻿using Aspose.Pdf.Operators;
-using FrontEnd.Helpers;
+﻿using FrontEnd.Helpers;
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -15,7 +13,7 @@ namespace FrontEnd.Controllers
         // GET: AppointmentsController
         public ActionResult Index()
         {
-            List<VWAppointmentViewModel> Appointments = appointmentsHelper.GetAppointmentsView();
+            List<VWAppointmentViewModel>? Appointments = appointmentsHelper.GetAppointmentsView();
             return View(Appointments);
         }
 
