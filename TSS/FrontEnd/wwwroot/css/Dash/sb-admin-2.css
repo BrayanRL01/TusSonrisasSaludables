@@ -12233,3 +12233,11 @@ footer.sticky-footer {
 body.sidebar-toggled footer.sticky-footer {
     width: 100%;
 }
+
+/*.form {
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 30px;
+    margin: .5rem
+}*/

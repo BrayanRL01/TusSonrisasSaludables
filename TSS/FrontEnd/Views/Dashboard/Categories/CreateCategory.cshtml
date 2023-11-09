@@ -10,14 +10,15 @@
 <h4>CategoryViewModel</h4>*@
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col">
         <form asp-action="CreateCategory">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="CategoryName" class="control-label"></label>*@
                 <center><input asp-for="CategoryName" class="form-control" placeholder="Nombre" /></center>
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
+            <br />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
                 <button class="btn btn-primary" asp-action="Categories">Regresar a Categorias</button>

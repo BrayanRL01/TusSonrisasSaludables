@@ -7,31 +7,31 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col">
         <form asp-action="CreateAppointment">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="DoctorId" class="control-label"></label>*@
-                <center><h6>Doctor</h6></center>
+                @*<center><h6>Doctor</h6></center>*@
                 @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Seleccione un doctor", new { @class = "form-control" })
                 <span asp-validation-for="DoctorId" class="text-danger"></span>
             </div>
             <br />
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="SpecialtyId" class="control-label"></label>*@
-                <center><h6>Especialidad</h6></center>
+                @*<center><h6>Especialidad</h6></center>*@
                 @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
                 <span asp-validation-for="SpecialtyId" class="text-danger"></span>
             </div>
             <br />
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="StartTime" class="control-label"></label>*@
                 <center><h6>Inicio</h6></center>
                 <input asp-for="StartTime" class="form-control" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <br />
-            <div class="form-group">
+            <div class="col">
                @* <label asp-for="EndTime" class="control-label"></label>*@
                 <center><h6>Fin</h6></center>
                 <input asp-for="EndTime" class="form-control" />

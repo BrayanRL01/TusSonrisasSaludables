@@ -9,14 +9,15 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col">
         <form asp-action="CreateProcedure">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="col">
               @*  <label asp-for="ProcedureName" class="control-label"></label>*@
                 <input asp-for="ProcedureName" class="form-control" placeholder="Nombre del Procedimiento"/>
                 <span asp-validation-for="ProcedureName" class="text-danger"></span>
             </div>
+            <br />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
                 <button class="btn btn-primary" asp-action="Procedures">Regresar a Procedimientos</button>
