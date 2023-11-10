@@ -4,9 +4,20 @@
     ViewData["Title"] = "CreateAppointment";
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
+@*<style>
+    .padding{
+        padding-left: 160px;
+        padding-right: 160px;
+        padding-bottom:5px;
+    }
+</style>*@
 
 <hr />
-<div class="row">
+<center><h1>Crear Cita</h1></center>
+
+@*<div class="row padding">*@
+
+    <div class="row">
     <div class="col">
         <form asp-action="CreateAppointment">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
