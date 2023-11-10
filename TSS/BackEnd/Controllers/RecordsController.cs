@@ -38,6 +38,25 @@ namespace BackEnd.Controllers
             }
         }
 
+        [HttpGet("UserRecords/{email}")]
+        public async Task<ActionResult> SP_GetUserRecords(string email)
+        {
+            if (_context.VwRecords == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var records = await _context.VwRecords.FromSqlInterpolated($"EXEC SP_GetPatientRecord {email}").ToListAsync();
+                return Ok(records);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         #region GetID
         [HttpGet("RecordInfo/{id}")]
         public async Task<ActionResult> SP_GetRecordView(int id)

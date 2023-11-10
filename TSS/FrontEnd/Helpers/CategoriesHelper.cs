@@ -26,7 +26,7 @@ namespace FrontEnd.Helpers
                 }
                 return list;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -45,7 +45,7 @@ namespace FrontEnd.Helpers
                 }
                 return list;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

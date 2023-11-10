@@ -1,0 +1,70 @@
+﻿@model FrontEnd.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "EditProfile";
+    Layout = "_DashLayout";
+}
+
+<center><h1>Editar Perfil</h1></center>
+
+<hr />
+<div style="padding: 30px;">
+    <form asp-action="EditProfile" class="row g-3">
+        @Html.HiddenFor(Model => Model.UserId)
+        @Html.HiddenFor(Model => Model.RoleId)
+        <div class="col-md-6">
+            @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo de identificación", new { @class = "form-control" })
+            <span asp-validation-for="TypeId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
+            <span asp-validation-for="GenreId" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            @Html.DropDownListFor(model => model.ProvinceId, (SelectList)ViewBag.Provinces, "Seleccione una provincia", new { @class = "form-control" })
+            <span asp-validation-for="ProvinceId" class="text-danger"></span>
+        </div>
+        <div class="col-6">
+            <input asp-for="IdNumber" class="form-control" placeholder="Identificación">
+            <span asp-validation-for="IdNumber" class="text-danger"></span>
+        </div>
+        <div class="col-6">
+            <input asp-for="UserName" class="form-control" placeholder="Nombre">
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="col-6">
+            <input asp-for="FirstName" class="form-control" placeholder="Primer Apellido">
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="col-6">
+            <input asp-for="LastName" class="form-control" placeholder="Segundo Apellido">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="col-md-12">
+            <input asp-for="BirthDate" class="form-control" placeholder="Fecha de Nacimiento">
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+        <div class="col-6">
+            <input asp-for="Email" class="form-control" placeholder="Correo Electrónico">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Número Telefónico">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="col-md-12">
+            <textarea asp-for="UserAddress" class="form-control" placeholder="Dirección" rows="3"></textarea>
+            <span asp-validation-for="UserAddress" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <input asp-for="PasswordHash" class="form-control" placeholder="Contraseña">
+            <span asp-validation-for="PasswordHash" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+            <a style="padding-left: 10px;" asp-action="Users" class="btn btn-primary">Regresar a Inicio</a>
+        </div>
+    </form>
+</div>
+
+

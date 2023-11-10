@@ -17,8 +17,8 @@
     <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
-            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-            <div class="col-lg-7">
+            @* <div class="col-lg-5 d-none d-lg-block bg-register-image"></div> *@
+            <div class="col-lg-12">
                 <div class="p-5">
                     @if (TempData.ContainsKey("Error"))
                     {
@@ -30,7 +30,7 @@
                         </div>
                     }
                     <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Crear Cuenta!</h1>
+                        <h1 class="h4 text-gray-900 mb-4">¡Crear Cuenta!</h1>
                     </div>
                     <form asp-action="Register" id="Registration">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -94,17 +94,16 @@
                             <input asp-for="PasswordHash" class="form-control form-control-user" />
                             <span asp-validation-for="PasswordHash" class="text-danger"></span>
                         </div>
-                        <div class="g-recaptcha text-center" data-sitekey="@ViewData["Key"]" data-callback="recaptcha_callback"></div>
+                        <div class="g-recaptcha" data-sitekey="6LeEVPsoAAAAAIV04PkyxMomhwV6AFnFQXdfoyp5"></div>
                         <br />
-                        <div class="form-group">
+                        <div class="form-group text-center">
                             <input type="submit" id="login" value="Crear Usuario" class="btn btn-primary text-center" />
                         </div>
                     </form>
                     <div class="text-center">
-                        <a class="small" href="#">¿Olvido su contraseña?</a>
-                    </div>
-                    <div class="text-center">
-                        <a class="small" asp-controller="Account" asp-action="Login">¿Ya tiene una cuenta? ¡Ingrese aqui!</a>
+                        <a class="small" href="#">¿Olvido su contraseña?</a> <br />
+                        <a class="small" asp-controller="Account" asp-action="Login">¿Ya tiene una cuenta? ¡Ingrese aqui!</a> <br />
+                        <a class="small" asp-controller="Home" asp-action="Index">Regresar al Menú Principal</a>
                     </div>
                 </div>
             </div>
@@ -112,12 +111,3 @@
     </div>
 </div>
 
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-<script type="text/javascript">
-    function recaptcha_callback() {
-        $('#login').show();
-    }</script>

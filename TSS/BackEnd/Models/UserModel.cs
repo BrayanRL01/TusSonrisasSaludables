@@ -15,9 +15,12 @@ namespace BackEnd.Models
         public string LastName { get; set; } = null!;
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+        [EmailAddress]
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string UserAddress { get; set; } = null!;
+        [DataType(DataType.Password)]
         public string PasswordHash { get; set; } = null!;
+        public string Roles { get; set; } = string.Empty;
     }
 }

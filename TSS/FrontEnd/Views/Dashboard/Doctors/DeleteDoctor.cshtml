@@ -5,57 +5,60 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h3>¿Desea eliminarlo?</h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialtyName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SpecialtyName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BirthDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BirthDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DoctorPhoto)
-        </dt>
-        <dd class="col-sm-10">
-            <partial name="Photo/_DoctorPhotoView" model="Model" />
-        </dd>
-    </dl>
+<center>
+    <h3>¿Desea eliminarlo?</h3>
 
-    <form asp-action="DeleteDoctor">
-        @Html.HiddenFor(Model => Model.DoctorId)
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Regresar a Doctores</a>
-    </form>
-</div>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IdNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.IdNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SpecialtyName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SpecialtyName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FullName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FullName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BirthDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DoctorPhoto)
+            </dt>
+            <dd class="col-sm-10">
+                <partial name="Photo/_DoctorPhotoView" model="Model" />
+            </dd>
+        </dl>
+
+        <form asp-action="DeleteDoctor">
+            @Html.HiddenFor(Model => Model.DoctorId)
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index">Regresar a Doctores</a>
+        </form>
+    </div>
+</center>

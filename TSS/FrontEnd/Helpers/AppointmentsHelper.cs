@@ -13,16 +13,16 @@ namespace FrontEnd.Helpers
         }
 
         #region GetAll
-        public List<VWAppointmentViewModel> GetAppointmentsView()
+        public List<VWAppointmentViewModel>? GetAppointmentsView()
         {
             try
             {
-                List<VWAppointmentViewModel> list = new List<VWAppointmentViewModel>();
-                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments");
+                List<VWAppointmentViewModel>? list = new();
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/Appointments");
                 if (responseMessage != null)
                 {
                     var content = responseMessage.Content.ReadAsStringAsync().Result;
-                    list = JsonConvert.DeserializeObject<List<VWAppointmentViewModel>>(content);
+                    list = JsonConvert.DeserializeObject<List<VWAppointmentViewModel>?>(content);
                 }
                 return list;
             }
@@ -62,11 +62,26 @@ namespace FrontEnd.Helpers
 
         public AppointmentViewModel GetByID(int id)
         {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/Appointment/" + id);
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AppointmentInfo/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             AppointmentViewModel Appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
 
             return Appointment;
+        }
+
+        public List<VWAdminAppointmentViewModel> GetUserAppointments(string email)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments/" + email);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                List<VWAdminAppointmentViewModel> Appointment = JsonConvert.DeserializeObject<List<VWAdminAppointmentViewModel>>(content);
+                return Appointment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         #endregion
 
@@ -89,14 +104,14 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Add
-        public AppointmentViewModel Add(AppointmentViewModel Cita)
+        public AppointmentViewModel Add(AppointmentViewModel appointment)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Appointments/Appointment", Cita);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Appointments/Appointment", appointment);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
-                return CitaAPI;
+                AppointmentViewModel appointmentAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+                return appointmentAPI;
             }
             catch (Exception ex)
             {
@@ -113,6 +128,40 @@ namespace FrontEnd.Helpers
                 AppointmentViewModel Cita = new();
                 HttpResponseMessage responseMessage = repository.DeleteResponse("api/Appointments/" + id);
                 return Cita;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Confirm and Cancel
+        public AppointmentViewModel Confirm(AppointmentViewModel model)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/ConfirmAppointment/", model);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+
+                return CitaAPI;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public AppointmentViewModel Cancel(AppointmentViewModel model)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/CancelAppointment/", model);
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+
+                return CitaAPI;
             }
             catch (Exception ex)
             {

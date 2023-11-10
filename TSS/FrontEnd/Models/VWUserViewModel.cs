@@ -21,6 +21,6 @@ namespace FrontEnd.Models
         public string Email { get; set; } = null!;
         [Display(Name = "Número de Teléfono")]
         [DataType(DataType.PhoneNumber)]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
     }
 }

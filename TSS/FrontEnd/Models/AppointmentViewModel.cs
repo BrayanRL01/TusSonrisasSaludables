@@ -20,5 +20,7 @@ namespace FrontEnd.Models
         [Display(Name = "Hora de Fin")]
         [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; } = DateTime.Now.Date;
+        [EmailAddress]
+        public string? Email { get; set; } 
     }
 }

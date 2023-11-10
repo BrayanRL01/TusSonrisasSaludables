@@ -16,8 +16,8 @@ namespace FrontEnd.Controllers
         private readonly ILogger<DashboardController> _logger;
 
         #region Helpers
-        private ServiceRepository repository = new();
-        private SecurityHelper securityHelper = new SecurityHelper();
+        ServiceRepository repository = new();
+        private SecurityHelper securityHelper = new();
 
 
         #region Users
@@ -56,8 +56,6 @@ namespace FrontEnd.Controllers
 
         public IActionResult Index()
         {
-            var token = HttpContext.Session.GetString("token");
-            repository = new(token);
             return View();
         }
 
@@ -78,7 +76,7 @@ namespace FrontEnd.Controllers
         #endregion
 
         #region Create
-        public ActionResult CreateAdmin()
+        public IActionResult CreateAdmin()
         {
             UserViewModel user = new();
             var genres = genresHelper.GetAllView();
@@ -93,7 +91,7 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAdmin(UserViewModel user)
+        public IActionResult CreateAdmin(UserViewModel user)
         {
             try
             {
@@ -135,7 +133,7 @@ namespace FrontEnd.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = new Exception("Hubo un error: " + ex);
+                TempData["Error"] = new Exception("Hubo un error: " + ex.Message);
                 return RedirectToAction("Users");
             }
         }
@@ -290,11 +288,14 @@ namespace FrontEnd.Controllers
         {
             try
             {
-                category = categoriesHelper.EditSubCategory(category);
-                TempData["Message"] = "Subcategoría creado correctamente.";
+                if (ModelState.IsValid)
+                {
+                    category = categoriesHelper.EditSubCategory(category);
+                    TempData["Message"] = "Subcategoría creado correctamente.";
+                }
                 return RedirectToAction("SubCategories");
             }
-            catch (JsonReaderException ex)
+            catch (Exception ex)
             {
                 TempData["Error"] = "No se pudo editar la subcategoría. " + ex.Message;
                 return RedirectToAction("SubCategories");
@@ -394,9 +395,9 @@ namespace FrontEnd.Controllers
                 TempData["Message"] = "Cita creada correctamente.";
                 return RedirectToAction("Appointments");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["Error"] = ex.Message;
+                TempData["Error"] = "No se ha podido crear la cita.";
                 return RedirectToAction("Appointments");
             }
         }
@@ -492,7 +493,7 @@ namespace FrontEnd.Controllers
             try
             {
                 specialty = specialtiesHelper.Add(specialty);
-                TempData["Message"] = "Especialidad creada.";
+                TempData["Message"] = "Especialidad creada correctamente.";
                 return RedirectToAction("Specialties");
             }
             catch (Exception ex)
@@ -1052,7 +1053,7 @@ namespace FrontEnd.Controllers
             try
             {
                 record = recordsHelper.Add(record);
-                TempData["Message"] = $"Registro creado correctamente.";
+                TempData["Message"] = "Registro creado correctamente.";
                 return RedirectToAction("Records");
             }
             catch (Exception ex)
@@ -1111,15 +1112,16 @@ namespace FrontEnd.Controllers
             {
                 record = recordsHelper.Delete(record.RecordId);
                 TempData["Message"] = "Registro eliminado correctamente.";
-                return RedirectToAction("Procedures");
+                return RedirectToAction("Records");
             }
             catch (Exception ex)
             {
                 TempData["Error"] = $"No se pudo eliminar el registro: {ex.Message}";
-                return RedirectToAction("Procedures");
+                return RedirectToAction("Records");
             }
         }
         #endregion
+
         #endregion
 
         public IActionResult Privacy()
@@ -1127,23 +1129,23 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public IActionResult EditAdmin()
+        public ActionResult EditProfile()
         {
-            string email = User.FindFirst(ClaimTypes.Name)?.Value;
-            UserViewModel user = securityHelper.GetEmail(email);
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            UserViewModel user = securityHelper.GetEmail(email!);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
             ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
             ViewBag.IDTypes = new SelectList(ids, "TypeId", "IdType");
             ViewBag.Provinces = new SelectList(provinces, "ProvinceId", "ProvinceName");
-            return View("EditAdmin", user);
+            return View("EditProfile", user);
         }
 
         // POST: UsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditAdmin(UserViewModel user)
+        public ActionResult EditProfile(UserViewModel user)
         {
             if (ModelState.IsValid)
             {
@@ -1153,7 +1155,7 @@ namespace FrontEnd.Controllers
             }
             else
             {
-                TempData["Error"] = "No se editó el usuario.";
+                TempData["Error"] = "No se modificó el usuario, compruebe sus validaciones e intentelo de nuevo.";
                 return RedirectToAction("Index");
             }
         }

@@ -19,29 +19,29 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
+        #region GetAppointments
         // GET: api/<AppointmentsController>
-        [HttpGet("UserAppointments")]
-        public async Task<JsonResult> SP_GetCitasView()
+        [HttpGet("Appointments")]
+        public async Task<ActionResult<IEnumerable<VwAppointment>>> SP_GetCitasView()
         {
             if (_context.VwAppointments == null)
             {
-                return new JsonResult(NotFound());
+                return NotFound();
             }
 
             try
             {
                 var users = await _context.VwAppointments.FromSqlRaw("EXEC SP_GetAppointmentsView").ToListAsync();
-                return new JsonResult(Ok(users));
+                return Ok(users);
             }
             catch (Exception ex)
             {
-                return new JsonResult(BadRequest(ex.Message));
+                return BadRequest(ex.Message);
             }
         }
 
-
         [HttpGet("AdminAppointments")]
-        public async Task<ActionResult<IEnumerable<Appointment>>> SP_GetCitasAdminView()
+        public async Task<ActionResult<IEnumerable<VwAdminAppointment>>> SP_GetCitasAdminView()
         {
             if (_context.VwAdminAppointments == null)
             {
@@ -58,9 +58,11 @@ namespace BackEnd.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
 
+        #region GetBy
         // GET api/<AppointmentsController>/5
-        [HttpGet("Appointment/{id}")]
+        [HttpGet("AppointmentInfo/{id}")]
         public async Task<ActionResult> SP_GetAppointment(int id)
         {
             try
@@ -76,7 +78,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("UserAppointment/{id}")]
+        [HttpGet("Appointment/{id}")]
         public async Task<ActionResult> SP_GetAppointmentView(int id)
         {
             try
@@ -108,12 +110,12 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("FindAppointment/{data}")]
-        public async Task<ActionResult> SP_FindAppointment(int data)
+        [HttpGet("UserAppointments/{email}")]
+        public async Task<ActionResult> SP_UserAppointments(string email)
         {
             try
             {
-                var users = await _context.VwAppointments.FromSqlInterpolated($"EXEC SP_FindAppointmentView {data}").ToListAsync();
+                var users = await _context.VwAdminAppointments.FromSqlInterpolated($"EXEC SP_GetUserAppointments {email}").ToListAsync();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -121,8 +123,9 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "No se ha encontrado la cita: " + ex.Message);
             }
         }
+        #endregion
 
-
+        #region PostAppointments
         // POST api/<AppointmentsController>
         [HttpPost("Appointment")]
         public async Task<ActionResult<Appointment>> PostAppointment([FromBody] AppointmentModel entity)
@@ -173,6 +176,7 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "No se pudo crear la cita: " + ex.Message);
             }
         }
+        #endregion
 
         #region PutAppoiments
         // PUT api/<AppointmentsController>/5
@@ -250,6 +254,52 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "No se pudo eliminar la cita: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Confirm and Cancel
+        [HttpPut("ConfirmAppointment")]
+        public async Task<ActionResult> ConfirmAppointment([FromBody] AppointmentModel model)
+        {
+            try
+            {
+                if (model.Email == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ConfirmAppointment {model.AppointmentId}, {model.Email}");
+                    await _context.SaveChangesAsync();
+                    return Ok(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"No se ha podido confirmar la cita: {ex.Message}");
+            }
+        }
+
+        [HttpPut("CancelAppointment")]
+        public async Task<ActionResult> CancelAppointment([FromBody] AppointmentModel model)
+        {
+            try
+            {
+                if (model.Email == null)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CancelAppointment {model.AppointmentId}, {model.Email}");
+                    await _context.SaveChangesAsync();
+                    return Ok(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"No se ha podido confirmar la cita: {ex.Message}");
             }
         }
         #endregion

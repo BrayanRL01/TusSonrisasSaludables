@@ -90,7 +90,7 @@ namespace BackEnd.Controllers
 
         #region PostUsers
         [HttpPost("AdminUser")]
-        public async Task<ActionResult<User>> PostAdminUser([FromBody] UserModel entity)
+        public async Task<IActionResult> PostAdminUser([FromBody] UserModel entity)
         {
             try
             {

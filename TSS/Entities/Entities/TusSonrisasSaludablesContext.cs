@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Entities.Entities
 {
@@ -23,6 +26,7 @@ namespace Entities.Entities
         public virtual DbSet<PatientRecord> PatientRecords { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<Province> Provinces { get; set; } = null!;
+        public virtual DbSet<Recomendation> Recomendations { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
         public virtual DbSet<ShoppingDetail> ShoppingDetails { get; set; } = null!;
@@ -39,6 +43,7 @@ namespace Entities.Entities
         public virtual DbSet<VwProcedure> VwProcedures { get; set; } = null!;
         public virtual DbSet<VwProduct> VwProducts { get; set; } = null!;
         public virtual DbSet<VwProvince> VwProvinces { get; set; } = null!;
+        public virtual DbSet<VwRecomendation> VwRecomendations { get; set; } = null!;
         public virtual DbSet<VwRecord> VwRecords { get; set; } = null!;
         public virtual DbSet<VwRole> VwRoles { get; set; } = null!;
         public virtual DbSet<VwSpecialty> VwSpecialties { get; set; } = null!;
@@ -322,6 +327,33 @@ namespace Entities.Entities
                 entity.Property(e => e.ProvinceName)
                     .HasMaxLength(20)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Recomendation>(entity =>
+            {
+                entity.Property(e => e.RecomendationId).HasColumnName("RecomendationID");
+
+                entity.Property(e => e.Information).IsUnicode(false);
+
+                entity.Property(e => e.PostDate)
+                    .HasColumnType("date")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.HasOne(d => d.Specialty)
+                    .WithMany(p => p.Recomendations)
+                    .HasForeignKey(d => d.SpecialtyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Recomenda__Speci__2CBDA3B5");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Recomendations)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Recomenda__UserI__2BC97F7C");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -702,6 +734,28 @@ namespace Entities.Entities
 
                 entity.Property(e => e.ProvinceName)
                     .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<VwRecomendation>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("VW_Recomendations");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(302)
+                    .IsUnicode(false)
+                    .HasColumnName("Full Name");
+
+                entity.Property(e => e.Information).IsUnicode(false);
+
+                entity.Property(e => e.PostDate).HasColumnType("date");
+
+                entity.Property(e => e.RecomendationId).HasColumnName("RecomendationID");
+
+                entity.Property(e => e.SpecialtyName)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 

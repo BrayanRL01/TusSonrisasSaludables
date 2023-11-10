@@ -1,7 +1,8 @@
 ﻿using FrontEnd.Helpers;
 using FrontEnd.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FrontEnd.Controllers
 {
@@ -12,7 +13,7 @@ namespace FrontEnd.Controllers
         // GET: AppointmentsController
         public ActionResult Index()
         {
-            List<VWAdminAppointmentViewModel> Appointments = appointmentsHelper.GetAdminAppointmentsView();
+            List<VWAppointmentViewModel>? Appointments = appointmentsHelper.GetAppointmentsView();
             return View(Appointments);
         }
 
@@ -22,66 +23,59 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        // GET: AppointmentsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: AppointmentsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: AppointmentsController/Edit/5
-        public ActionResult Edit(int id)
+        [Authorize]
+        public ActionResult Confirm(int id)
         {
-            return View();
+            AppointmentViewModel? model = appointmentsHelper.GetByID(id);
+            return View(model);
         }
 
         // POST: AppointmentsController/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Confirm(AppointmentViewModel model)
         {
             try
             {
+                model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
+                appointmentsHelper.Confirm(model);
+                TempData["Message"] = "Cita confirmada correctamente.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Usted no es la persona a nombre de esta cita. " + ex.Message;
+                return View("Index");
+            }
+        }
+
+        [Authorize]
+        public ActionResult Cancel(int id)
+        {
+            AppointmentViewModel? model = appointmentsHelper.GetByID(id);
+            return View(model);
+        }
+
+        // POST: AppointmentsController/Edit/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cancel(AppointmentViewModel model)
+        {
+            try
+            {
+                model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
+                appointmentsHelper.Cancel(model);
+                TempData["Message"] = "Cita cancelada correctamente.";
+
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
-            }
-        }
-
-        // GET: AppointmentsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: AppointmentsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                TempData["Error"] = "No se pudo cancelar la cita, intente de nuevo.";
+                return View("Index");
             }
         }
     }

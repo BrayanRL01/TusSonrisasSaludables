@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
-
 namespace FrontEnd.Controllers
 {
     public class PdfController : Controller
@@ -20,7 +19,7 @@ namespace FrontEnd.Controllers
 
         private byte[] GenerarPDFDesdeHTML(string html)
         {
-            var renderer = new HtmlToPdf();
+            var renderer = new ChromePdfRenderer();
             var pdf = renderer.RenderHtmlAsPdf(html);
             return pdf.BinaryData;
         }
@@ -28,6 +27,6 @@ namespace FrontEnd.Controllers
 
     public class PdfRequest
     {
-        public string Contenido { get; set; }
+        public string Contenido { get; set; } = string.Empty;
     }
 }

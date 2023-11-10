@@ -1,4 +1,6 @@
-﻿namespace BackEnd.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BackEnd.Models
 {
     public class RecordModel
     {

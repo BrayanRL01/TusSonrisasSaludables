@@ -1,4 +1,6 @@
-﻿namespace BackEnd.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BackEnd.Models
 {
     public class AppointmentModel
     {
@@ -8,6 +10,7 @@
         public int SpecialtyId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-
+        [EmailAddress]
+        public string? Email { get; set; }
     }
 }

@@ -1,25 +1,26 @@
 ﻿using FrontEnd.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers
 {
     public class SecurityHelper
     {
-        private ServiceRepository repository;
+        ServiceRepository _repository;
 
         public SecurityHelper()
         {
-            repository = new ServiceRepository();
+            _repository = new ServiceRepository();
         }
 
-        public TokenModel Login(LoginModel usuario)
+        public TokenModel? Login(LoginModel usuario)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/Login", usuario);
+                HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Login", usuario);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                TokenModel TokenModel = JsonConvert.DeserializeObject<TokenModel>(content);
+                TokenModel? TokenModel = JsonConvert.DeserializeObject<TokenModel?>(content);
 
                 return TokenModel;
             }
@@ -29,13 +30,13 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public UserViewModel Register(UserViewModel Usuario)
+        public UserViewModel? Register(UserViewModel? Usuario)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/Register", Usuario);
+                HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Register", Usuario!);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                UserViewModel UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
+                UserViewModel? UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel?>(content);
                 return UsuarioAPI;
             }
             catch (Exception ex)
@@ -44,28 +45,43 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public LoginModel GetUser(LoginModel usuario)
+        public UserViewModel GetUser(LoginModel usuario)
         {
-            HttpResponseMessage responseMessage = repository.PostResponse("api/Authenticate/GetUser", usuario);
+            HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/GetUser", usuario);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
-            LoginModel loginModel = JsonConvert.DeserializeObject<LoginModel>(content);
+            UserViewModel loginModel = JsonConvert.DeserializeObject<UserViewModel>(content);
             return loginModel;
+        }
+
+        public string GetRole(LoginModel usuario)
+        {
+            HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/GetRole", usuario);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string Roles = content;
+            return Roles;
         }
 
         public UserViewModel GetEmail(string email)
         {
-            HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/GetEmail/" + email);
+            HttpResponseMessage responseMessage = _repository.GetResponse("api/Authenticate/GetEmail/" + email);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
             UserViewModel user = JsonConvert.DeserializeObject<UserViewModel>(content);
             return user;
         }
 
-        //public UserViewModel GetByEmail(string email)
-        //{
-        //    HttpResponseMessage responseMessage = repository.GetResponse("api/Authenticate/UserEmail/" + email);
-        //    string content = responseMessage.Content.ReadAsStringAsync().Result;
-        //    UserViewModel Usuario = JsonConvert.DeserializeObject<UserViewModel>(content);
-        //    return Usuario;
-        //}
+        public string ForgotPassword(EmailModel model)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = _repository.PutResponse("api/Email/ResetPassword/", model);
+                string content = responseMessage.Content.ReadAsStringAsync().Result;
+                string message = content;
+                return message;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
