@@ -11,7 +11,7 @@ namespace FrontEnd.Helpers
             Client = new()
             {
                 //BaseAddress = new Uri("https://localhost:7091/")
-                BaseAddress = new Uri("https://tsswebapi.azure-api.net")
+                BaseAddress = new Uri("https://tsswebapi.azurewebsites.net")
             };
             Client.DefaultRequestHeaders.Add("ApiKey", "56CGE54GS94FS65V46F5BS6B1");
         }
@@ -20,7 +20,7 @@ namespace FrontEnd.Helpers
         {
             Client = new()
             {
-                BaseAddress = new Uri("https://tsswebapi.azure-api.net")
+                BaseAddress = new Uri("https://tsswebapi.azurewebsites.net")
                 //BaseAddress = new Uri("https://localhost:7091/")
             };
             Client.DefaultRequestHeaders.Add("ApiKey", "56CGE54GS94FS65V46F5BS6B1");
