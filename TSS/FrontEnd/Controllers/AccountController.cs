@@ -172,9 +172,18 @@ namespace FrontEnd.Controllers
         [Authorize]
         public ActionResult MyAppointments()
         {
-            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            List<VWAdminAppointmentViewModel> model = _appointmentsHelper.GetUserAppointments(email!);
-            return View(model);
+            try
+            {
+                string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+                List<VWAdminAppointmentViewModel>? model = _appointmentsHelper.GetUserAppointments(email!);
+                return View(model);
+ 
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "No tienes citas disponibles.";
+                return View();
+            }
         }
 
         [Authorize]
