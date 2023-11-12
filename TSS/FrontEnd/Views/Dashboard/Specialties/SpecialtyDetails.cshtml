@@ -5,9 +5,11 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h1>SpecialtyDetails</h1>
+<center>
+    <h1>Registro de Especialidades</h1></center>
 
 <div>
+   @* <h4>SpecialtyViewModel</h4>*@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -18,7 +20,8 @@
         </dd>
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Edit", "EditSpecialty", new { id = Model.SpecialtyId }) |
-    <a asp-action="Index">Regresar a Especialidades</a>
+<div  style="text-align: center;">
+    @Html.ActionLink("Editar", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Specialties">Regresar a Especialidades</a>
+</div>
 </div>

@@ -5,76 +5,81 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<center>
-    <h1>Editar Doctor</h1>
+<h1>Editar Doctor</h1>
 
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="EditDoctor" method="post" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @Html.HiddenFor(Model => Model.DoctorId)
-                <div class="form-group">
-                    <label asp-for="TypeId" class="form-label"></label>
-                    @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.Types, "Seleccione un tipo", new { @class = "form-control" })
-                    <span asp-validation-for="TypeId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="SpecialtyId" class="control-label"></label>
-                    @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
-                    <span asp-validation-for="SpecialtyId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="GenreId" class="form-label"></label>
-                    @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
-                    <span asp-validation-for="GenreId" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="IdNumber" class="control-label"></label>
-                    <input asp-for="IdNumber" class="form-control" />
-                    <span asp-validation-for="IdNumber" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DoctorName" class="control-label"></label>
-                    <input asp-for="DoctorName" class="form-control" />
-                    <span asp-validation-for="DoctorName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="FirstName" class="control-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="LastName" class="control-label"></label>
-                    <input asp-for="LastName" class="form-control" />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="BirthDate" class="control-label"></label>
-                    <input asp-for="BirthDate" class="form-control" />
-                    <span asp-validation-for="BirthDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Email" class="control-label"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PhoneNumber" class="control-label"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="file" asp-for="DoctorPhoto" class="form-control" name="files" />
-                    <span asp-validation-for="DoctorPhoto" class="text-danger"></span>
-                </div>
-                <partial name="Photo/_DoctorPhoto" model="Model" />
+@*<h4>DoctorViewModel</h4>*@
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditDoctor" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(Model => Model.DoctorId)
+            <div class="form-group">
+                <label asp-for="TypeId" class="form-label"></label>
+                @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.Types, "Seleccione un tipo", new { @class = "form-control" })
+                <span asp-validation-for="TypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialtyId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
+                <span asp-validation-for="SpecialtyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GenreId" class="form-label"></label>
+                @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
+                <span asp-validation-for="GenreId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdNumber" class="control-label"></label>
+                <input asp-for="IdNumber" class="form-control" />
+                <span asp-validation-for="IdNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DoctorName" class="control-label"></label>
+                <input asp-for="DoctorName" class="form-control" />
+                <span asp-validation-for="DoctorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="file" asp-for="DoctorPhoto" class="form-control" name="files" />
+                <span asp-validation-for="DoctorPhoto" class="text-danger"></span>
+            </div>
+            <partial name="Photo/_DoctorPhoto" model="Model" />
 
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                    <input asp-action="Doctors" class="btn btn-secondary" />
-                </div>
-            </form>
-        </div>
+            <div style="text-align: center;">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <button class="btn btn-primary" asp-action="Appointments">Regresar a Doctores</button>
+            </div>
+        </form>
     </div>
-</center>
+</div>
+
+@*<div>
+    <a asp-action="Doctors">Volver a Doctores</a>
+</div>
+
+*@

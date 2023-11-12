@@ -5,43 +5,152 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PacientName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PacientName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialtyName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SpecialtyName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-    </dl>
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Detalles de la Cita</h1>
+        <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            @Html.HiddenFor(Model => Model.AppointmentId) Reporte
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Formulario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formulario">
+                        @Html.HiddenFor(Model => Model.AppointmentId)
+                        <div class="form-group">
+                            <label asp-for="Doctor" class="control-label"></label>
+                            <input id="Doctor" asp-for="Doctor" class="form-control" readonly />
+                            <span asp-validation-for="Doctor" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PacientName" class="control-label"></label>
+                            <input id="PacientName" asp-for="PacientName" class="form-control" readonly />
+                            <span asp-validation-for="PacientName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SpecialtyName" class="control-label"></label>
+                            <input id="SpecialtyName" asp-for="SpecialtyName" class="form-control" readonly />
+                            <span asp-validation-for="SpecialtyName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="StartTime" class="control-label"></label>
+                            <input id="StartTime" asp-for="StartTime" class="form-control" readonly />
+                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EndTime" class="control-label"></label>
+                            <input id="EndTime" asp-for="EndTime" class="form-control" readonly />
+                            <span asp-validation-for="EndTime" class="text-danger"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    @* <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> *@
+                    @* <button type="submit" form="formulario" class="btn btn-primary">Enviar</button> *@
+                    <button id="generarInforme">Generar Informe</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    @Html.ActionLink("Editar", "EditAppointment", new { id = Model.AppointmentId }) |
-    <a asp-action="Appointments">Regresar a Citas</a>
-</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Maneja el clic en el botón para generar el informe
+        document.getElementById("generarInforme").addEventListener("click", function () {
+            // Obtén los datos del formulario
+            var doctor = document.getElementById("Doctor").value;
+            var pacientName = document.getElementById("PacientName").value;
+            var specialtyName = document.getElementById("SpecialtyName").value;
+            var startTime = document.getElementById("StartTime").value;
+            var endTime = document.getElementById("EndTime").value;
+
+
+            // Crea un objeto con los datos del formulario
+            var formData = {
+                Doctor: doctor,
+                PacientName: pacientName,
+                SpecialtyName: specialtyName,
+                StartTime: startTime,
+                EndTime: endTime,
+            };
+
+            // Realiza una solicitud AJAX para generar el informe PDF
+            fetch('/Pdf/GenerarCitaPDF', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Informe.pdf';
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                });
+        });
+    });
+</script>
+
+<center>
+    <div style="background-color: white; padding-left: 250px;">
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Doctor)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Doctor)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PacientName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PacientName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SpecialtyName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SpecialtyName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @Html.ActionLink("Editar", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Appointments">Regresar a Citas</a>
+    </div>
+</center>
+
+
 

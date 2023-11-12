@@ -1,32 +1,73 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
+using FrontEnd.Models;
 
 namespace FrontEnd.Controllers
 {
     public class PdfController : Controller
     {
-        [HttpPost]
-        public IActionResult GenerarPDF([FromBody] PdfRequest request)
+        private ChromePdfRenderer pdf = new();
+
+        public IActionResult GenerarPDF([FromBody] FormularioData formData)
         {
-            var contenidoHtml = request.Contenido;
+            var htmlContent = $@"
+    <html>
+        <body>
+            <h1>Cita</h1>
+            <p>Nombre: {formData.Nombre}</p>
+            <p>Edad: {formData.Edad}</p>
+            <p>Fecha: {formData.Fecha}</p>
+            <p>Correo: {formData.Correo}</p>
+        </body>
+    </html>";
 
-            // Genera el PDF y lo convierte en bytes
-            byte[] pdfBytes = GenerarPDFDesdeHTML(contenidoHtml);
+            var renderer = pdf;
+            var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
 
-            // Devuelve el PDF como una descarga
-            return File(pdfBytes, MediaTypeNames.Application.Pdf, "mi-archivo.pdf");
+            var pdfStream = pdfDocument.BinaryData;
+
+            return File(pdfStream, "application/pdf", "Informe.pdf");
         }
 
-        private byte[] GenerarPDFDesdeHTML(string html)
+        public IActionResult GenerarCitaPDF([FromBody] VWAdminAppointmentViewModel formData)
         {
-            var renderer = new ChromePdfRenderer();
-            var pdf = renderer.RenderHtmlAsPdf(html);
-            return pdf.BinaryData;
-        }
-    }
+            var htmlContent = $@"<!DOCTYPE html>
+<html>
+<head>
+    <title>Reporte de Cita Agendada</title>
+</head>
+<body>
+    <div style='width: 600px;
+    margin: 0 auto;
+    border: 1px solid #000;
+            padding: 20px; '>
+        <div style='text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;'>Reporte de Cita Agendada</div>
+        <div style='margin-bottom: 10px;'>
+            <p> Doctor: {formData.Doctor}</p>
+        </div>
+        <div style='margin-bottom: 10px;'>
+           <p> Paciente: {formData.PacientName}</p>
+        </div>
+        <div style='margin-bottom: 10px;'>
+            <p> Especialidad: {formData.SpecialtyName} </p>
+        </div>
+        <div style='margin-bottom: 10px;'>
+            <p> Hora de Inicio: {formData.StartTime}</ p>
+        </div>
+        <div style='margin-bottom: 10px;'>
+          <p> Hora de Fin: {formData.EndTime} </p>
+        </div>
+    </div>
+</body>
+</html>";
 
-    public class PdfRequest
-    {
-        public string Contenido { get; set; } = string.Empty;
+            var renderer = pdf;
+            var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
+
+            var pdfStream = pdfDocument.BinaryData;
+
+            return File(pdfStream, "application/pdf", $"Informe Cita - {formData.PacientName}.pdf");
+        }
     }
 }

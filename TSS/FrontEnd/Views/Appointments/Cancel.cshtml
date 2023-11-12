@@ -5,22 +5,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Cancelar Cita</h1>
+<center>
+    <div style="align-content:center; padding-top: 30px; padding-left: 30px; padding-right: 30px;">
+        <h1>Confirmar Cita</h1>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Cancel">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @Html.HiddenFor(Model => Model.AppointmentId)
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="col-md-4">
+            <form asp-action="Cancel">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h3>¿Desea cancelar esta cita?</h3>
+                @Html.HiddenFor(Model => Model.AppointmentId)
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Cancelar Cita" class="btn btn-primary" />
+                    <button asp-action="Index" class="btn btn-secondary">Volver a Citas</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+</center>

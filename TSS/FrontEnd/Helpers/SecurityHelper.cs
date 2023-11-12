@@ -1,6 +1,4 @@
 ﻿using FrontEnd.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Helpers
@@ -30,18 +28,19 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public UserViewModel? Register(UserViewModel? Usuario)
+        public string Register(UserViewModel? Usuario)
         {
             try
             {
                 HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Register", Usuario!);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                UserViewModel? UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel?>(content);
-                return UsuarioAPI;
+                string Mensaje = content;
+                //UserViewModel? UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel?>(content);
+                return content;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return ex.Message;
             }
         }
 

@@ -9,46 +9,52 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col">
         <form asp-action="CreateRecord">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="col">
                @* <label asp-for="UserId" class="form-label"></label>*@
                 @Html.DropDownListFor(model => model.UserId, (SelectList)ViewBag.Users, "Seleccione un paciente", new { @class = "form-control" })
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <br /> 
-            <div class="form-group">
+            <div class="col">
                @* <label asp-for="DoctorId" class="form-label"></label>*@
                 @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Seleccione un doctor", new { @class = "form-control" })
                 <span asp-validation-for="DoctorId" class="text-danger"></span>
             </div>
             <br />
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="ProcedureId" class="form-label"></label>*@
                 @Html.DropDownListFor(model => model.ProcedureId, (SelectList)ViewBag.Procedures, "Seleccione un procedimiento", new { @class = "form-control" })
                 <span asp-validation-for="ProcedureId" class="text-danger"></span>
             </div>
             <br />
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="Diagnoses" class="control-label"></label>*@
                 <input asp-for="Diagnoses" class="form-control" placeholder="Diagnóstico" />
                 <span asp-validation-for="Diagnoses" class="text-danger"></span>
             </div>
             <br />
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="Symptoms" class="control-label"></label>*@
                 <input asp-for="Symptoms" class="form-control" placeholder="Síntomas" />
                 <span asp-validation-for="Symptoms" class="text-danger" ></span>
             </div>
             <br />
-            <div class="form-group">
+            <div class="col">
                 @*<label asp-for="Treatment" class="control-label"></label>*@
                 <input asp-for="Treatment" class="form-control" placeholder="Tratamiento" />
                 <span asp-validation-for="Treatment" class="text-danger"></span>
             </div>
             <br /> 
-            <div class="form-group">
+            <div class="col">
+               @* <label asp-for="RecordDate" class="control-label"></label>*@
+                <input asp-for="RecordDate" class="form-control" placeholder="Fecha"/>
+                <span asp-validation-for="RecordDate" class="text-danger"></span>
+            </div>
+            <br />
+            <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
                 <button class="btn btn-primary" asp-action="Records">Regresar a Registros</button>
             </div>
@@ -56,4 +62,7 @@
     </div>
 </div>
 
+@*<div>
+    <a asp-action="Records">Regresar a Registros</a>
+</div>*@
 

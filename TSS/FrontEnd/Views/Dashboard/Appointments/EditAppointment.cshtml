@@ -31,14 +31,16 @@
                 <input asp-for="EndTime" class="form-control" />
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div style="text-align: center;">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <button class="btn btn-primary" asp-action="Appointments">Regresar a Citas</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
+@*<div>
     <a asp-action="Appointments">Regresar a la lista</a>
 </div>
 
+*@

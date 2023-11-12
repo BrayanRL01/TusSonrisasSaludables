@@ -69,13 +69,13 @@ namespace FrontEnd.Helpers
             return Appointment;
         }
 
-        public List<VWAdminAppointmentViewModel> GetUserAppointments(string email)
+        public List<VWAdminAppointmentViewModel>? GetUserAppointments(string email)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/UserAppointments/" + email);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                List<VWAdminAppointmentViewModel> Appointment = JsonConvert.DeserializeObject<List<VWAdminAppointmentViewModel>>(content);
+                List<VWAdminAppointmentViewModel>? Appointment = JsonConvert.DeserializeObject<List<VWAdminAppointmentViewModel>?>(content);
                 return Appointment;
             }
             catch (Exception ex)
