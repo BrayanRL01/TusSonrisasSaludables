@@ -165,7 +165,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Usuario creado correctamente.");
             }
             catch (Exception ex)
             {

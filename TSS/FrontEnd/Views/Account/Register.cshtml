@@ -32,66 +32,53 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">¡Crear Cuenta!</h1>
                     </div>
-                    <form asp-action="Register" id="Registration">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <label asp-for="TypeId" class="form-label"></label>
+                    <form asp-action="Register" id="Registration" class="row g-3">
+                        <div class="col-md-6">
                             @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo", new { @class = "form-control" })
                             <span asp-validation-for="TypeId" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="GenreId" class="form-label"></label>
+                        <div class="col-md-6">
                             @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
                             <span asp-validation-for="GenreId" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="ProvinceId" class="form-label"></label>
+                        <div class="col-12">
                             @Html.DropDownListFor(model => model.ProvinceId, (SelectList)ViewBag.Provinces, "Seleccione una provincia", new { @class = "form-control" })
                             <span asp-validation-for="ProvinceId" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="IdNumber" class="control-label"></label>
-                            <input asp-for="IdNumber" class="form-control form-control-user" />
+                        <div class="col-6">
+                            <input asp-for="IdNumber" class="form-control" placeholder="Identificación">
                             <span asp-validation-for="IdNumber" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="UserName" class="control-label"></label>
-                            <input asp-for="UserName" class="form-control form-control-user" />
+                        <div class="col-6">
+                            <input asp-for="UserName" class="form-control" placeholder="Nombre">
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="FirstName" class="control-label"></label>
-                            <input asp-for="FirstName" class="form-control form-control-user" />
+                        <div class="col-6">
+                            <input asp-for="FirstName" class="form-control" placeholder="Primer Apellido">
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="LastName" class="control-label"></label>
-                            <input asp-for="LastName" class="form-control form-control-user" />
+                        <div class="col-6">
+                            <input asp-for="LastName" class="form-control" placeholder="Segundo Apellido">
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="BirthDate" class="control-label"></label>
-                            <input asp-for="BirthDate" class="form-control form-control-user" />
+                        <div class="col-md-12">
+                            <input asp-for="BirthDate" class="form-control" placeholder="Fecha de Nacimiento">
                             <span asp-validation-for="BirthDate" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control form-control-user" />
+                        <div class="col-6">
+                            <input asp-for="Email" class="form-control" placeholder="Correo Electrónico">
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="PhoneNumber" class="control-label"></label>
-                            <input asp-for="PhoneNumber" class="form-control form-control-user" />
+                        <div class="col-md-6">
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Número Telefónico">
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="UserAddress" class="control-label"></label>
-                            <input asp-for="UserAddress" class="form-control form-control-user" />
+                        <div class="col-md-12">
+                            <textarea asp-for="UserAddress" class="form-control" placeholder="Dirección" rows="3"></textarea>
                             <span asp-validation-for="UserAddress" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="PasswordHash" class="control-label"></label>
-                            <input asp-for="PasswordHash" class="form-control form-control-user" />
+                        <div class="col-12">
+                            <input asp-for="PasswordHash" class="form-control" placeholder="Contraseña">
                             <span asp-validation-for="PasswordHash" class="text-danger"></span>
                         </div>
                         <div class="g-recaptcha" data-sitekey="6LeEVPsoAAAAAIV04PkyxMomhwV6AFnFQXdfoyp5"></div>
@@ -101,7 +88,7 @@
                         </div>
                     </form>
                     <div class="text-center">
-                        <a class="small" href="#">¿Olvido su contraseña?</a> <br />
+                        <a class="small" asp-controller="Account" asp-action="ResetPassword">¿Olvido su contraseña?</a> <br />
                         <a class="small" asp-controller="Account" asp-action="Login">¿Ya tiene una cuenta? ¡Ingrese aqui!</a> <br />
                         <a class="small" asp-controller="Home" asp-action="Index">Regresar al Menú Principal</a>
                     </div>

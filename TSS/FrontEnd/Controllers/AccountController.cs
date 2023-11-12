@@ -43,7 +43,7 @@ namespace FrontEnd.Controllers
             try
             {
                 TokenModel? token = _securityHelper.Login(model);
-                HttpContext.Session.SetString("token", token.Token);
+                HttpContext.Session.SetString("token", token!.Token);
 
                 var loginModel = _securityHelper.GetUser(model);
                 loginModel.Roles = _securityHelper.GetRole(model);
@@ -82,7 +82,7 @@ namespace FrontEnd.Controllers
             }
         }
 
-        public ActionResult Register()
+        public IActionResult Register()
         {
             UserViewModel user = new();
             var genres = _genresHelper.GetAllView();
@@ -100,20 +100,23 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(UserViewModel? user)
+        public async Task<IActionResult> Register(UserViewModel? user)
         {
             var gRecaptchaResponse = Request.Form["g-recaptcha-response"];
             var secretKey = _configuration["RecaptchaSettings:SecretKey"];
             bool response = await IsReCaptchaPassedAsync(gRecaptchaResponse, secretKey);
-            if (response && ModelState.IsValid)
+
+            string mensaje = _securityHelper.Register(user);
+            if (response && ModelState.IsValid && mensaje.StartsWith("U"))
             {
-                user = _securityHelper.Register(user);
-                TempData["Message"] = "Usuario creado correctamente.";
+                //TempData["Message"] = "Usuario creado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Login");
             }
             else
             {
-                TempData["Error"] = "No se ha creado el usuario.";
+                //TempData["Error"] = "No se ha creado el usuario.";
+                TempData["Error"] = mensaje;
                 return RedirectToAction("Register");
             }
         }
@@ -177,7 +180,7 @@ namespace FrontEnd.Controllers
                 string? email = User.FindFirst(ClaimTypes.Email)?.Value;
                 List<VWAdminAppointmentViewModel>? model = _appointmentsHelper.GetUserAppointments(email!);
                 return View(model);
- 
+
             }
             catch (Exception)
             {
