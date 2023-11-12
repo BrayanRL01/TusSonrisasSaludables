@@ -1,12 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FrontEnd.Models;
 
-public class PdfController : Controller
+namespace FrontEnd.Controllers
 {
-    HtmlToPdf pdf = new();
-    public IActionResult GenerarPDF([FromBody] FormularioData formData)
+    public class PdfController : Controller
     {
-        var htmlContent = $@"
+        private readonly ChromePdfRenderer pdf = new();
+
+        public PdfController(ChromePdfRenderer pdf)
+        {
+            this.pdf = pdf;
+        }
+
+        public IActionResult GenerarPDF([FromBody] FormularioData formData)
+        {
+            var htmlContent = $@"
     <html>
         <body>
             <h1>Cita</h1>
@@ -17,17 +25,17 @@ public class PdfController : Controller
         </body>
     </html>";
 
-        var renderer = pdf;
-        var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
+            var renderer = pdf;
+            var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
 
-        var pdfStream = pdfDocument.BinaryData;
+            var pdfStream = pdfDocument.BinaryData;
 
-        return File(pdfStream, "application/pdf", "Informe.pdf");
-    }
+            return File(pdfStream, "application/pdf", "Informe.pdf");
+        }
 
-    public IActionResult GenerarCitaPDF([FromBody] VWAdminAppointmentViewModel formData)
-    {
-        var htmlContent = $@"<!DOCTYPE html>
+        public IActionResult GenerarCitaPDF([FromBody] VWAdminAppointmentViewModel formData)
+        {
+            var htmlContent = $@"<!DOCTYPE html>
 <html>
 <head>
     <title>Reporte de Cita Agendada</title>
@@ -59,25 +67,12 @@ public class PdfController : Controller
 </body>
 </html>";
 
-        var renderer = pdf;
-        var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
+            var renderer = pdf;
+            var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
 
-        var pdfStream = pdfDocument.BinaryData;
+            var pdfStream = pdfDocument.BinaryData;
 
-        return File(pdfStream, "application/pdf", $"Informe Cita - {formData.PacientName}.pdf");
+            return File(pdfStream, "application/pdf", $"Informe Cita - {formData.PacientName}.pdf");
+        }
     }
 }
-
-
-//< html >
-//    < body >
-
-//        < h1 > Cita </ h1 >
-//        < p > Doctor: { formData.Doctor}</ p >
-//        < p > PacientName: { formData.PacientName}</ p >
-//        < p > SpecialtyName: { formData.SpecialtyName}</ p >
-//        < p > StartTime: { formData.StartTime}</ p >
-//        < p > EndTime: { formData.EndTime}</ p >
-//    </ body >
-//</ html > ";
-

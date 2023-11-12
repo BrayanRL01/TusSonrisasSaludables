@@ -16,7 +16,6 @@
 	<ItemGroup>
 		<PackageReference Include="DinkToPdf" Version="1.0.8" />
 		<PackageReference Include="IronPdf" Version="2023.11.7" />
-		<PackageReference Include="iTextSharp" Version="5.5.13.3" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
 	</ItemGroup>
