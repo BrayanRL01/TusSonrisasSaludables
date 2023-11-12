@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <h1 class="h3 mb-0 text-gray-800">Detalles de la Cita</h1>
         <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
             @Html.HiddenFor(Model => Model.AppointmentId) Reporte
         </button>
@@ -110,46 +110,47 @@
     });
 </script>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Doctor)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PacientName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PacientName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecialtyName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SpecialtyName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Appointments">Regresar a Citas</a>
-</div>
-
+<center>
+    <div style="background-color: white; padding-left: 250px;">
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Doctor)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Doctor)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PacientName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PacientName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SpecialtyName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SpecialtyName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @Html.ActionLink("Editar", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Appointments">Regresar a Citas</a>
+    </div>
+</center>
 
 
 
