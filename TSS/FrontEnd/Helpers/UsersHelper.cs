@@ -70,18 +70,19 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Add
-        public UserViewModel AddAdmin(UserViewModel Usuario)
+        public string AddAdmin(UserViewModel? Usuario)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Users/AdminUser", Usuario);
+                HttpResponseMessage responseMessage = repository.PostResponse("api/Users/AdminUser", Usuario!);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                UserViewModel UsuarioAPI = JsonConvert.DeserializeObject<UserViewModel>(content);
-                return UsuarioAPI;
+                //UserViewModel? userApi = JsonConvert.DeserializeObject<UserViewModel?>(content);
+                string Mensaje = content;
+                return content;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return ex.Message;
             }
         }
         #endregion

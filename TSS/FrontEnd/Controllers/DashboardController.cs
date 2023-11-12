@@ -93,15 +93,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateAdmin(UserViewModel user)
         {
-            try
+            string mensaje = Helper.AddAdmin(user);
+            if (mensaje.StartsWith("A"))
             {
-                user = Helper.AddAdmin(user);
-                TempData["Message"] = "Usuario creado correctamente.";
+                TempData["Message"] = mensaje;
+                //TempData["Message"] = "Usuario creado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (Exception ex)
+            else
             {
-                TempData["Error"] = "No se ha creado el usuario. " + ex.Message;
+                TempData["Error"] = mensaje;
                 return RedirectToAction("Users");
             }
         }

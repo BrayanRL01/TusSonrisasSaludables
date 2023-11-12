@@ -7,8 +7,8 @@
 
 <style>
     .pad {
-    padding-left: 20px;
-    padding-top: 20px;
+        padding-left: 20px;
+        padding-top: 20px;
     }
 </style>
 
@@ -95,8 +95,8 @@
                                 @Html.DisplayFor(modelItem => item.PhoneNumber)
                             </td>
                             <td>
-                                @Html.ActionLink("Editar", "Edit" , new { id=item.UserId }  , new {@class="btn btn-warning" } ) 
-                                @Html.ActionLink("Detalles", "Details", new { id=item.UserId },new {@class="btn btn-info" } ) 
+                                @Html.ActionLink("Editar", "Edit" , new { id=item.UserId }  , new {@class="btn btn-warning" } )
+                                @Html.ActionLink("Detalles", "Details", new { id=item.UserId },new {@class="btn btn-info" } )
                                 @Html.ActionLink("Eliminar", "Delete", new { id=item.UserId } ,new {@class="btn btn-danger" } )
                             </td>
                         </tr>
@@ -105,5 +105,4 @@
             </table>
         </div>
     </div>
-</div>
 </div>

@@ -5,64 +5,67 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<center><h1>Mis Registros</h1></center>
+<div style="padding: 30px; width: 100%;">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PatientName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DoctorName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProcedureName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Diagnoses)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Symptoms)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Treatment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecordDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <center><h1>Mis Registros</h1></center>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PatientName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DoctorName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProcedureName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Diagnoses)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Symptoms)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Treatment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecordDate)
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.PatientName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DoctorName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProcedureName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Diagnoses)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Symptoms)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Treatment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RecordDate)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PatientName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DoctorName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProcedureName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Diagnoses)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Symptoms)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Treatment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecordDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
