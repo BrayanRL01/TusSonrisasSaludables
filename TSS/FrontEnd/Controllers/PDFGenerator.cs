@@ -1,35 +1,50 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
 
-namespace FrontEnd.Controllers
+public class PDFGenerator
 {
-    public class PDFGenerator
+    private readonly IConverter _converter;
+
+    public PDFGenerator(IConverter converter)
     {
-        private IConverter _converter;
+        _converter = converter;
+    }
 
-        public PDFGenerator(IConverter converter)
+    public byte[] GeneratePdf(string htmlContent)
+    {
+        var document = new HtmlToPdfDocument()
         {
-            _converter = converter;
-        }
-
-        public byte[] GeneratePdf(string htmlContent)
-        {
-            var document = new HtmlToPdfDocument()
-            {
-                GlobalSettings = {
+            GlobalSettings = {
                 PaperSize = PaperKind.A4,
                 Orientation = Orientation.Portrait,
             },
-                Objects = {
+            Objects = {
                 new ObjectSettings()
                 {
                     PagesCount = true,
                     HtmlContent = htmlContent
                 }
             }
-            };
+        };
+        return _converter.Convert(document);
+    }
 
-            return _converter.Convert(document);
-        }
+    public byte[] GenerateAppointmentPDF(string htmlContent)
+    {
+        var document = new HtmlToPdfDocument()
+        {
+            GlobalSettings = {
+                PaperSize = PaperKind.A4,
+                Orientation = Orientation.Portrait,
+            },
+            Objects = {
+                new ObjectSettings()
+                {
+                    PagesCount = true,
+                    HtmlContent = htmlContent
+                }
+            }
+        };
+        return _converter.Convert(document);
     }
 }
