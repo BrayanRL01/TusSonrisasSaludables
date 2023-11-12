@@ -5,12 +5,7 @@ namespace FrontEnd.Controllers
 {
     public class PdfController : Controller
     {
-        private readonly ChromePdfRenderer pdf = new();
-
-        public PdfController(ChromePdfRenderer pdf)
-        {
-            this.pdf = pdf;
-        }
+        private ChromePdfRenderer pdf = new();
 
         public IActionResult GenerarPDF([FromBody] FormularioData formData)
         {

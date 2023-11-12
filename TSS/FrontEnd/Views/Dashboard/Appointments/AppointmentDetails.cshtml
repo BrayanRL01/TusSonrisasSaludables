@@ -7,6 +7,13 @@
 
 
 <div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            @Html.HiddenFor(Model => Model.AppointmentId) Reporte
+        </button>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -49,6 +56,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                    @* <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> *@
+                    @* <button type="submit" form="formulario" class="btn btn-primary">Enviar</button> *@
                     <button id="generarInforme">Generar Informe</button>
                 </div>
             </div>
@@ -101,7 +110,7 @@
     });
 </script>
 
-<div style="padding: 30px; background-color: white;" class="text-center justify-content-center">
+<div>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -135,14 +144,10 @@
             @Html.DisplayFor(model => model.EndTime)
         </dd>
     </dl>
-    <div>
-        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-        <a asp-action="Appointments">Regresar a Citas</a>
-        <!-- Page Heading -->
-        <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-            @Html.HiddenFor(Model => Model.AppointmentId) Reporte
-        </button>
-    </div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Appointments">Regresar a Citas</a>
 </div>
 
 

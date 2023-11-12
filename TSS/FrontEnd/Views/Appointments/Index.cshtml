@@ -62,7 +62,7 @@ else if (TempData.ContainsKey("Error"))
                         @Html.DisplayFor(modelItem => item.EndTime)
                     </td>
                     <td>
-                        <button class="btn btn-primary">@Html.ActionLink("Reservar Cita", "Confirm", new { id=item.AppointmentId })</button>
+                        <button class="btn btn-secondary">@Html.ActionLink("Reservar Cita", "Confirm", new { id=item.AppointmentId })</button>
                     </td>
                 </tr>
             }
