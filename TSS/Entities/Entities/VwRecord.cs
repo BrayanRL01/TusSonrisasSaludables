@@ -7,6 +7,7 @@ namespace Entities.Entities
     {
         public int RecordId { get; set; }
         public string PatientName { get; set; } = null!;
+        public string IdNumber { get; set; } = null!;
         public string DoctorName { get; set; } = null!;
         public string ProcedureName { get; set; } = null!;
         public string Diagnoses { get; set; } = null!;
