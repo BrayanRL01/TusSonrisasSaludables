@@ -76,7 +76,7 @@ namespace BackEnd.Controllers
                         await client.DisconnectAsync(true);
                     }
                 }
-                return Ok("Se ha enviado correctamente un correo con su nueva contraseña.");
+                return Ok("Se ha recibido su solicitud para efectuar un cambio de contraseña, revise su correo electrónico validando que llegó dicho cambio.");
             }
             catch (Exception ex)
             {

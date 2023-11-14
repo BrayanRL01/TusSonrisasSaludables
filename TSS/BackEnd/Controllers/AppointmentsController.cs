@@ -116,7 +116,11 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwAdminAppointments.FromSqlInterpolated($"EXEC SP_GetUserAppointments {email}").ToListAsync();
-                return Ok(users);
+                if (users != null)
+                {
+                    return Ok(users);               
+                }
+                return StatusCode(500, "No hay citas reservadas.");
             }
             catch (Exception ex)
             {
