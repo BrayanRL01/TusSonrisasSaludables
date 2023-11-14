@@ -49,6 +49,10 @@ namespace BackEnd.Controllers
             try
             {
                 var records = await _context.VwRecords.FromSqlInterpolated($"EXEC SP_GetPatientRecord {email}").ToListAsync();
+                if (records == null)
+                {
+                    return StatusCode(500, "No hay registros disponibles.");
+                }
                 return Ok(records);
             }
             catch (Exception ex)

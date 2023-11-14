@@ -46,19 +46,19 @@
                             <span asp-validation-for="ProvinceId" class="text-danger"></span>
                         </div>
                         <div class="col-6">
-                            <input asp-for="IdNumber" class="form-control" placeholder="Identificación">
+                            <input asp-for="IdNumber" class="form-control" placeholder="Número de Cédula" required>
                             <span asp-validation-for="IdNumber" class="text-danger"></span>
                         </div>
                         <div class="col-6">
-                            <input asp-for="UserName" class="form-control" placeholder="Nombre">
+                            <input asp-for="UserName" class="form-control" placeholder="Nombre" required>
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                         <div class="col-6">
-                            <input asp-for="FirstName" class="form-control" placeholder="Primer Apellido">
+                            <input asp-for="FirstName" class="form-control" placeholder="Primer Apellido" required>
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="col-6">
-                            <input asp-for="LastName" class="form-control" placeholder="Segundo Apellido">
+                            <input asp-for="LastName" class="form-control" placeholder="Segundo Apellido" required>
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                         <div class="col-md-12">
@@ -66,19 +66,19 @@
                             <span asp-validation-for="BirthDate" class="text-danger"></span>
                         </div>
                         <div class="col-6">
-                            <input asp-for="Email" class="form-control" placeholder="Correo Electrónico">
+                            <input asp-for="Email" class="form-control" placeholder="Correo Electrónico" required>
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
-                            <input asp-for="PhoneNumber" class="form-control" placeholder="Número Telefónico">
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="Número Telefónico" required>
                             <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                         <div class="col-md-12">
-                            <textarea asp-for="UserAddress" class="form-control" placeholder="Dirección" rows="3"></textarea>
+                            <textarea asp-for="UserAddress" class="form-control" placeholder="Dirección" rows="3" required></textarea>
                             <span asp-validation-for="UserAddress" class="text-danger"></span>
                         </div>
                         <div class="col-12">
-                            <input asp-for="PasswordHash" class="form-control" placeholder="Contraseña">
+                            <input asp-for="PasswordHash" class="form-control" placeholder="Contraseña" required>
                             <span asp-validation-for="PasswordHash" class="text-danger"></span>
                         </div>
                         <div class="g-recaptcha" data-sitekey="6LeEVPsoAAAAAIV04PkyxMomhwV6AFnFQXdfoyp5"></div>
