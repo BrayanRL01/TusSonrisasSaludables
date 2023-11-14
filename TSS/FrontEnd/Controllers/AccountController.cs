@@ -225,7 +225,7 @@ namespace FrontEnd.Controllers
             else
             {
                 TempData["Error"] = "Perfil no editado.";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", user);
             }
         }
 
