@@ -7,6 +7,8 @@ namespace FrontEnd.Models
         public int RecordId { get; set; }
         [Display(Name = "Nombre del Paciente")]
         public string PatientName { get; set; } = null!;
+        [Display(Name = "Número de Cédula")]
+        public string IdNumber { get; set; } = null!;
         [Display(Name = "Nombre del Doctor/a")]
         public string DoctorName { get; set; } = null!;
         [Display(Name = "Procedimiento")]
