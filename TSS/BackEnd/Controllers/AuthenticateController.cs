@@ -1,12 +1,14 @@
 ﻿using BackEnd.Models;
 using Entities.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -249,6 +251,52 @@ namespace BackEnd.Controllers
             {
                 return StatusCode(500, "Hubo un error: " + ex.Message);
             }
+        }
+
+        [HttpPatch("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] UserModel model)
+        {
+            if (model.Email == null || model.PasswordHash == null)
+            {
+                return BadRequest("Ha ocurrido un error al cambiar la contraseña, intente de nuevo.");
+            }
+            else if (model.PasswordHash.Length < 8 || ValidPassword(model.PasswordHash) == false)
+            {
+                return BadRequest("La contraseña debe contener un mínimo de 8 caractéres, un número, una letra mayúscula y un caracter especial, intente de nuevo.");
+            }
+            try
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ChangePassword {model.Email}, {model.PasswordHash}");
+                await _context.SaveChangesAsync();
+                return Ok("Se ha cambiado su contraseña correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ha ocurrido un error: {ex.Message}");
+            }
+        }
+
+        public static bool ValidPassword(string password)
+        {
+            // Comprueba si la contraseña contiene al menos un número
+            if (!Regex.IsMatch(password, @"\d"))
+            {
+                return false;
+            }
+
+            // Comprueba si la contraseña contiene al menos una letra mayúscula
+            if (!Regex.IsMatch(password, @"[A-Z]"))
+            {
+                return false;
+            }
+
+            // Comprueba si la contraseña contiene al menos un caracter especial
+            if (!Regex.IsMatch(password, @"[\W_]"))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
