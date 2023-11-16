@@ -1148,13 +1148,13 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProfile(UserViewModel user)
         {
-            if (ModelState.IsValid)
+            try
             {
                 user = Helper.Edit(user);
                 TempData["Message"] = "Usuario modificado correctamente.";
                 return RedirectToAction("Index");
             }
-            else
+            catch (Exception)
             {
                 TempData["Error"] = "No se modificó el usuario, compruebe sus validaciones e intentelo de nuevo.";
                 return RedirectToAction("Index");

@@ -244,7 +244,7 @@ namespace FrontEnd.Controllers
             {
                 string message = _securityHelper.ForgotPassword(user);
                 TempData["Message"] = message;
-                return RedirectToAction("Login");
+                return RedirectToAction("ResetPassword");
             }
             else
             {
@@ -252,7 +252,34 @@ namespace FrontEnd.Controllers
                 return RedirectToAction("ResetPassword");
             }
         }
-        #endregion
 
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [Authorize]
+        //[AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(PasswordModel model)
+        {
+            if (model.Password.Length >= 8)
+            {
+                string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+                model.Email  = email!; 
+                string message = _securityHelper.ChangePassword(model);
+                TempData["Message"] = message;
+                return RedirectToAction("ChangePassword");
+            }
+            else
+            {
+                TempData["Error"] = "Correo electrónico inválido.";
+                return RedirectToAction("ChangePassword");
+            }
+        }
+
+        #endregion
     }
 }

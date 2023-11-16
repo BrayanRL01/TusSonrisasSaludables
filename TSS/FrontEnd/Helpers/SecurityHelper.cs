@@ -82,5 +82,13 @@ namespace FrontEnd.Helpers
                 throw new Exception(ex.Message);
             }
         }
+
+        public string ChangePassword(PasswordModel model)
+        {
+            HttpResponseMessage responseMessage = _repository.PutResponse("api/Authenticate/ChangePassword/", model);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            string message = content;
+            return message;
+        }
     }
 }

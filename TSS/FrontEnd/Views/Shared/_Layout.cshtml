@@ -101,6 +101,7 @@
                     <div class="dropdown-menu m-0">
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <a asp-controller="Account" asp-action="ChangePassword" class="dropdown-item">Cambiar Contraseña</a>
                             <a asp-controller="Account" asp-action="EditProfile" class="dropdown-item">Mí Información</a>
                             <a asp-controller="Account" asp-action="MyAppointments" class="dropdown-item">Mis Citas</a>
                             <a asp-controller="Account" asp-action="MyRecords" class="dropdown-item">Mis Registros</a>
