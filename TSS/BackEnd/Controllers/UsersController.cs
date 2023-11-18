@@ -295,19 +295,12 @@ namespace BackEnd.Controllers
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.UserAddress
                     },
-                    // new SqlParameter()
-                    //{
-                    //    ParameterName = "@Password",
-                    //    SqlDbType = System.Data.SqlDbType.VarChar,
-                    //    Direction = System.Data.ParameterDirection.Input,
-                    //    Value = entity.PasswordHash
-                    //}
                 };
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Usuario actualizado correctamente.");
             }
             catch (Exception ex)
             {
@@ -325,7 +318,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteUser {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Usuario eliminado correctamente.");
             }
             catch (Exception ex)
             {

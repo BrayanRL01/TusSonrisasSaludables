@@ -214,18 +214,19 @@ namespace FrontEnd.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile([FromBody] UserViewModel user)
+        public ActionResult EditProfile(UserViewModel user)
         {
-            if (ModelState.IsValid)
+            string mensaje = usersHelper.Edit(user);
+
+            if (mensaje.StartsWith("U"))
             {
-                user = usersHelper.Edit(user);
-                TempData["Message"] = "Perfil editado correctamente.";
-                return RedirectToAction("Index", "Home");
+                TempData["Message"] = mensaje;
+                return RedirectToAction("EditProfile", "Account");
             }
             else
             {
                 TempData["Error"] = "Perfil no editado.";
-                return RedirectToAction("Index", "Home", user);
+                return RedirectToAction("EditProfile", "Account");
             }
         }
 

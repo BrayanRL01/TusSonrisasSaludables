@@ -16,6 +16,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger" align="center"></div>
             @Html.HiddenFor(Model => Model.UserId)
             @Html.HiddenFor(Model => Model.RoleId)
+            @Html.HiddenFor(Model => Model.PasswordHash)
             <div class="form-group row">
                 <label asp-for="TypeId" readonly class="control-label" align="center"></label>
                 @Html.DropDownListFor(model => model.TypeId, (SelectList)ViewBag.IDTypes, "Seleccione un tipo", new { @class = "form-control" })
@@ -97,14 +98,7 @@
                     <span asp-validation-for="UserAddress" class="text-danger" align="center"></span>
                 </div>
             </center>
-            <br />
-            @*             <center>
-            <div class="form-group">
-            <label asp-for="PasswordHash" class="control-label" align="center"></label>
-            <input asp-for="PasswordHash" class="form-control" />
-            <span asp-validation-for="PasswordHash" class="text-danger" align="center"></span>
-            </div>
-            </center> *@
+
             <br />
             <div style="text-align: center;">
                 <input type="submit" value="Save" class="btn btn-primary" />

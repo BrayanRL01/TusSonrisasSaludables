@@ -63,13 +63,13 @@ namespace FrontEnd.Controllers
         #region Get
         public ActionResult Users()
         {
-            List<VWUserViewModel> users = Helper.GetAllView();
+            List<VWUserViewModel>? users = Helper.GetAllView();
             return View("Users/Index", users);
         }
 
         public ActionResult Details(int id)
         {
-            VWUserViewModel vwuser = Helper.GetViewByID(id);
+            VWUserViewModel? vwuser = Helper.GetViewByID(id);
             return View("Users/Details", vwuser);
         }
         #endregion
@@ -110,7 +110,7 @@ namespace FrontEnd.Controllers
         #region Edit
         public ActionResult Edit(int id)
         {
-            UserViewModel user = Helper.GetByID(id);
+            UserViewModel? user = Helper.GetByID(id);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
@@ -125,17 +125,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserViewModel user)
         {
-            try
+            string mensaje = Helper.Edit(user);
+
+            if (mensaje.StartsWith("U"))
             {
-                user = Helper.Edit(user);
                 TempData["Message"] = "Usuario modificado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = new Exception("Hubo un error: " + ex.Message);
-                return RedirectToAction("Users");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Users");
         }
         #endregion
 
@@ -143,7 +142,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult Delete(int id)
         {
-            VWUserViewModel vwuser = Helper.GetViewByID(id);
+            VWUserViewModel? vwuser = Helper.GetViewByID(id);
             return View("Users/Delete", vwuser);
         }
 
@@ -152,15 +151,14 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserViewModel user)
         {
-            try
+            string mensaje = Helper.Delete(user.UserId);
+            if (mensaje.StartsWith("U"))
             {
-                user = Helper.Delete(user.UserId);
-                TempData["Message"] = "Usuario eliminado correctamente.";
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Users");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se eliminó el usuario. " + ex.Message;
-            }
+
+            TempData["Error"] = mensaje;
             return RedirectToAction("Users");
         }
 
@@ -558,13 +556,13 @@ namespace FrontEnd.Controllers
         #region GetAll
         public ActionResult Brands()
         {
-            List<BrandViewModel> brands = brandsHelper.GetBrandsView();
+            List<BrandViewModel>? brands = brandsHelper.GetBrandsView();
             return View("Brands/Brands", brands);
         }
 
         public ActionResult BrandDetails(int id)
         {
-            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            BrandViewModel? brand = brandsHelper.GetViewByID(id);
             return View("Brands/BrandDetails", brand);
         }
         #endregion
@@ -1139,15 +1137,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProfile(UserViewModel user)
         {
-            try
+            string mensaje = Helper.Edit(user);
+
+            if (mensaje.StartsWith("U"))
             {
-                user = Helper.Edit(user);
-                TempData["Message"] = "Usuario modificado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Index");
             }
-            catch (Exception)
+            else
             {
-                TempData["Error"] = "No se modificó el usuario, compruebe sus validaciones e intentelo de nuevo.";
+                TempData["Error"] = mensaje;
                 return RedirectToAction("Index");
             }
         }

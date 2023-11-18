@@ -13,16 +13,16 @@ namespace FrontEnd.Helpers
         }
 
         #region GetAll
-        public List<BrandViewModel> GetBrandsView()
+        public List<BrandViewModel>? GetBrandsView()
         {
             try
             {
-                List<BrandViewModel> list = new();
+                List<BrandViewModel>? list = new();
                 HttpResponseMessage responseMessage = repository.GetResponse("api/Brands/Brands");
                 if (responseMessage != null)
                 {
                     var content = responseMessage.Content.ReadAsStringAsync().Result;
-                    list = JsonConvert.DeserializeObject<List<BrandViewModel>>(content);
+                    list = JsonConvert.DeserializeObject<List<BrandViewModel>?>(content);
                 }
                 return list;
             }
@@ -34,11 +34,11 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region GetByID
-        public BrandViewModel GetViewByID(int id)
+        public BrandViewModel? GetViewByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Brands/Brand/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            BrandViewModel Brand = JsonConvert.DeserializeObject<BrandViewModel>(content);
+            BrandViewModel? Brand = JsonConvert.DeserializeObject<BrandViewModel?>(content);
             return Brand;
         }
         #endregion
