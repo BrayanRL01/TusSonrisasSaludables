@@ -44,31 +44,32 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Create
-        public BrandViewModel Add(BrandViewModel Brand)
+        public string Add(BrandViewModel Brand)
         {
             HttpResponseMessage responseMessage = repository.PostResponse("api/Brands/Brand/", Brand);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
-            BrandViewModel BrandAPI = JsonConvert.DeserializeObject<BrandViewModel>(content);
-            return BrandAPI;
+            string mensaje = content.ToString();
+            return mensaje;
         }
         #endregion
 
         #region Update
-        public BrandViewModel Edit(BrandViewModel Brand)
+        public string Edit(BrandViewModel Brand)
         {
             HttpResponseMessage responseMessage = repository.PutResponse("api/Brands/Brand/", Brand);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
-            BrandViewModel BrandAPI = JsonConvert.DeserializeObject<BrandViewModel>(content);
-            return BrandAPI;
+            string mensaje = content;
+            return mensaje;
         }
         #endregion
 
         #region Delete
-        public BrandViewModel Delete(int id)
+        public string Delete(int id)
         {
-            BrandViewModel Brand = new();
             HttpResponseMessage responseMessage = repository.DeleteResponse("api/Brands/" + id);
-            return Brand;
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
         }
         #endregion
     }

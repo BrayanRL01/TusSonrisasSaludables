@@ -16,9 +16,8 @@ namespace FrontEnd.Controllers
         private readonly ILogger<DashboardController> _logger;
 
         #region Helpers
-        ServiceRepository repository = new();
+        private ServiceRepository repository = new();
         private SecurityHelper securityHelper = new();
-
 
         #region Users
         private UsersHelper Helper = new();
@@ -582,17 +581,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateBrand(BrandViewModel brand)
         {
-            try
+            string mensaje = brandsHelper.Add(brand);
+
+            if (mensaje.StartsWith("M"))
             {
-                brand = brandsHelper.Add(brand);
-                TempData["Message"] = "Marca creada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Brands");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo eliminar la marca: " + ex.Message;
-                return RedirectToAction("Brands");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Brands");
         }
         #endregion
 
@@ -607,17 +605,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditBrand(BrandViewModel brand)
         {
-            try
+            string mensaje = brandsHelper.Edit(brand);
+
+            if (mensaje.StartsWith("M"))
             {
-                brand = brandsHelper.Edit(brand);
-                TempData["Message"] = "Marca editada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Brands");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Brands");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Brands");
         }
         #endregion
 
@@ -634,17 +631,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteBrand(BrandViewModel brand)
         {
-            try
+            string mensaje = brandsHelper.Delete(brand.BrandId);
+
+            if (mensaje.StartsWith("M"))
             {
-                brand = brandsHelper.Delete(brand.BrandId);
-                TempData["Message"] = "Marca eliminada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Brands");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"No se pudo eliminar la marca: {ex.Message}";
-                return RedirectToAction("Brands");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Brands");
         }
         #endregion
 
