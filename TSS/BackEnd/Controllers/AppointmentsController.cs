@@ -173,7 +173,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Cita(as) creada correctamente.");
             }
             catch (Exception ex)
             {
@@ -234,7 +234,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Cita actualizada correctamente.");
             }
             catch (Exception ex)
             {
@@ -253,7 +253,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteAppointment {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Cita eliminada correctamente.");
             }
             catch (Exception ex)
             {
@@ -276,7 +276,7 @@ namespace BackEnd.Controllers
                 {
                     await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ConfirmAppointment {model.AppointmentId}, {model.Email}");
                     await _context.SaveChangesAsync();
-                    return Ok(model);
+                    return Ok("Cita reservada correctamente.");
                 }
             }
             catch (Exception ex)
@@ -298,7 +298,7 @@ namespace BackEnd.Controllers
                 {
                     await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CancelAppointment {model.AppointmentId}, {model.Email}");
                     await _context.SaveChangesAsync();
-                    return Ok(model);
+                    return Ok("Cita cancelada correctamente.");
                 }
             }
             catch (Exception ex)

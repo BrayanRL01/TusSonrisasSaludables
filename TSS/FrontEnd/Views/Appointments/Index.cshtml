@@ -14,7 +14,7 @@
         </button>
     </div>
 }
-else if (TempData.ContainsKey("Error"))
+@if (TempData.ContainsKey("Error"))
 {
     <div class="alert alert-danger" role="alert">
         @TempData["Error"]
@@ -23,6 +23,7 @@ else if (TempData.ContainsKey("Error"))
         </button>
     </div>
 }
+
 
 <div style="padding: 30px; padding-bottom: 60px;">
     <table class="table table-bordered">
@@ -62,7 +63,7 @@ else if (TempData.ContainsKey("Error"))
                         @Html.DisplayFor(modelItem => item.EndTime)
                     </td>
                     <td>
-                        <button class="btn btn-secondary">@Html.ActionLink("Reservar Cita", "Confirm", new { id=item.AppointmentId })</button>
+                        <button class="btn btn-secondary">@Html.ActionLink("Reservar Cita", "Confirm", new { id = item.AppointmentId })</button>
                     </td>
                 </tr>
             }

@@ -44,11 +44,11 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public UserViewModel GetUser(LoginModel usuario)
+        public UserViewModel? GetUser(LoginModel usuario)
         {
             HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/GetUser", usuario);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
-            UserViewModel loginModel = JsonConvert.DeserializeObject<UserViewModel>(content);
+            UserViewModel? loginModel = JsonConvert.DeserializeObject<UserViewModel?>(content);
             return loginModel;
         }
 
@@ -60,27 +60,20 @@ namespace FrontEnd.Helpers
             return Roles;
         }
 
-        public UserViewModel GetEmail(string email)
+        public UserViewModel? GetEmail(string email)
         {
             HttpResponseMessage responseMessage = _repository.GetResponse("api/Authenticate/GetEmail/" + email);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            UserViewModel user = JsonConvert.DeserializeObject<UserViewModel>(content);
+            UserViewModel? user = JsonConvert.DeserializeObject<UserViewModel?>(content);
             return user;
         }
 
         public string ForgotPassword(EmailModel model)
         {
-            try
-            {
-                HttpResponseMessage responseMessage = _repository.PutResponse("api/Email/ResetPassword/", model);
-                string content = responseMessage.Content.ReadAsStringAsync().Result;
-                string message = content;
-                return message;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            HttpResponseMessage responseMessage = _repository.PutResponse("api/Email/ResetPassword/", model);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            string message = content;
+            return message;
         }
 
         public string ChangePassword(PasswordModel model)

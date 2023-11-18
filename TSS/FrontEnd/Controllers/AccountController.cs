@@ -48,12 +48,12 @@ namespace FrontEnd.Controllers
                 var loginModel = _securityHelper.GetUser(model);
                 loginModel.Roles = _securityHelper.GetRole(model);
                 var claims = new List<Claim>() {
-                    new Claim(ClaimTypes.NameIdentifier, loginModel.IdNumber),
-                    new Claim(ClaimTypes.Name, loginModel.UserName),
-                    new Claim(ClaimTypes.Surname, loginModel.FirstName),
-                    new Claim(ClaimTypes.GivenName, loginModel.LastName),
-                    new Claim(ClaimTypes.Email, loginModel.Email),
-                    new Claim(ClaimTypes.Role, loginModel.Roles)
+                    new(ClaimTypes.NameIdentifier, loginModel.IdNumber),
+                    new(ClaimTypes.Name, loginModel.UserName),
+                    new(ClaimTypes.Surname, loginModel.FirstName),
+                    new(ClaimTypes.GivenName, loginModel.LastName),
+                    new(ClaimTypes.Email, loginModel.Email),
+                    new(ClaimTypes.Role, loginModel.Roles)
                  };
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -67,7 +67,7 @@ namespace FrontEnd.Controllers
                 if (loginModel.Roles == "Admin")
                 {
                     TempData["Message"] = $"Bienvenido/a {loginModel.UserName} {loginModel.FirstName}.";
-                    return RedirectToAction("Index", "Dashboard", model);
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 else if (loginModel.Roles == "User")
                 {
@@ -201,7 +201,7 @@ namespace FrontEnd.Controllers
         public ActionResult EditProfile()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            UserViewModel user = _securityHelper.GetEmail(email!);
+            UserViewModel? user = _securityHelper.GetEmail(email!);
             var genres = _genresHelper.GetAllView();
             var ids = _identificationsHelper.GetAllView();
             var provinces = _provincesHelper.GetAllView();
@@ -256,7 +256,8 @@ namespace FrontEnd.Controllers
         [Authorize]
         public IActionResult ChangePassword()
         {
-            return View();
+            PasswordModel model = new();
+            return View(model);
         }
 
         [Authorize]
@@ -265,17 +266,17 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ChangePassword(PasswordModel model)
         {
-            if (model.Password.Length >= 8)
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            model.Email = email!;
+            string message = _securityHelper.ChangePassword(model);
+            if (message.StartsWith("Se"))
             {
-                string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-                model.Email  = email!; 
-                string message = _securityHelper.ChangePassword(model);
                 TempData["Message"] = message;
                 return RedirectToAction("ChangePassword");
             }
             else
             {
-                TempData["Error"] = "Correo electrónico inválido.";
+                TempData["Error"] = message;
                 return RedirectToAction("ChangePassword");
             }
         }

@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace FrontEnd.Models
 {
@@ -11,5 +13,10 @@ namespace FrontEnd.Models
         [RegularExpression(@"^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$", ErrorMessage = "La contraseña debe cumplir con 8 caractéres, un número, " +
             "una letra mayúscula y un caractér especial.")]
         public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es requerida."), DataType(DataType.Password), Display(Name = "Confirmar Contraseña"), StringLength(20)]
+        [RegularExpression(@"^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$", ErrorMessage = "La contraseña debe cumplir con 8 caractéres, un número, " +
+           "una letra mayúscula y un caractér especial.")]
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

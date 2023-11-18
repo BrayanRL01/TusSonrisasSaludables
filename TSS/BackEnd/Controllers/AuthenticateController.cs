@@ -259,13 +259,14 @@ namespace BackEnd.Controllers
         [HttpPut("ChangePassword")]
         public async Task<IActionResult> ChangePassword(PasswordModel model)
         {
-            if (model.Email == null || model.Password == null)
+            if (model.Email == null || model.Password == null || model.ConfirmPassword == null)
             {
                 return BadRequest("Ha ocurrido un error al cambiar la contraseña, intente de nuevo.");
             }
-            else if (model.Password.Length < 8 || ValidPassword(model.Password) == false)
+            else if (model.Password.Length < 8 || ValidPassword(model.Password) == false || model.Password != model.ConfirmPassword)
             {
-                return BadRequest("La contraseña debe contener un mínimo de 8 caractéres, un número, una letra mayúscula y un caracter especial, intente de nuevo.");
+                return BadRequest("La contraseña debe contener un mínimo de 8 caractéres, un número, una letra mayúscula, un caracter especial y deben concordar " +
+                    "ambas contraseñas, intente de nuevo.");
             }
             try
             {

@@ -363,13 +363,13 @@ namespace FrontEnd.Controllers
         #region GetAll
         public ActionResult Appointments()
         {
-            List<VWAdminAppointmentViewModel> adminAppointments = appointmentsHelper.GetAdminAppointmentsView();
+            List<VWAdminAppointmentViewModel>? adminAppointments = appointmentsHelper.GetAdminAppointmentsView();
             return View("Appointments/AdminAppointments", adminAppointments);
         }
 
         public ActionResult AppointmentDetails(int id)
         {
-            VWAdminAppointmentViewModel Appointment = appointmentsHelper.GetViewByID(id);
+            VWAdminAppointmentViewModel? Appointment = appointmentsHelper.GetViewByID(id);
             return View("Appointments/AppointmentDetails", Appointment);
         }
         #endregion
@@ -388,26 +388,25 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAppointment(AppointmentViewModel appointment)
+        public ActionResult CreateAppointment(AppointmentViewModel? appointment)
         {
-            try
+            string mensaje = appointmentsHelper.Add(appointment!);
+
+            if (mensaje.StartsWith("C"))
             {
-                appointment = appointmentsHelper.Add(appointment);
-                TempData["Message"] = "Cita creada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Appointments");
             }
-            catch (Exception)
-            {
-                TempData["Error"] = "No se ha podido crear la cita.";
-                return RedirectToAction("Appointments");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Appointments");
         }
         #endregion
 
         #region Edit
         public ActionResult EditAppointment(int id)
         {
-            AppointmentViewModel appointment = appointmentsHelper.GetByID(id);
+            AppointmentViewModel? appointment = appointmentsHelper.GetByID(id);
             var specialties = specialtiesHelper.GetAllView();
             var doctors = doctorsHelper.GetAllView();
             ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
@@ -418,19 +417,18 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditAppointment(AppointmentViewModel appointment)
+        public ActionResult EditAppointment(AppointmentViewModel? appointment)
         {
-            try
+            string mensaje = appointmentsHelper.Edit(appointment!);
+            if (mensaje.StartsWith("C"))
             {
-                appointment = appointmentsHelper.Edit(appointment);
                 TempData["Message"] = "Cita editada correctamente.";
                 return RedirectToAction("Appointments");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Appointments");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Appointments");
+
         }
         #endregion
 
@@ -438,7 +436,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult DeleteAppointment(int id)
         {
-            VWAdminAppointmentViewModel vwappointment = appointmentsHelper.GetViewByID(id);
+            VWAdminAppointmentViewModel? vwappointment = appointmentsHelper.GetViewByID(id);
             return View("Appointments/DeleteAppointment", vwappointment);
         }
 
@@ -447,17 +445,14 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAppointment(AppointmentViewModel appointment)
         {
-            try
+            string mensaje = appointmentsHelper.Delete(appointment.AppointmentId);
+            if (mensaje.StartsWith("C"))
             {
-                appointment = appointmentsHelper.Delete(appointment.AppointmentId);
-                TempData["Message"] = "Cita eliminada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Appointments");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Appointments");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Appointments");
         }
         #endregion
 
@@ -1133,7 +1128,7 @@ namespace FrontEnd.Controllers
         public ActionResult EditProfile()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            UserViewModel user = securityHelper.GetEmail(email!);
+            UserViewModel? user = securityHelper.GetEmail(email!);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
