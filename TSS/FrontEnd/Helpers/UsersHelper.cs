@@ -87,11 +87,11 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Delete
-        public string Delete(int id)
+        public string? Delete(int id)
         {
             HttpResponseMessage responseMessage = repository.DeleteResponse("api/Users/" + id);
             var content = responseMessage.Content?.ReadAsStringAsync().Result;
-            string mensaje = content;
+            string? mensaje = content;
             return mensaje;
         }
         #endregion

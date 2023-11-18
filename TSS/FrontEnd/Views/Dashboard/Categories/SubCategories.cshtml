@@ -54,9 +54,9 @@ else if (TempData.ContainsKey("Error"))
                             @Html.DisplayFor(modelItem => item.SubCategory)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "EditSubCategory", new { id=item.CategoryId }) |
-                            @Html.ActionLink("Details", "SubCategoryDetails", new { id=item.CategoryId }) |
-                            @Html.ActionLink("Delete", "DeleteSubCategory", new { id=item.CategoryId })
+                            @Html.ActionLink("Edit", "EditSubCategory", new { id = item.CategoryId }) |
+                            @Html.ActionLink("Details", "SubCategoryDetails", new { id = item.CategoryId }) |
+                            @Html.ActionLink("Delete", "DeleteSubCategory", new { id = item.CategoryId })
                         </td>
                     </tr>
                 }

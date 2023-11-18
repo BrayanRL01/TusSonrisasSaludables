@@ -46,7 +46,7 @@ namespace FrontEnd.Controllers
                 HttpContext.Session.SetString("token", token!.Token);
 
                 var loginModel = _securityHelper.GetUser(model);
-                loginModel.Roles = _securityHelper.GetRole(model);
+                loginModel!.Roles = _securityHelper.GetRole(model);
                 var claims = new List<Claim>() {
                     new(ClaimTypes.NameIdentifier, loginModel.IdNumber),
                     new(ClaimTypes.Name, loginModel.UserName),

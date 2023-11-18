@@ -120,7 +120,7 @@ namespace BackEnd.Controllers
 
                 var param = new SqlParameter[]
                 {
-                    new SqlParameter()
+                    new()
                     {
                         ParameterName = "@CategoryName",
                         SqlDbType = System.Data.SqlDbType.VarChar,
@@ -132,7 +132,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Categoría creada correctamente.");
             }
             catch (Exception ex)
             {
@@ -149,14 +149,14 @@ namespace BackEnd.Controllers
 
                 var param = new SqlParameter[]
                 {
-                    new SqlParameter()
+                    new()
                     {
                         ParameterName = "@MainCategory",
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.MainCategoryId
                     },
-                    new SqlParameter()
+                    new()
                     {
                         ParameterName = "@CategoryName",
                         SqlDbType = System.Data.SqlDbType.VarChar,
@@ -168,7 +168,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Subcategoría creada correctamente.");
             }
             catch (Exception ex)
             {
@@ -180,7 +180,7 @@ namespace BackEnd.Controllers
         #region PutCategories
         // PUT api/<CategoriesController>/5
         [HttpPut("Category")]
-        public async Task<JsonResult> PutCategory([FromBody] CategoryModel entity)
+        public async Task<ActionResult<Category>> PutCategory([FromBody] CategoryModel entity)
         {
             try
             {
@@ -188,14 +188,14 @@ namespace BackEnd.Controllers
 
                 var param = new SqlParameter[]
                 {
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@CategoryID",
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.CategoryId
                     },
-                    new SqlParameter()
+                    new()
                     {
                         ParameterName = "@CategoryName",
                         SqlDbType = System.Data.SqlDbType.VarChar,
@@ -207,11 +207,11 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return new JsonResult(Ok(entity));
+                return Ok("Categoría actualizada correctamente.");
             }
             catch (Exception ex)
             {
-                return new JsonResult(StatusCode(500, "No se pudo editar la categoría: " + ex.Message));
+                return StatusCode(500, "No se pudo editar la categoría: " + ex.Message);
             }
         }
 
@@ -250,7 +250,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Subcategoría actualizada correctamente.");
             }
             catch (Exception ex)
             {
@@ -268,7 +268,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteCategory {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Categoría/Subcategoría eliminada correctamente.");
             }
             catch (Exception ex)
             {

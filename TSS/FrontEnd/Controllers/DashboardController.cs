@@ -172,13 +172,13 @@ namespace FrontEnd.Controllers
         // GET: CategoriesController
         public ActionResult Categories()
         {
-            List<VWCategoryViewModel> categories = categoriesHelper.GetCategoriesView();
+            List<VWCategoryViewModel>? categories = categoriesHelper.GetCategoriesView();
             return View("Categories/Categories", categories);
         }
 
         public ActionResult SubCategories()
         {
-            List<VWSubCategoryViewModel> subcategories = categoriesHelper.GetSubCategoriesView();
+            List<VWSubCategoryViewModel>? subcategories = categoriesHelper.GetSubCategoriesView();
             return View("Categories/SubCategories", subcategories);
         }
         #endregion
@@ -186,13 +186,13 @@ namespace FrontEnd.Controllers
         #region Details
         public ActionResult CategoryDetails(int id)
         {
-            VWCategoryViewModel category = categoriesHelper.GetViewByID(id);
+            VWCategoryViewModel? category = categoriesHelper.GetViewByID(id);
             return View("Categories/CategoryDetails", category);
         }
 
         public ActionResult SubCategoryDetails(int id)
         {
-            VWSubCategoryViewModel category = categoriesHelper.GetSubByID(id);
+            VWSubCategoryViewModel? category = categoriesHelper.GetSubByID(id);
             return View("Categories/SubCategoryDetails", category);
         }
         #endregion
@@ -208,17 +208,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.AddCategory(category);
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.AddCategory(category);
-                TempData["Message"] = "Categoría creado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Categories");
             }
-            catch (JsonReaderException ex)
-            {
-                TempData["Error"] = "No se pudo crear la categoría. " + ex.Message;
-                return RedirectToAction("Categories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Categories");
+
         }
 
         public ActionResult CreateSubCategory()
@@ -233,24 +232,24 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSubCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.AddSubCategory(category);
+
+            if (mensaje.StartsWith("S"))
             {
-                category = categoriesHelper.AddSubCategory(category);
-                TempData["Message"] = "Subcategoría creado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("SubCategories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo crear la subcategoría. " + ex.Message;
-                return RedirectToAction("SubCategories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("SubCategories");
+
         }
         #endregion
 
         #region Edit
         public ActionResult EditCategory(int id)
         {
-            CategoryViewModel category = categoriesHelper.GetByID(id);
+            CategoryViewModel? category = categoriesHelper.GetByID(id);
             return View("Categories/EditCategory", category);
         }
 
@@ -259,22 +258,21 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.EditCategory(category);
+
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.EditCategory(category);
-                TempData["Message"] = "Categoría editada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Categories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo editar la categoría. " + ex.Message;
-                return RedirectToAction("Categories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Categories");
         }
 
         public ActionResult EditSubCategory(int id)
         {
-            CategoryViewModel subcategory = categoriesHelper.GetByID(id);
+            CategoryViewModel? subcategory = categoriesHelper.GetByID(id);
             var categories = categoriesHelper.GetCategoriesView();
             ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
             return View("Categories/EditSubCategory", subcategory);
@@ -284,27 +282,24 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditSubCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.EditSubCategory(category);
+
+            if (mensaje.StartsWith("S"))
             {
-                if (ModelState.IsValid)
-                {
-                    category = categoriesHelper.EditSubCategory(category);
-                    TempData["Message"] = "Subcategoría creado correctamente.";
-                }
+                TempData["Message"] = mensaje;
                 return RedirectToAction("SubCategories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo editar la subcategoría. " + ex.Message;
-                return RedirectToAction("SubCategories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("SubCategories");
+
         }
         #endregion
 
         #region Delete
         public ActionResult DeleteCategory(int id)
         {
-            VWCategoryViewModel category = categoriesHelper.GetViewByID(id);
+            VWCategoryViewModel? category = categoriesHelper.GetViewByID(id);
             return View("Categories/DeleteCategory", category);
         }
 
@@ -313,22 +308,20 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.Delete(category.CategoryId);
+
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.Delete(category.CategoryId);
-                TempData["Message"] = "Categoría eliminada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Categories");
             }
-            catch (Exception ex)
-            {
-                TempData["Message"] = ex.Message;
-                return RedirectToAction("Categories");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Categories");
         }
 
         public ActionResult DeleteSubCategory(int id)
         {
-            VWSubCategoryViewModel category = categoriesHelper.GetSubByID(id);
+            VWSubCategoryViewModel? category = categoriesHelper.GetSubByID(id);
             return View("Categories/DeleteSubCategory", category);
         }
 
@@ -337,19 +330,14 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteSubCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.Delete(category.CategoryId);
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.Delete(category.CategoryId);
-                TempData["Message"] = "Subcategoría eliminada correctamente.";
-                TempData["Status"] = "success";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("SubCategories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se eliminó la subcategoría: " + ex.Message;
-                TempData["Status"] = "danger";
-                return RedirectToAction("SubCategories");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("SubCategories");
         }
         #endregion
 
@@ -595,7 +583,7 @@ namespace FrontEnd.Controllers
         #region Edit
         public ActionResult EditBrand(int id)
         {
-            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            BrandViewModel? brand = brandsHelper.GetViewByID(id);
             return View("Brands/EditBrand", brand);
         }
 
@@ -620,7 +608,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult DeleteBrand(int id)
         {
-            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            BrandViewModel? brand = brandsHelper.GetViewByID(id);
             return View("Brands/DeleteBrand", brand);
         }
 

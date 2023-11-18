@@ -99,7 +99,7 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Perfil</a>
                     <div class="dropdown-menu m-0">
-                        @if (User.Identity.IsAuthenticated)
+                        @if (User.Identity!.IsAuthenticated)
                         {
                             <a asp-controller="Account" asp-action="ChangePassword" class="dropdown-item">Cambiar Contraseña</a>
                             <a asp-controller="Account" asp-action="EditProfile" class="dropdown-item">Mí Información</a>
