@@ -154,7 +154,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Registro creado correctamente.");
             }
             catch (Exception ex)
             {
@@ -208,7 +208,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Registro actualizado correctamente.");
             }
             catch (Exception ex)
             {
@@ -226,7 +226,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteRecord {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Registro eliminado correctamente.");
             }
             catch (Exception ex)
             {

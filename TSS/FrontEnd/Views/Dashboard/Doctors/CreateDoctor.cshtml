@@ -22,7 +22,7 @@
                 @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
                 <span asp-validation-for="SpecialtyId" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div class="col">
                 @*<label asp-for="GenreId" class="form-label"></label>*@
                 @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
@@ -36,61 +36,56 @@
             </div>
             <br />
             <div class="col">
-            @*    <label asp-for="DoctorName" class="control-label"></label>*@
-                    <input asp-for="DoctorName" class="form-control" placeholder="Nombre" />
+                @*    <label asp-for="DoctorName" class="control-label"></label>*@
+                <input asp-for="DoctorName" class="form-control" placeholder="Nombre" />
                 <span asp-validation-for="DoctorName" class="text-danger"></span>
             </div>
 
-            @*<div class="form-group">*@
-                @*<label asp-for="FirstName" class="control-label"></label>*@
-               @* <input asp-for="FirstName" class="form-control" />*@
-               @* <span asp-validation-for="FirstName" class="text-danger"></span>*@
-            @*</div>*@
+            <div class="form-group">
+                @* <label asp-for="FirstName" class="control-label"></label> *@
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
             <br />
             <div class="col">
-                @*<label asp-for="LastName" class="control-label"></label>*@
-                    <input asp-for="LastName" class="form-control" placeholder="Apellidos" />
+                @* <label asp-for="LastName" class="control-label"></label> *@
+                <input asp-for="LastName" class="form-control" placeholder="Apellidos" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
-           </div>
-           
+            </div>
+
             <br />
-           
+
             <div class="col">
                 @*<label asp-for="Email" class="control-label"></label>*@
-                <input asp-for="Email" class="form-control" placeholder="Correo"/>
+                <input asp-for="Email" class="form-control" placeholder="Correo" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-           
-             <br />
+
+            <br />
             <div class="col">
                 @*<label asp-for="PhoneNumber" class="control-label"></label>*@
-             <input asp-for="PhoneNumber" class="form-control" placeholder="Número Telefónico" />
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Número Telefónico" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-                   
+
             <br />
-                    <div class="col">
-                        @*<label asp-for="BirthDate" class="control-label"></label>*@
-                        <input asp-for="BirthDate" class="form-control" />
-                        <span asp-validation-for="BirthDate" class="text-danger"></span>
-                    </div>
-                    <br /> 
             <div class="col">
-                <input type="file" asp-for="DoctorPhoto" class="form-control" name="files" placeholder="Foto"/>
-                        <span asp-validation-for="DoctorPhoto" class="text-danger" placeholder="Foto"></span>
+                @*<label asp-for="BirthDate" class="control-label"></label>*@
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
-            <br />  
+            <br />
+            <div class="col">
+                <input type="file" asp-for="DoctorPhoto" class="form-control" name="files" placeholder="Foto" />
+                <span asp-validation-for="DoctorPhoto" class="text-danger" placeholder="Foto"></span>
+            </div>
+            <br />
             <partial name="Photo/_DoctorPhoto" model="Model" />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
-                        <button class="btn btn-primary" asp-action="Doctors">Regresar a Doctores</button>
+                <button class="btn btn-primary" asp-action="Doctors">Regresar a Doctores</button>
             </div>
         </form>
-     </div>
     </div>
-@*</div>*@
-
-@*<div>
-    <a asp-action="Index">Regresar a Doctores</a>
-</div>*@
-
+</div>

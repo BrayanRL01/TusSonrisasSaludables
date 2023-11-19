@@ -31,9 +31,9 @@ namespace FrontEnd.Models
         [Required(ErrorMessage = "El segundo apellido es requerido."), Display(Name = "Segundo Apellido"), StringLength(20)]
         public string LastName { get; set; } = null!;
 
-        [Required(ErrorMessage = "La fecha de nacimiento es requerida."), Display(Name = "Fecha de Nacimiento"), StringLength(20)]
+        [Required(ErrorMessage = "La fecha de nacimiento es requerida."), Display(Name = "Fecha de Nacimiento")]
         [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } = DateTime.Now.Date;
 
         [Required(ErrorMessage = "El correo electrónico es requerido."), Display(Name = "Correo Electrónico"), StringLength(30)]
         [EmailAddress(ErrorMessage = "El correo electrónico debe ser válido.")]

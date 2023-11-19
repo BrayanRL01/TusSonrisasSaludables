@@ -115,7 +115,6 @@ namespace FrontEnd.Controllers
             }
             else
             {
-                //TempData["Error"] = "No se ha creado el usuario.";
                 TempData["Error"] = mensaje;
                 return RedirectToAction("Register");
             }
@@ -180,7 +179,6 @@ namespace FrontEnd.Controllers
                 string? email = User.FindFirst(ClaimTypes.Email)?.Value;
                 List<VWAdminAppointmentViewModel>? model = _appointmentsHelper.GetUserAppointments(email!);
                 return View(model);
-
             }
             catch (Exception)
             {
@@ -193,7 +191,7 @@ namespace FrontEnd.Controllers
         public ActionResult MyRecords()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            List<VWRecordViewModel> model = _recordsHelper.GetUserRecords(email!);
+            List<VWRecordViewModel>? model = _recordsHelper.GetUserRecords(email!);
             return View(model);
         }
 

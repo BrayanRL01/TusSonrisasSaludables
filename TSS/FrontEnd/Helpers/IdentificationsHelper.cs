@@ -12,14 +12,14 @@ namespace FrontEnd.Helpers
             repository = new ServiceRepository();
         }
 
-        public List<IdentificationViewModel> GetAllView()
+        public List<IdentificationViewModel>? GetAllView()
         {
-            List<IdentificationViewModel> list = new List<IdentificationViewModel>();
+            List<IdentificationViewModel>? list = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Identifications/GetIDTypesView");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                list = JsonConvert.DeserializeObject<List<IdentificationViewModel>>(content);
+                list = JsonConvert.DeserializeObject<List<IdentificationViewModel>?>(content);
             }
             return list;
         }
