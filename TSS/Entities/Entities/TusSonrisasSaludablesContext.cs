@@ -358,6 +358,8 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Role>(entity =>
             {
+                entity.HasIndex(e => e.RoleType, "IDX_RoleTypes");
+
                 entity.HasIndex(e => e.RoleType, "UQ__Roles__5D0A2E947603CBE2")
                     .IsUnique();
 
@@ -431,8 +433,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Email, "IDX_UserEmails")
-                    .IsUnique();
+                entity.HasIndex(e => e.Email, "IDX_UserEmails");
 
                 entity.HasIndex(e => e.IdNumber, "UQ__Users__62DF8033E5901911")
                     .IsUnique();

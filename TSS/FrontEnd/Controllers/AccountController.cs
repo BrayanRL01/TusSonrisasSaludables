@@ -223,7 +223,7 @@ namespace FrontEnd.Controllers
             }
             else
             {
-                TempData["Error"] = "Perfil no editado.";
+                TempData["Error"] = mensaje;
                 return RedirectToAction("EditProfile", "Account");
             }
         }
@@ -239,15 +239,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(EmailModel user)
         {
-            if (user.To != null)
+            string message = _securityHelper.ForgotPassword(user);
+
+            if (message.StartsWith("S"))
             {
-                string message = _securityHelper.ForgotPassword(user);
                 TempData["Message"] = message;
                 return RedirectToAction("ResetPassword");
             }
             else
             {
-                TempData["Error"] = "Correo electrónico inválido.";
+                TempData["Error"] = message;
                 return RedirectToAction("ResetPassword");
             }
         }
@@ -279,7 +280,6 @@ namespace FrontEnd.Controllers
                 return RedirectToAction("ChangePassword");
             }
         }
-
         #endregion
     }
 }

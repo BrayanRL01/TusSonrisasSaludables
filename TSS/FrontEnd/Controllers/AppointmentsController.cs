@@ -8,7 +8,7 @@ namespace FrontEnd.Controllers
 {
     public class AppointmentsController : Controller
     {
-        AppointmentsHelper appointmentsHelper = new();
+        private AppointmentsHelper appointmentsHelper = new();
 
         // GET: AppointmentsController
         public ActionResult Index()
@@ -68,10 +68,10 @@ namespace FrontEnd.Controllers
             if (mensaje.StartsWith("C"))
             {
                 TempData["Message"] = mensaje;
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MyAppointments", "Account");
             }
             TempData["Error"] = mensaje;
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("MyAppointments", "Account");
         }
     }
 }

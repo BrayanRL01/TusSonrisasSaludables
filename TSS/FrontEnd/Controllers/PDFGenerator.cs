@@ -1,50 +1,53 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
 
-public class PDFGenerator
+namespace FrontEnd.Controllers
 {
-    private readonly IConverter _converter;
-
-    public PDFGenerator(IConverter converter)
+    public class PDFGenerator
     {
-        _converter = converter;
-    }
+        private readonly IConverter _converter;
 
-    public byte[] GeneratePdf(string htmlContent)
-    {
-        var document = new HtmlToPdfDocument()
+        public PDFGenerator(IConverter converter)
         {
-            GlobalSettings = {
+            _converter = converter;
+        }
+
+        public byte[] GeneratePdf(string htmlContent)
+        {
+            var document = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
                 PaperSize = PaperKind.A4,
                 Orientation = Orientation.Portrait,
             },
-            Objects = {
+                Objects = {
                 new ObjectSettings()
                 {
                     PagesCount = true,
                     HtmlContent = htmlContent
                 }
             }
-        };
-        return _converter.Convert(document);
-    }
+            };
+            return _converter.Convert(document);
+        }
 
-    public byte[] GenerateAppointmentPDF(string htmlContent)
-    {
-        var document = new HtmlToPdfDocument()
+        public byte[] GenerateAppointmentPDF(string htmlContent)
         {
-            GlobalSettings = {
+            var document = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
                 PaperSize = PaperKind.A4,
                 Orientation = Orientation.Portrait,
             },
-            Objects = {
+                Objects = {
                 new ObjectSettings()
                 {
                     PagesCount = true,
                     HtmlContent = htmlContent
                 }
             }
-        };
-        return _converter.Convert(document);
+            };
+            return _converter.Convert(document);
+        }
     }
 }

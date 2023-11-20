@@ -373,9 +373,9 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAppointment(AppointmentViewModel? appointment)
+        public ActionResult CreateAppointment(AppointmentViewModel appointment)
         {
-            string mensaje = appointmentsHelper.Add(appointment!);
+            string mensaje = appointmentsHelper.Add(appointment);
 
             if (mensaje.StartsWith("C"))
             {

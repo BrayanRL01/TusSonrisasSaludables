@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +18,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+
                     <th>Espacios de citas disponibles para el doctor</th>
                     <!-- Dynamically generate date headers for the next 30 days -->
                     <script>
@@ -37,10 +41,10 @@
                             const nextDate = new Date(today);
                             nextDate.setDate(today.getDate() + i);
                             document.write(`
-                                            <td>
-                                                <button class="btn btn-sm btn-danger toggle-btn" data-date="${nextDate.toISOString().slice(0, 10)}" data-time="${hour}:00">Not Available</button>
-                                            </td>
-                                        `);
+                                                                                            <td>
+                                                                                                <button class="btn btn-sm btn-danger toggle-btn" data-date="${nextDate.toISOString().slice(0, 10)}" data-time="${hour}:00">Not Available</button>
+                                                                                            </td>
+                                                                                        `);
                         }
                         document.write(`</tr>`);
                     }
@@ -62,7 +66,7 @@
 
             // Make an AJAX call with the date and time data
             $.ajax({
-                url: '/your-endpoint-url', // replace with your endpoint URL
+                url: '', // replace with your endpoint URL
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ date: date, time: time }),
@@ -77,3 +81,43 @@
     </script>
 </body>
 </html>
+
+
+@{
+    var today = DateTime.Today;
+}
+
+<div class="container mt-5">
+    <form method="post" action="/your-endpoint-url">
+        <!-- replace with your endpoint URL -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Espacios de citas disponibles para el doctor</th>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                    var nextDate = today.AddDays(i);
+                    <th>@nextDate.ToString("yyyy-MM-dd")</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int hour = 9; hour <= 18; hour++)
+                {
+                <tr>
+                    <td>@hour:00</td>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                    var nextDate = today.AddDays(i);
+                    <td>
+                        <input type="checkbox" name="appointments" value="@nextDate.ToString(" yyyy-MM-dd")-@hour:00" />
+                    </td>
+                    }
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Crear citas</button>
+    </form>
+</div>
