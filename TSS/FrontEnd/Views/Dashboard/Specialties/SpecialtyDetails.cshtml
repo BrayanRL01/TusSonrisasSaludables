@@ -6,12 +6,12 @@
 }
 
 <center>
-    <h1>Registro de Especialidades</h1></center>
+    <h1>Registro de Especialidades</h1>
+</center>
 
 <div>
-   @* <h4>SpecialtyViewModel</h4>*@
     <hr />
-    <dl class="row">
+    <dl class="row" style="padding-left: 570px;">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SpecialtyName)
         </dt>
@@ -20,8 +20,7 @@
         </dd>
     </dl>
 </div>
-<div  style="text-align: center;">
-    @Html.ActionLink("Editar", "Edit", new { /* id = Model.PrimaryKey */ }) |
+<div style="text-align: center;">
+    @Html.ActionLink("Editar", "EditSpecialty", new { id = Model.SpecialtyId }) |
     <a asp-action="Specialties">Regresar a Especialidades</a>
-</div>
 </div>

@@ -55,7 +55,7 @@ else if (TempData.ContainsKey("Error"))
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "EditSubCategory", new { id = item.CategoryId }) |
-                            @Html.ActionLink("Details", "SubCategoryDetails", new { id = item.CategoryId }) |
+                            @* @Html.ActionLink("Details", "SubCategoryDetails", new { id = item.CategoryId }) | *@
                             @Html.ActionLink("Delete", "DeleteSubCategory", new { id = item.CategoryId })
                         </td>
                     </tr>

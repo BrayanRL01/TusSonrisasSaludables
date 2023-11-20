@@ -64,7 +64,7 @@ namespace FrontEnd.Controllers
         public ActionResult Users()
         {
             List<VWUserViewModel>? users = Helper.GetAllView();
-            return View("Users/Index", users);
+            return View("Users/Users", users);
         }
 
         public ActionResult Details(int id)
@@ -514,7 +514,7 @@ namespace FrontEnd.Controllers
         public ActionResult DeleteSpecialty(int id)
         {
             SpecialtyViewModel? specialty = specialtiesHelper.GetViewByID(id);
-            return View("Appointments/DeleteSpecialty", specialty);
+            return View("Specialties/DeleteSpecialty", specialty);
         }
 
         // POST: UsersController/Delete/5

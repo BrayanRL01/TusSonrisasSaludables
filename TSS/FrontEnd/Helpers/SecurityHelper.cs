@@ -5,7 +5,7 @@ namespace FrontEnd.Helpers
 {
     public class SecurityHelper
     {
-        ServiceRepository _repository;
+        private ServiceRepository _repository;
 
         public SecurityHelper()
         {
@@ -34,8 +34,8 @@ namespace FrontEnd.Helpers
             {
                 HttpResponseMessage responseMessage = _repository.PostResponse("api/Authenticate/Register", Usuario!);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                string Mensaje = content;
-                return content;
+                string mensaje = content;
+                return mensaje;
             }
             catch (Exception ex)
             {

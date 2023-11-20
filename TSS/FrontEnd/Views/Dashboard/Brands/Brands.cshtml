@@ -49,7 +49,7 @@ else if (TempData.ContainsKey("Error"))
                         </td>
                         <td>
                             @Html.ActionLink("Editar", "EditBrand", new { id = item.BrandId }, new { @class = "btn btn-warning" })
-                            @Html.ActionLink("Detalles", "BrandDetails", new { id = item.BrandId }, new { @class = "btn btn-info" })
+                            @* @Html.ActionLink("Detalles", "BrandDetails", new { id = item.BrandId }, new { @class = "btn btn-info" }) *@
                             @Html.ActionLink("Eliminar", "DeleteBrand", new { id = item.BrandId }, new { @class = "btn btn-danger" })
                         </td>
                     </tr>

@@ -18,51 +18,46 @@
                 @Html.DropDownListFor(model => model.BrandId, (SelectList)ViewBag.Brands, "Seleccione una marca", new { @class = "form-control" })
                 <span asp-validation-for="BrandId" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div class="col">
-               @* <label asp-for="CategoryId" class="form-label"></label>*@
+                @* <label asp-for="CategoryId" class="form-label"></label>*@
                 @Html.DropDownListFor(model => model.CategoryId, (SelectList)ViewBag.Categories, "Seleccione una categoría", new { @class = "form-control" })
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div class="col">
                 @*<label asp-for="ProductName" class="control-label"></label>*@
-                <input asp-for="ProductName" class="form-control" placeholder="Nombre de Producto"/>
+                <input asp-for="ProductName" class="form-control" placeholder="Nombre de Producto" />
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div class="col">
                 @*<label asp-for="ProductDescription" class="control-label"></label>*@
-                <input asp-for="ProductDescription" class="form-control" placeholder="Descripción del Producto"/>
+                <input asp-for="ProductDescription" class="form-control" placeholder="Descripción del Producto" />
                 <span asp-validation-for="ProductDescription" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div class="col">
                 <label asp-for="UnitPrice" class="control-label"></label>
-                <input asp-for="UnitPrice" class="form-control" placeholder="Precio"/>
+                <input asp-for="UnitPrice" class="form-control" placeholder="Precio" />
                 <span asp-validation-for="UnitPrice" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div class="col">
                 <label asp-for="Stock" class="control-label"></label>
-                <input asp-for="Stock" class="form-control" placeholder="Disponible"/>
+                <input asp-for="Stock" class="form-control" placeholder="Disponible" />
                 <span asp-validation-for="Stock" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div class="col">
                 <input type="file" asp-for="ProductImage" class="form-control" name="files" />
                 <span asp-validation-for="ProductImage" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
-                <button class="btn btn-primary" asp-action="Index">Regresar a Producto</button>
+                <button class="btn btn-primary" asp-action="Products">Regresar a Producto</button>
             </div>
         </form>
     </div>
 </div>
-
-@*<div>
-    <a asp-action="Index">Regresar a producto</a>
-</div>
-*@
