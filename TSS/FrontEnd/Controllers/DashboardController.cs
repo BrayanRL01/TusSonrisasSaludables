@@ -3,10 +3,10 @@ using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-using NuGet.Protocol.Core.Types;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using Newtonsoft.Json;
 
 namespace FrontEnd.Controllers
 {
@@ -362,6 +362,8 @@ namespace FrontEnd.Controllers
         #region Create
         public ActionResult CreateAppointment()
         {
+            var citas = new List<AppointmentViewModel>();
+
             AppointmentViewModel appointment = new();
             var specialties = specialtiesHelper.GetAllView();
             var doctors = doctorsHelper.GetAllView();
@@ -373,18 +375,36 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAppointment(AppointmentViewModel appointment)
+        public ActionResult CreateAppointment(AppointmentViewModel appointments, string mensaje)
         {
-            string mensaje = appointmentsHelper.Add(appointment);
+
+            var startTimes = Request.Form["StartTime"];
+
+            // Creamos las citas
+            foreach (var startTime in startTimes)
+            {
+                var appointment = new AppointmentViewModel
+                {
+                    DoctorId = appointments.DoctorId,
+                    SpecialtyId = appointments.SpecialtyId,
+                    StartTime = DateTime.Parse(startTime),
+                    EndTime = DateTime.Parse(startTime).AddHours(1),
+                };
+
+                mensaje = appointmentsHelper.Add(appointment);
+            };
 
             if (mensaje.StartsWith("C"))
             {
                 TempData["Message"] = mensaje;
                 return RedirectToAction("Appointments");
-            }
 
-            TempData["Error"] = mensaje;
-            return RedirectToAction("Appointments");
+            }
+            else
+            {
+                TempData["Error"] = mensaje;
+                return RedirectToAction("Appointments");
+            }
         }
         #endregion
 

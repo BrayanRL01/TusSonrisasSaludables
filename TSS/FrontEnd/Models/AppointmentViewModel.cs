@@ -21,6 +21,8 @@ namespace FrontEnd.Models
         [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; } = DateTime.Now.Date;
         [EmailAddress]
-        public string? Email { get; set; } 
+        public string? Email { get; set; }
+
+        public List<string>? SelectedTimes { get; set; }
     }
 }
