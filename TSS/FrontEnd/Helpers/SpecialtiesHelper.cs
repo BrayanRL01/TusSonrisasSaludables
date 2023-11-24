@@ -13,61 +13,54 @@ namespace FrontEnd.Helpers
         }
 
         #region GetAll
-        public List<SpecialtyViewModel> GetAllView()
+        public List<SpecialtyViewModel>? GetAllView()
         {
-            List<SpecialtyViewModel> list = new();
+            List<SpecialtyViewModel>? list = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Specialties/Specialties/");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                list = JsonConvert.DeserializeObject<List<SpecialtyViewModel>>(content);
+                list = JsonConvert.DeserializeObject<List<SpecialtyViewModel>?>(content);
             }
             return list;
         }
 
-        public SpecialtyViewModel GetViewByID(int id)
+        public SpecialtyViewModel? GetViewByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Specialties/Specialty/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            SpecialtyViewModel Specialty = JsonConvert.DeserializeObject<SpecialtyViewModel>(content);
-            return Specialty;
+            SpecialtyViewModel? specialty = JsonConvert.DeserializeObject<SpecialtyViewModel?>(content);
+            return specialty;
         }
         #endregion
 
         #region Update
-        public SpecialtyViewModel Edit(SpecialtyViewModel Specialty)
+        public string Edit(SpecialtyViewModel Specialty)
         {
             HttpResponseMessage responseMessage = repository.PutResponse("api/Specialties/Specialty/", Specialty);
             var content = responseMessage.Content.ReadAsStringAsync().Result;
-            SpecialtyViewModel SpecialtyAPI = JsonConvert.DeserializeObject<SpecialtyViewModel>(content);
-
-            return SpecialtyAPI;
+            string mensaje = content;
+            return mensaje;
         }
         #endregion
 
         #region Create
-        public SpecialtyViewModel Add(SpecialtyViewModel specialty)
+        public string Add(SpecialtyViewModel specialty)
         {
-            try
-            {
-                HttpResponseMessage responseMessage = repository.PostResponse("api/Specialties/Specialty", specialty);
-                var content = responseMessage.Content.ReadAsStringAsync().Result;
-                SpecialtyViewModel SpecialtyAPI = JsonConvert.DeserializeObject<SpecialtyViewModel>(content);
-                return SpecialtyAPI;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            HttpResponseMessage responseMessage = repository.PostResponse("api/Specialties/Specialty", specialty);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
         }
         #endregion
 
         #region Delete
-        public SpecialtyViewModel Delete(int id)
+        public string Delete(int id)
         {
-            SpecialtyViewModel Specialty = new();
             HttpResponseMessage responseMessage = repository.DeleteResponse("api/Specialties/" + id);
-            return Specialty;
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
         }
         #endregion
     }

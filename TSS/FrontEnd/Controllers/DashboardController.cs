@@ -3,10 +3,10 @@ using FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-using NuGet.Protocol.Core.Types;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using Newtonsoft.Json;
 
 namespace FrontEnd.Controllers
 {
@@ -16,9 +16,8 @@ namespace FrontEnd.Controllers
         private readonly ILogger<DashboardController> _logger;
 
         #region Helpers
-        ServiceRepository repository = new();
+        private ServiceRepository repository = new();
         private SecurityHelper securityHelper = new();
-
 
         #region Users
         private UsersHelper Helper = new();
@@ -64,13 +63,13 @@ namespace FrontEnd.Controllers
         #region Get
         public ActionResult Users()
         {
-            List<VWUserViewModel> users = Helper.GetAllView();
-            return View("Users/Index", users);
+            List<VWUserViewModel>? users = Helper.GetAllView();
+            return View("Users/Users", users);
         }
 
         public ActionResult Details(int id)
         {
-            VWUserViewModel vwuser = Helper.GetViewByID(id);
+            VWUserViewModel? vwuser = Helper.GetViewByID(id);
             return View("Users/Details", vwuser);
         }
         #endregion
@@ -111,7 +110,7 @@ namespace FrontEnd.Controllers
         #region Edit
         public ActionResult Edit(int id)
         {
-            UserViewModel user = Helper.GetByID(id);
+            UserViewModel? user = Helper.GetByID(id);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
@@ -126,17 +125,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(UserViewModel user)
         {
-            try
+            string mensaje = Helper.Edit(user);
+
+            if (mensaje.StartsWith("U"))
             {
-                user = Helper.Edit(user);
                 TempData["Message"] = "Usuario modificado correctamente.";
                 return RedirectToAction("Users");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = new Exception("Hubo un error: " + ex.Message);
-                return RedirectToAction("Users");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Users");
         }
         #endregion
 
@@ -144,7 +142,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult Delete(int id)
         {
-            VWUserViewModel vwuser = Helper.GetViewByID(id);
+            VWUserViewModel? vwuser = Helper.GetViewByID(id);
             return View("Users/Delete", vwuser);
         }
 
@@ -153,15 +151,14 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserViewModel user)
         {
-            try
+            string mensaje = Helper.Delete(user.UserId);
+            if (mensaje!.StartsWith("U"))
             {
-                user = Helper.Delete(user.UserId);
-                TempData["Message"] = "Usuario eliminado correctamente.";
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Users");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se eliminó el usuario. " + ex.Message;
-            }
+
+            TempData["Error"] = mensaje;
             return RedirectToAction("Users");
         }
 
@@ -175,13 +172,13 @@ namespace FrontEnd.Controllers
         // GET: CategoriesController
         public ActionResult Categories()
         {
-            List<VWCategoryViewModel> categories = categoriesHelper.GetCategoriesView();
+            List<VWCategoryViewModel>? categories = categoriesHelper.GetCategoriesView();
             return View("Categories/Categories", categories);
         }
 
         public ActionResult SubCategories()
         {
-            List<VWSubCategoryViewModel> subcategories = categoriesHelper.GetSubCategoriesView();
+            List<VWSubCategoryViewModel>? subcategories = categoriesHelper.GetSubCategoriesView();
             return View("Categories/SubCategories", subcategories);
         }
         #endregion
@@ -189,13 +186,13 @@ namespace FrontEnd.Controllers
         #region Details
         public ActionResult CategoryDetails(int id)
         {
-            VWCategoryViewModel category = categoriesHelper.GetViewByID(id);
+            VWCategoryViewModel? category = categoriesHelper.GetViewByID(id);
             return View("Categories/CategoryDetails", category);
         }
 
         public ActionResult SubCategoryDetails(int id)
         {
-            VWSubCategoryViewModel category = categoriesHelper.GetSubByID(id);
+            VWSubCategoryViewModel? category = categoriesHelper.GetSubByID(id);
             return View("Categories/SubCategoryDetails", category);
         }
         #endregion
@@ -211,17 +208,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.AddCategory(category);
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.AddCategory(category);
-                TempData["Message"] = "Categoría creado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Categories");
             }
-            catch (JsonReaderException ex)
-            {
-                TempData["Error"] = "No se pudo crear la categoría. " + ex.Message;
-                return RedirectToAction("Categories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Categories");
+
         }
 
         public ActionResult CreateSubCategory()
@@ -236,24 +232,24 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSubCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.AddSubCategory(category);
+
+            if (mensaje.StartsWith("S"))
             {
-                category = categoriesHelper.AddSubCategory(category);
-                TempData["Message"] = "Subcategoría creado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("SubCategories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo crear la subcategoría. " + ex.Message;
-                return RedirectToAction("SubCategories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("SubCategories");
+
         }
         #endregion
 
         #region Edit
         public ActionResult EditCategory(int id)
         {
-            CategoryViewModel category = categoriesHelper.GetByID(id);
+            CategoryViewModel? category = categoriesHelper.GetByID(id);
             return View("Categories/EditCategory", category);
         }
 
@@ -262,22 +258,21 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.EditCategory(category);
+
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.EditCategory(category);
-                TempData["Message"] = "Categoría editada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Categories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo editar la categoría. " + ex.Message;
-                return RedirectToAction("Categories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Categories");
         }
 
         public ActionResult EditSubCategory(int id)
         {
-            CategoryViewModel subcategory = categoriesHelper.GetByID(id);
+            CategoryViewModel? subcategory = categoriesHelper.GetByID(id);
             var categories = categoriesHelper.GetCategoriesView();
             ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
             return View("Categories/EditSubCategory", subcategory);
@@ -287,27 +282,24 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditSubCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.EditSubCategory(category);
+
+            if (mensaje.StartsWith("S"))
             {
-                if (ModelState.IsValid)
-                {
-                    category = categoriesHelper.EditSubCategory(category);
-                    TempData["Message"] = "Subcategoría creado correctamente.";
-                }
+                TempData["Message"] = mensaje;
                 return RedirectToAction("SubCategories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo editar la subcategoría. " + ex.Message;
-                return RedirectToAction("SubCategories");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("SubCategories");
+
         }
         #endregion
 
         #region Delete
         public ActionResult DeleteCategory(int id)
         {
-            VWCategoryViewModel category = categoriesHelper.GetViewByID(id);
+            VWCategoryViewModel? category = categoriesHelper.GetViewByID(id);
             return View("Categories/DeleteCategory", category);
         }
 
@@ -316,22 +308,20 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.Delete(category.CategoryId);
+
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.Delete(category.CategoryId);
-                TempData["Message"] = "Categoría eliminada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Categories");
             }
-            catch (Exception ex)
-            {
-                TempData["Message"] = ex.Message;
-                return RedirectToAction("Categories");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Categories");
         }
 
         public ActionResult DeleteSubCategory(int id)
         {
-            VWSubCategoryViewModel category = categoriesHelper.GetSubByID(id);
+            VWSubCategoryViewModel? category = categoriesHelper.GetSubByID(id);
             return View("Categories/DeleteSubCategory", category);
         }
 
@@ -340,19 +330,14 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteSubCategory(CategoryViewModel category)
         {
-            try
+            string mensaje = categoriesHelper.Delete(category.CategoryId);
+            if (mensaje.StartsWith("C"))
             {
-                category = categoriesHelper.Delete(category.CategoryId);
-                TempData["Message"] = "Subcategoría eliminada correctamente.";
-                TempData["Status"] = "success";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("SubCategories");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se eliminó la subcategoría: " + ex.Message;
-                TempData["Status"] = "danger";
-                return RedirectToAction("SubCategories");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("SubCategories");
         }
         #endregion
 
@@ -363,13 +348,13 @@ namespace FrontEnd.Controllers
         #region GetAll
         public ActionResult Appointments()
         {
-            List<VWAdminAppointmentViewModel> adminAppointments = appointmentsHelper.GetAdminAppointmentsView();
+            List<VWAdminAppointmentViewModel>? adminAppointments = appointmentsHelper.GetAdminAppointmentsView();
             return View("Appointments/AdminAppointments", adminAppointments);
         }
 
         public ActionResult AppointmentDetails(int id)
         {
-            VWAdminAppointmentViewModel Appointment = appointmentsHelper.GetViewByID(id);
+            VWAdminAppointmentViewModel? Appointment = appointmentsHelper.GetViewByID(id);
             return View("Appointments/AppointmentDetails", Appointment);
         }
         #endregion
@@ -377,6 +362,8 @@ namespace FrontEnd.Controllers
         #region Create
         public ActionResult CreateAppointment()
         {
+            var citas = new List<AppointmentViewModel>();
+
             AppointmentViewModel appointment = new();
             var specialties = specialtiesHelper.GetAllView();
             var doctors = doctorsHelper.GetAllView();
@@ -388,17 +375,34 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAppointment(AppointmentViewModel appointment)
+        public ActionResult CreateAppointment(AppointmentViewModel appointments, string mensaje)
         {
-            try
+
+            var startTimes = Request.Form["StartTime"];
+
+            // Creamos las citas
+            foreach (var startTime in startTimes)
             {
-                appointment = appointmentsHelper.Add(appointment);
-                TempData["Message"] = "Cita creada correctamente.";
+                var appointment = new AppointmentViewModel
+                {
+                    DoctorId = appointments.DoctorId,
+                    SpecialtyId = appointments.SpecialtyId,
+                    StartTime = DateTime.Parse(startTime),
+                    EndTime = DateTime.Parse(startTime).AddHours(1),
+                };
+
+                mensaje = appointmentsHelper.Add(appointment);
+            };
+
+            if (mensaje.StartsWith("C"))
+            {
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Appointments");
+
             }
-            catch (Exception)
+            else
             {
-                TempData["Error"] = "No se ha podido crear la cita.";
+                TempData["Error"] = mensaje;
                 return RedirectToAction("Appointments");
             }
         }
@@ -407,7 +411,7 @@ namespace FrontEnd.Controllers
         #region Edit
         public ActionResult EditAppointment(int id)
         {
-            AppointmentViewModel appointment = appointmentsHelper.GetByID(id);
+            AppointmentViewModel? appointment = appointmentsHelper.GetByID(id);
             var specialties = specialtiesHelper.GetAllView();
             var doctors = doctorsHelper.GetAllView();
             ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
@@ -418,19 +422,18 @@ namespace FrontEnd.Controllers
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditAppointment(AppointmentViewModel appointment)
+        public ActionResult EditAppointment(AppointmentViewModel? appointment)
         {
-            try
+            string mensaje = appointmentsHelper.Edit(appointment!);
+            if (mensaje.StartsWith("C"))
             {
-                appointment = appointmentsHelper.Edit(appointment);
                 TempData["Message"] = "Cita editada correctamente.";
                 return RedirectToAction("Appointments");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Appointments");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Appointments");
+
         }
         #endregion
 
@@ -438,7 +441,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult DeleteAppointment(int id)
         {
-            VWAdminAppointmentViewModel vwappointment = appointmentsHelper.GetViewByID(id);
+            VWAdminAppointmentViewModel? vwappointment = appointmentsHelper.GetViewByID(id);
             return View("Appointments/DeleteAppointment", vwappointment);
         }
 
@@ -447,17 +450,14 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAppointment(AppointmentViewModel appointment)
         {
-            try
+            string mensaje = appointmentsHelper.Delete(appointment.AppointmentId);
+            if (mensaje.StartsWith("C"))
             {
-                appointment = appointmentsHelper.Delete(appointment.AppointmentId);
-                TempData["Message"] = "Cita eliminada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Appointments");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Appointments");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Appointments");
         }
         #endregion
 
@@ -468,13 +468,13 @@ namespace FrontEnd.Controllers
         #region Get
         public ActionResult Specialties()
         {
-            List<SpecialtyViewModel> Specialties = specialtiesHelper.GetAllView();
+            List<SpecialtyViewModel>? Specialties = specialtiesHelper.GetAllView();
             return View("Specialties/Specialties", Specialties);
         }
 
         public ActionResult SpecialtyDetails(int id)
         {
-            SpecialtyViewModel Specialty = specialtiesHelper.GetViewByID(id);
+            SpecialtyViewModel? Specialty = specialtiesHelper.GetViewByID(id);
             return View("Specialties/SpecialtyDetails", Specialty);
         }
         #endregion
@@ -491,24 +491,24 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateSpecialty(SpecialtyViewModel specialty)
         {
-            try
+            string mensaje = specialtiesHelper.Add(specialty);
+
+            if (mensaje.StartsWith("E"))
             {
-                specialty = specialtiesHelper.Add(specialty);
-                TempData["Message"] = "Especialidad creada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Specialties");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo crear la especialidad: " + ex.Message.ToString();
-                return RedirectToAction("Specialties");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Specialties");
+
         }
         #endregion
 
         #region Edit
         public ActionResult EditSpecialty(int id)
         {
-            SpecialtyViewModel specialty = specialtiesHelper.GetViewByID(id);
+            SpecialtyViewModel? specialty = specialtiesHelper.GetViewByID(id);
             return View("Specialties/EditSpecialty", specialty);
         }
 
@@ -517,25 +517,24 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditSpecialty(SpecialtyViewModel specialty)
         {
-            try
+            string mensaje = specialtiesHelper.Edit(specialty);
+
+            if (mensaje.StartsWith("E"))
             {
-                specialty = specialtiesHelper.Edit(specialty);
-                TempData["Message"] = "Especialidad editada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Specialties");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo editar la especialidad: " + ex.Message.ToString();
-                return RedirectToAction("Specialties");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Specialties");
         }
         #endregion
 
         #region Delete
         public ActionResult DeleteSpecialty(int id)
         {
-            SpecialtyViewModel specialty = specialtiesHelper.GetViewByID(id);
-            return View("Appointments/DeleteSpecialty", specialty);
+            SpecialtyViewModel? specialty = specialtiesHelper.GetViewByID(id);
+            return View("Specialties/DeleteSpecialty", specialty);
         }
 
         // POST: UsersController/Delete/5
@@ -543,17 +542,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteSpecialty(SpecialtyViewModel specialty)
         {
-            try
+            string mensaje = specialtiesHelper.Delete(specialty.SpecialtyId);
+
+            if (mensaje.StartsWith("E"))
             {
-                specialty = specialtiesHelper.Delete(specialty.SpecialtyId);
-                TempData["Message"] = "Especialidad eliminada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Specialties");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Specialties");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Specialties");
         }
         #endregion
 
@@ -564,13 +562,13 @@ namespace FrontEnd.Controllers
         #region GetAll
         public ActionResult Brands()
         {
-            List<BrandViewModel> brands = brandsHelper.GetBrandsView();
+            List<BrandViewModel>? brands = brandsHelper.GetBrandsView();
             return View("Brands/Brands", brands);
         }
 
         public ActionResult BrandDetails(int id)
         {
-            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            BrandViewModel? brand = brandsHelper.GetViewByID(id);
             return View("Brands/BrandDetails", brand);
         }
         #endregion
@@ -587,24 +585,23 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateBrand(BrandViewModel brand)
         {
-            try
+            string mensaje = brandsHelper.Add(brand);
+
+            if (mensaje.StartsWith("M"))
             {
-                brand = brandsHelper.Add(brand);
-                TempData["Message"] = "Marca creada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Brands");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo eliminar la marca: " + ex.Message;
-                return RedirectToAction("Brands");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Brands");
         }
         #endregion
 
         #region Edit
         public ActionResult EditBrand(int id)
         {
-            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            BrandViewModel? brand = brandsHelper.GetViewByID(id);
             return View("Brands/EditBrand", brand);
         }
 
@@ -612,17 +609,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditBrand(BrandViewModel brand)
         {
-            try
+            string mensaje = brandsHelper.Edit(brand);
+
+            if (mensaje.StartsWith("M"))
             {
-                brand = brandsHelper.Edit(brand);
-                TempData["Message"] = "Marca editada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Brands");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Brands");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Brands");
         }
         #endregion
 
@@ -630,7 +626,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult DeleteBrand(int id)
         {
-            BrandViewModel brand = brandsHelper.GetViewByID(id);
+            BrandViewModel? brand = brandsHelper.GetViewByID(id);
             return View("Brands/DeleteBrand", brand);
         }
 
@@ -639,17 +635,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteBrand(BrandViewModel brand)
         {
-            try
+            string mensaje = brandsHelper.Delete(brand.BrandId);
+
+            if (mensaje.StartsWith("M"))
             {
-                brand = brandsHelper.Delete(brand.BrandId);
-                TempData["Message"] = "Marca eliminada correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Brands");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"No se pudo eliminar la marca: {ex.Message}";
-                return RedirectToAction("Brands");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Brands");
         }
         #endregion
 
@@ -660,13 +655,13 @@ namespace FrontEnd.Controllers
         #region GetAll
         public ActionResult Doctors()
         {
-            List<VWDoctorViewModel> doctors = doctorsHelper.GetAllView();
+            List<VWDoctorViewModel>? doctors = doctorsHelper.GetAllView();
             return View("Doctors/Doctors", doctors);
         }
 
         public ActionResult DoctorDetails(int id)
         {
-            VWDoctorViewModel doctor = doctorsHelper.GetViewByID(id);
+            VWDoctorViewModel? doctor = doctorsHelper.GetViewByID(id);
             return View("Doctors/DoctorDetails", doctor);
         }
         #endregion
@@ -689,39 +684,36 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateDoctor(DoctorViewModel doctor, List<IFormFile> files)
         {
-            try
+            if (files.Count > 0)
             {
-                if (files.Count > 0)
-                {
-                    IFormFile formFile = files[0];
+                IFormFile formFile = files[0];
 
-                    using (var ms = new MemoryStream())
-                    {
-                        formFile.CopyTo(ms);
-                        doctor.DoctorPhoto = ms.ToArray();
-                    }
-                }
-                else
-                {
-                    doctor.DoctorPhoto = Array.Empty<byte>();
-                }
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                doctor.DoctorPhoto = ms.ToArray();
+            }
+            else
+            {
+                doctor.DoctorPhoto = Array.Empty<byte>();
+            }
 
-                doctor = doctorsHelper.Add(doctor);
-                TempData["Message"] = "Doctor creado correctamente.";
+            var mensaje = doctorsHelper.Add(doctor);
+
+            if (mensaje.StartsWith("D"))
+            {
+                TempData["Message"] = mensaje.ToString();
                 return RedirectToAction("Doctors");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"No se pudo crear el doctor: {ex.Message}";
-                return RedirectToAction("Doctors");
-            }
+
+            TempData["Error"] = mensaje.ToString();
+            return RedirectToAction("Doctors");
         }
         #endregion
 
         #region Edit
         public ActionResult EditDoctor(int id)
         {
-            DoctorViewModel doctor = doctorsHelper.GetByID(id);
+            DoctorViewModel? doctor = doctorsHelper.GetByID(id);
             var specialties = specialtiesHelper.GetAllView();
             var types = idHelper.GetAllView();
             var genres = genresHelper.GetAllView();
@@ -736,32 +728,29 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditDoctor(DoctorViewModel doctor, List<IFormFile> files)
         {
-            try
+            if (files.Count > 0)
             {
-                if (files.Count > 0)
-                {
-                    IFormFile formFile = files[0];
+                IFormFile formFile = files[0];
 
-                    using (var ms = new MemoryStream())
-                    {
-                        formFile.CopyTo(ms);
-                        doctor.DoctorPhoto = ms.ToArray();
-                    }
-                }
-                else
-                {
-                    doctor.DoctorPhoto = Array.Empty<byte>();
-                }
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                doctor.DoctorPhoto = ms.ToArray();
+            }
+            else
+            {
+                doctor.DoctorPhoto = Array.Empty<byte>();
+            }
 
-                doctor = doctorsHelper.Edit(doctor);
-                TempData["Message"] = $"Doctor {doctor.DoctorName} {doctor.FirstName} {doctor.LastName} editado correctamente.";
+            string mensaje = doctorsHelper.Edit(doctor);
+
+            if (mensaje.StartsWith("D"))
+            {
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Doctors");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"No se pudo editar el doctor: {ex.Message}";
-                return RedirectToAction("Doctors");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Doctors");
         }
         #endregion
 
@@ -769,7 +758,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult DeleteDoctor(int id)
         {
-            VWDoctorViewModel vwdoctor = doctorsHelper.GetViewByID(id);
+            VWDoctorViewModel? vwdoctor = doctorsHelper.GetViewByID(id);
             return View("Doctors/DeleteDoctor", vwdoctor);
         }
 
@@ -778,17 +767,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteDoctor(DoctorViewModel doctor)
         {
-            try
+            string mensaje = doctorsHelper.Delete(doctor.DoctorId);
+
+            if (mensaje.StartsWith("D"))
             {
-                TempData["Message"] = $"Doctor {doctor.DoctorName} {doctor.FirstName} {doctor.LastName} eliminado correctamente.";
-                doctor = doctorsHelper.Delete(doctor.DoctorId);
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Doctors");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Doctors");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Doctors");
         }
         #endregion
 
@@ -797,13 +785,13 @@ namespace FrontEnd.Controllers
         #region Products
         public ActionResult Products()
         {
-            List<VWProductViewModel> products = productsHelper.GetAllView();
+            List<VWProductViewModel>? products = productsHelper.GetAllView();
             return View("Products/Products", products);
         }
 
         public ActionResult ProductDetails(int id)
         {
-            VWProductViewModel product = productsHelper.GetViewByID(id);
+            VWProductViewModel? product = productsHelper.GetViewByID(id);
             return View("Products/ProductDetails", product);
         }
 
@@ -822,39 +810,34 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateProduct(ProductViewModel product, List<IFormFile> files)
         {
-            try
+            if (files.Count > 0)
             {
-                if (files.Count > 0)
-                {
-                    IFormFile formFile = files[0];
+                IFormFile formFile = files[0];
 
-                    using (var ms = new MemoryStream())
-                    {
-                        formFile.CopyTo(ms);
-                        product.ProductImage = ms.ToArray();
-                    }
-                }
-                else
-                {
-                    product.ProductImage = Array.Empty<byte>();
-                }
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                product.ProductImage = ms.ToArray();
+            }
+            else
+            {
+                product.ProductImage = Array.Empty<byte>();
+            }
 
-                product = productsHelper.Add(product);
-                TempData["Message"] = $"Producto {product.ProductName} creado correctamente.";
+            string mensaje = productsHelper.Add(product);
+            if (mensaje.StartsWith("P"))
+            {
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Products");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Products");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Products");
         }
         #endregion
 
         #region Edit 
         public ActionResult EditProduct(int id)
         {
-            ProductViewModel product = productsHelper.GetByID(id);
+            ProductViewModel? product = productsHelper.GetByID(id);
             var brands = brandsHelper.GetBrandsView();
             var categories = categoriesHelper.GetSubCategoriesView();
             ViewBag.Brands = new SelectList(brands, "BrandId", "BrandName");
@@ -866,38 +849,34 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProduct(ProductViewModel product, List<IFormFile> files)
         {
-            try
+            if (files.Count > 0)
             {
-                if (files.Count > 0)
-                {
-                    IFormFile formFile = files[0];
+                IFormFile formFile = files[0];
 
-                    using (var ms = new MemoryStream())
-                    {
-                        formFile.CopyTo(ms);
-                        product.ProductImage = ms.ToArray();
-                    }
-                }
-                else
-                {
-                    product.ProductImage = Array.Empty<byte>();
-                }
-                product = productsHelper.Edit(product);
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                product.ProductImage = ms.ToArray();
+            }
+            else
+            {
+                product.ProductImage = Array.Empty<byte>();
+            }
+
+            string mensaje = productsHelper.Edit(product);
+            if (mensaje.StartsWith("P"))
+            {
                 TempData["Message"] = $"Producto {product.ProductName} editado correctamente.";
                 return RedirectToAction("Products");
             }
-            catch (Exception ex)
-            {
-                TempData["Message"] = ex.Message;
-                return RedirectToAction("Products");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Products");
         }
         #endregion
 
         #region Delete
         public ActionResult DeleteProduct(int id)
         {
-            VWProductViewModel product = productsHelper.GetViewByID(id);
+            VWProductViewModel? product = productsHelper.GetViewByID(id);
             return View("Products/DeleteProduct", product);
         }
 
@@ -905,17 +884,17 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteProduct(ProductViewModel product)
         {
-            try
+            string mensaje = productsHelper.Delete(product.ProductId);
+
+            if (mensaje.StartsWith("P"))
             {
+
                 TempData["Message"] = $"Producto {product.ProductName} eliminado correctamente.";
-                product = productsHelper.Delete(product.ProductId);
                 return RedirectToAction("Products");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"No se pudo elimianr el producto {product.ProductName}: {ex.Message}";
-                return RedirectToAction("Products");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Products");
         }
         #endregion
 
@@ -926,13 +905,13 @@ namespace FrontEnd.Controllers
         #region GetAll
         public ActionResult Procedures()
         {
-            List<ProcedureViewModel> list = proceduresHelper.GetAllView();
+            List<ProcedureViewModel>? list = proceduresHelper.GetAllView();
             return View("Procedures/Procedures", list);
         }
 
         public ActionResult ProcedureDetails(int id)
         {
-            ProcedureViewModel procedure = proceduresHelper.GetByID(id);
+            ProcedureViewModel? procedure = proceduresHelper.GetByID(id);
             return View("Procedures/ProcedureDetails", procedure);
         }
         #endregion
@@ -949,24 +928,24 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateProcedure(ProcedureViewModel procedure)
         {
-            try
+            string mensaje = proceduresHelper.Add(procedure);
+
+            if (mensaje.StartsWith("P"))
             {
-                procedure = proceduresHelper.Add(procedure);
-                TempData["Message"] = $"Procedimiento {procedure.ProcedureName} creado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Procedures");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo crear el procedimiento: " + ex.Message;
-                return RedirectToAction("Procedures");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Procedures");
+
         }
         #endregion
 
         #region Edit
         public ActionResult EditProcedure(int id)
         {
-            ProcedureViewModel procedure = proceduresHelper.GetByID(id);
+            ProcedureViewModel? procedure = proceduresHelper.GetByID(id);
             return View("Procedures/EditProcedure", procedure);
         }
 
@@ -974,17 +953,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProcedure(ProcedureViewModel procedure)
         {
-            try
+            string mensaje = proceduresHelper.Edit(procedure);
+
+            if (mensaje.StartsWith("P"))
             {
-                procedure = proceduresHelper.Edit(procedure);
-                TempData["Message"] = $"Procedimiento {procedure.ProcedureName} editado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Procedures");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Procedures");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Procedures");
         }
         #endregion
 
@@ -992,7 +970,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult DeleteProcedure(int id)
         {
-            ProcedureViewModel procedure = proceduresHelper.GetByID(id);
+            ProcedureViewModel? procedure = proceduresHelper.GetByID(id);
             return View("Procedures/DeleteProcedure", procedure);
         }
 
@@ -1001,17 +979,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteProcedure(ProcedureViewModel procedure)
         {
-            try
+            string mensaje = proceduresHelper.Delete(procedure.ProcedureId);
+
+            if (mensaje.StartsWith("P"))
             {
-                procedure = proceduresHelper.Delete(procedure.ProcedureId);
-                TempData["Message"] = "Procedimiento eliminado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Procedures");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"No se pudo eliminar el procedimiento: {ex.Message}";
-                return RedirectToAction("Procedures");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Procedures");
         }
         #endregion
 
@@ -1022,13 +999,13 @@ namespace FrontEnd.Controllers
         #region GetAll
         public ActionResult Records()
         {
-            List<VWRecordViewModel> list = recordsHelper.GetAllView();
+            List<VWRecordViewModel>? list = recordsHelper.GetAllView();
             return View("Records/Records", list);
         }
 
         public ActionResult RecordDetails(int id)
         {
-            VWRecordViewModel record = recordsHelper.GetViewByID(id);
+            VWRecordViewModel? record = recordsHelper.GetViewByID(id);
             return View("Records/RecordDetails", record);
         }
         #endregion
@@ -1051,27 +1028,25 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateRecord(RecordViewModel record)
         {
-            try
+            string mensaje = recordsHelper.Add(record);
+            if (mensaje.StartsWith("R"))
             {
-                record = recordsHelper.Add(record);
-                TempData["Message"] = "Registro creado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Records");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "No se pudo crear el registro: " + ex.Message;
-                return RedirectToAction("Records");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Records");
         }
         #endregion
 
         #region Edit
         public ActionResult EditRecord(int id)
         {
-            RecordViewModel record = recordsHelper.GetByID(id);
-            List<VWUserViewModel> users = Helper.GetAllView();
-            List<VWDoctorViewModel> doctors = doctorsHelper.GetAllView();
-            List<ProcedureViewModel> procedures = proceduresHelper.GetAllView();
+            RecordViewModel? record = recordsHelper.GetByID(id);
+            List<VWUserViewModel>? users = Helper.GetAllView();
+            List<VWDoctorViewModel>? doctors = doctorsHelper.GetAllView();
+            List<ProcedureViewModel>? procedures = proceduresHelper.GetAllView();
             ViewBag.Users = new SelectList(users, "UserId", "FullName");
             ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
             ViewBag.Procedures = new SelectList(procedures, "ProcedureId", "ProcedureName");
@@ -1082,17 +1057,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditRecord(RecordViewModel record)
         {
-            try
+            string mensaje = recordsHelper.Edit(record);
+
+            if (mensaje.StartsWith("R"))
             {
-                record = recordsHelper.Edit(record);
-                TempData["Message"] = "Registro editado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Records");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Records");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Records");
         }
         #endregion
 
@@ -1100,7 +1074,7 @@ namespace FrontEnd.Controllers
         // GET: UsersController/Delete/5
         public ActionResult DeleteRecord(int id)
         {
-            VWRecordViewModel record = recordsHelper.GetViewByID(id);
+            VWRecordViewModel? record = recordsHelper.GetViewByID(id);
             return View("Records/DeleteRecord", record);
         }
 
@@ -1109,17 +1083,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteRecord(RecordViewModel record)
         {
-            try
+            string mensaje = recordsHelper.Delete(record.RecordId);
+
+            if (mensaje.StartsWith("R"))
             {
-                record = recordsHelper.Delete(record.RecordId);
-                TempData["Message"] = "Registro eliminado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Records");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"No se pudo eliminar el registro: {ex.Message}";
-                return RedirectToAction("Records");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Records");
         }
         #endregion
 
@@ -1133,7 +1106,7 @@ namespace FrontEnd.Controllers
         public ActionResult EditProfile()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            UserViewModel user = securityHelper.GetEmail(email!);
+            UserViewModel? user = securityHelper.GetEmail(email!);
             var genres = genresHelper.GetAllView();
             var ids = idHelper.GetAllView();
             var provinces = provincesHelper.GetAllView();
@@ -1148,15 +1121,16 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProfile(UserViewModel user)
         {
-            if (ModelState.IsValid)
+            string mensaje = Helper.Edit(user);
+
+            if (mensaje.StartsWith("U"))
             {
-                user = Helper.Edit(user);
-                TempData["Message"] = "Usuario modificado correctamente.";
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Index");
             }
             else
             {
-                TempData["Error"] = "No se modificó el usuario, compruebe sus validaciones e intentelo de nuevo.";
+                TempData["Error"] = mensaje;
                 return RedirectToAction("Index");
             }
         }

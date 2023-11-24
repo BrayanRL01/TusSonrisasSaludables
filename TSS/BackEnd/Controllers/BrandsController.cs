@@ -84,7 +84,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Marca creada correctamente.");
             }
             catch (Exception ex)
             {
@@ -121,7 +121,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Marca actualizada correctamente.");
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteBrand {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Marca eliminada correctamente.");
             }
             catch (Exception ex)
             {

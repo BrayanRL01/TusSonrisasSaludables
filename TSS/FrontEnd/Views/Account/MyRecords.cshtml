@@ -6,7 +6,24 @@
 }
 
 <div style="padding: 30px; width: 100%;">
-
+    @if (TempData.ContainsKey("Message"))
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Message"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    else @if (TempData.ContainsKey("Error"))
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
     <center><h1>Mis Registros</h1></center>
 
     <table class="table">

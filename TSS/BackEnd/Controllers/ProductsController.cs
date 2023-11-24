@@ -150,7 +150,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok($"Producto {entity.ProductName} creado correctamente.");
             }
             catch (Exception ex)
             {
@@ -166,7 +166,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteProduct {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Producto eliminado correctamente.");
             }
             catch (Exception ex)
             {
@@ -246,7 +246,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok($"Producto {entity.ProductName} actualizado correctamente.");
             }
             catch (Exception ex)
             {

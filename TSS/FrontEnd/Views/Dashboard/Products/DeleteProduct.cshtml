@@ -9,7 +9,6 @@
 
 <h3>Esta seguro d eeliminar este Producto?</h3>
 <div>
-    <h4>VWProductViewModel</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -58,7 +57,7 @@
 
     <form asp-action="DeleteProduct">
         @Html.HiddenFor(Model => Model.ProductId)
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Volver a producto </a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Products">Volver a Productos</a>
     </form>
 </div>

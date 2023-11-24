@@ -12,14 +12,14 @@ namespace FrontEnd.Helpers
             repository = new ServiceRepository();
         }
 
-        public List<ProvinceViewModel> GetAllView()
+        public List<ProvinceViewModel>? GetAllView()
         {
-            List<ProvinceViewModel> list = new List<ProvinceViewModel>();
+            List<ProvinceViewModel>? list = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Provinces/GetProvincesView");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                list = JsonConvert.DeserializeObject<List<ProvinceViewModel>>(content);
+                list = JsonConvert.DeserializeObject<List<ProvinceViewModel>?>(content);
             }
             return list;
         }

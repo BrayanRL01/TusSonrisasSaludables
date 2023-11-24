@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -66,8 +67,12 @@ namespace BackEnd.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> Register([FromBody] UserModel entity)
+        public async Task<IActionResult> Register([FromBody] UserModel entity)
         {
+            if (ValidPassword(entity.PasswordHash) == false)
+            {
+                return BadRequest("La contraseña debe contener como mínimo 8 caracteres con un número, una letra mayúscula y un caracter especial.");
+            }
             try
             {
                 string Query = "EXEC SP_CreateUser @TypeID, @GenreID, @ProvinceID, @IDNumber, @Username," +
@@ -249,6 +254,40 @@ namespace BackEnd.Controllers
             {
                 return StatusCode(500, "Hubo un error: " + ex.Message);
             }
+        }
+
+        [HttpPut("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(PasswordModel model)
+        {
+            if (model.Email == null || model.Password == null || model.ConfirmPassword == null)
+            {
+                return BadRequest("Ha ocurrido un error al cambiar la contraseña, intente de nuevo.");
+            }
+            else if (model.Password.Length < 8 || ValidPassword(model.Password) == false || model.Password != model.ConfirmPassword)
+            {
+                return BadRequest("La contraseña debe contener un mínimo de 8 caractéres, un número, una letra mayúscula, un caracter especial y deben concordar " +
+                    "ambas contraseñas, intente de nuevo.");
+            }
+            try
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ChangePassword {model.Email}, {model.Password}");
+                await _context.SaveChangesAsync();
+                return Ok("Se ha cambiado su contraseña correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ha ocurrido un error: {ex.Message}");
+            }
+        }
+
+        public static bool ValidPassword(string password)
+        {
+            // Comprueba si la contraseña contiene al menos un número
+            if (!Regex.IsMatch(password, @"\d") || !Regex.IsMatch(password, @"[A-Z]") || !Regex.IsMatch(password, @"[\W_]"))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -79,7 +79,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok($"Especialidad {entity.SpecialtyName} creada correctamente.");
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok($"Especialidad {entity.SpecialtyName} actualizada correctamente.");
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace BackEnd.Controllers
                 {
                     await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteSpecialty {id}");
                     await _context.SaveChangesAsync();
-                    return NoContent();
+                    return Ok("Especialidad eliminada correctamente.");
                 }
                 catch (Exception ex)
                 {

@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
+
 @if (TempData.ContainsKey("Message"))
 {
     <div class="alert alert-success" role="alert">
@@ -102,27 +103,24 @@ else if (TempData.ContainsKey("Error"))
                     {
                         <tr>
                             <td id="Doctor">
-                                @Html.DisplayFor(modelItem => item.Doctor)
+                                @Html.DisplayFor(modelItem => item.Doctor, new { @id = "Doctor" })
                             </td>
                             <td id="PatientName">
-                                @Html.DisplayFor(modelItem => item.PacientName)
+                                @Html.DisplayFor(modelItem => item.PacientName, new { @id = "PatientName" })
                             </td>
                             <td id="SpecialtyName">
-                                @Html.DisplayFor(modelItem => item.SpecialtyName)
+                                @Html.DisplayFor(modelItem => item.SpecialtyName, new { @id = "SpecialtyName" })
                             </td>
                             <td id="StartTime">
-                                @Html.DisplayFor(modelItem => item.StartTime)
+                                @Html.DisplayFor(modelItem => item.StartTime, new { @id = "StartTime" })
                             </td>
                             <td id="EndTime">
-                                @Html.DisplayFor(modelItem => item.EndTime)
+                                @Html.DisplayFor(modelItem => item.EndTime, new { @id = "EndTime" })
                             </td>
                             <td>
-                                @Html.ActionLink("Editar", "EditAppointment", new { id=item.AppointmentId }, new {@class="btn btn-warning" } )
-                                @Html.ActionLink("Detalles", "AppointmentDetails", new { id=item.AppointmentId },new {@class="btn btn-info" } )
-                                @Html.ActionLink("Eliminar", "DeleteAppointment", new { id=item.AppointmentId },new {@class="btn btn-danger" } )
-                                <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                    @Html.HiddenFor(itemModel => item.AppointmentId) Reporte
-                                </button>
+                                @Html.ActionLink("Editar", "EditAppointment", new { id = item.AppointmentId }, new { @class = "btn btn-warning" })
+                                @* @Html.ActionLink("Detalles", "AppointmentDetails", new { id = item.AppointmentId }, new { @class = "btn btn-info" }) *@
+                                @Html.ActionLink("Eliminar", "DeleteAppointment", new { id = item.AppointmentId }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }

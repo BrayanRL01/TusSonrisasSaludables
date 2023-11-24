@@ -100,84 +100,84 @@ namespace BackEnd.Controllers
 
                 var param = new SqlParameter[]
                 {
-                    new SqlParameter()
+                    new()
                     {
                         ParameterName = "@TypeID",
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.TypeId
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@GenreID",
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.GenreId
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@ProvinceID",
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.ProvinceId
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@IDNumber",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.IdNumber
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@Username",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.UserName
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@FirstName",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.FirstName
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@LastName",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.LastName
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@BirthDate",
                         SqlDbType  = System.Data.SqlDbType.Date,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.BirthDate
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@Email",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.Email
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@Phone",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.PhoneNumber
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@UserAddress",
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.UserAddress
                     },
-                     new SqlParameter()
+                     new()
                     {
                         ParameterName = "@Password",
                         SqlDbType = System.Data.SqlDbType.VarChar,
@@ -207,7 +207,7 @@ namespace BackEnd.Controllers
             {
                 string Query = "EXEC SP_EditUser @ID, @TypeID, @GenreID, @ProvinceID, @IDNumber, @Username," +
                     "@FirstName, @LastName, @BirthDate, @Email," +
-                    "@Phone, @UserAddress, @Password";
+                    "@Phone, @UserAddress";
 
                 var param = new SqlParameter[]
                 {
@@ -295,19 +295,12 @@ namespace BackEnd.Controllers
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.UserAddress
                     },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@Password",
-                        SqlDbType = System.Data.SqlDbType.VarChar,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.PasswordHash
-                    }
                 };
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Usuario actualizado correctamente.");
             }
             catch (Exception ex)
             {
@@ -325,7 +318,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteUser {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Usuario eliminado correctamente.");
             }
             catch (Exception ex)
             {

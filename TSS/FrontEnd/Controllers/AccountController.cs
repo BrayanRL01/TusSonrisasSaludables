@@ -46,14 +46,14 @@ namespace FrontEnd.Controllers
                 HttpContext.Session.SetString("token", token!.Token);
 
                 var loginModel = _securityHelper.GetUser(model);
-                loginModel.Roles = _securityHelper.GetRole(model);
+                loginModel!.Roles = _securityHelper.GetRole(model);
                 var claims = new List<Claim>() {
-                    new Claim(ClaimTypes.NameIdentifier, loginModel.IdNumber),
-                    new Claim(ClaimTypes.Name, loginModel.UserName),
-                    new Claim(ClaimTypes.Surname, loginModel.FirstName),
-                    new Claim(ClaimTypes.GivenName, loginModel.LastName),
-                    new Claim(ClaimTypes.Email, loginModel.Email),
-                    new Claim(ClaimTypes.Role, loginModel.Roles)
+                    new(ClaimTypes.NameIdentifier, loginModel.IdNumber),
+                    new(ClaimTypes.Name, loginModel.UserName),
+                    new(ClaimTypes.Surname, loginModel.FirstName),
+                    new(ClaimTypes.GivenName, loginModel.LastName),
+                    new(ClaimTypes.Email, loginModel.Email),
+                    new(ClaimTypes.Role, loginModel.Roles)
                  };
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -67,7 +67,7 @@ namespace FrontEnd.Controllers
                 if (loginModel.Roles == "Admin")
                 {
                     TempData["Message"] = $"Bienvenido/a {loginModel.UserName} {loginModel.FirstName}.";
-                    return RedirectToAction("Index", "Dashboard", model);
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 else if (loginModel.Roles == "User")
                 {
@@ -115,7 +115,6 @@ namespace FrontEnd.Controllers
             }
             else
             {
-                //TempData["Error"] = "No se ha creado el usuario.";
                 TempData["Error"] = mensaje;
                 return RedirectToAction("Register");
             }
@@ -180,7 +179,6 @@ namespace FrontEnd.Controllers
                 string? email = User.FindFirst(ClaimTypes.Email)?.Value;
                 List<VWAdminAppointmentViewModel>? model = _appointmentsHelper.GetUserAppointments(email!);
                 return View(model);
-
             }
             catch (Exception)
             {
@@ -193,7 +191,7 @@ namespace FrontEnd.Controllers
         public ActionResult MyRecords()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            List<VWRecordViewModel> model = _recordsHelper.GetUserRecords(email!);
+            List<VWRecordViewModel>? model = _recordsHelper.GetUserRecords(email!);
             return View(model);
         }
 
@@ -201,7 +199,7 @@ namespace FrontEnd.Controllers
         public ActionResult EditProfile()
         {
             string? email = User.FindFirst(ClaimTypes.Email)?.Value;
-            UserViewModel user = _securityHelper.GetEmail(email!);
+            UserViewModel? user = _securityHelper.GetEmail(email!);
             var genres = _genresHelper.GetAllView();
             var ids = _identificationsHelper.GetAllView();
             var provinces = _provincesHelper.GetAllView();
@@ -214,18 +212,19 @@ namespace FrontEnd.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile([FromBody] UserViewModel user)
+        public ActionResult EditProfile(UserViewModel user)
         {
-            if (ModelState.IsValid)
+            string mensaje = usersHelper.Edit(user);
+
+            if (mensaje.StartsWith("U"))
             {
-                user = usersHelper.Edit(user);
-                TempData["Message"] = "Perfil editado correctamente.";
-                return RedirectToAction("Index", "Home");
+                TempData["Message"] = mensaje;
+                return RedirectToAction("EditProfile", "Account");
             }
             else
             {
-                TempData["Error"] = "Perfil no editado.";
-                return RedirectToAction("Index", "Home", user);
+                TempData["Error"] = mensaje;
+                return RedirectToAction("EditProfile", "Account");
             }
         }
 
@@ -240,19 +239,47 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ResetPassword(EmailModel user)
         {
-            if (user.To != null)
+            string message = _securityHelper.ForgotPassword(user);
+
+            if (message.StartsWith("S"))
             {
-                string message = _securityHelper.ForgotPassword(user);
                 TempData["Message"] = message;
-                return RedirectToAction("Login");
+                return RedirectToAction("ResetPassword");
             }
             else
             {
-                TempData["Error"] = "Correo electrónico inválido.";
+                TempData["Error"] = message;
                 return RedirectToAction("ResetPassword");
             }
         }
-        #endregion
 
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            PasswordModel model = new();
+            return View(model);
+        }
+
+        [Authorize]
+        //[AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(PasswordModel model)
+        {
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            model.Email = email!;
+            string message = _securityHelper.ChangePassword(model);
+            if (message.StartsWith("Se"))
+            {
+                TempData["Message"] = message;
+                return RedirectToAction("ChangePassword");
+            }
+            else
+            {
+                TempData["Error"] = message;
+                return RedirectToAction("ChangePassword");
+            }
+        }
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FrontEnd.Models;
 using Newtonsoft.Json;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FrontEnd.Helpers
 {
@@ -13,16 +14,16 @@ namespace FrontEnd.Helpers
         }
 
         #region GetAll
-        public List<VWCategoryViewModel> GetCategoriesView()
+        public List<VWCategoryViewModel>? GetCategoriesView()
         {
             try
             {
-                List<VWCategoryViewModel> list = new List<VWCategoryViewModel>();
+                List<VWCategoryViewModel>? list = new List<VWCategoryViewModel>();
                 HttpResponseMessage responseMessage = repository.GetResponse("api/Categories/Categories");
                 if (responseMessage != null)
                 {
                     var content = responseMessage.Content.ReadAsStringAsync().Result;
-                    list = JsonConvert.DeserializeObject<List<VWCategoryViewModel>>(content);
+                    list = JsonConvert.DeserializeObject<List<VWCategoryViewModel>?>(content);
                 }
                 return list;
             }
@@ -32,16 +33,16 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public List<VWSubCategoryViewModel> GetSubCategoriesView()
+        public List<VWSubCategoryViewModel>? GetSubCategoriesView()
         {
             try
             {
-                List<VWSubCategoryViewModel> list = new List<VWSubCategoryViewModel>();
+                List<VWSubCategoryViewModel>? list = new();
                 HttpResponseMessage responseMessage = repository.GetResponse("api/Categories/SubCategories");
                 if (responseMessage != null)
                 {
                     var content = responseMessage.Content.ReadAsStringAsync().Result;
-                    list = JsonConvert.DeserializeObject<List<VWSubCategoryViewModel>>(content);
+                    list = JsonConvert.DeserializeObject<List<VWSubCategoryViewModel>?>(content);
                 }
                 return list;
             }
@@ -53,113 +54,112 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region GetID
-        public VWCategoryViewModel GetViewByID(int id)
+        public VWCategoryViewModel? GetViewByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Categories/Category/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            VWCategoryViewModel category = JsonConvert.DeserializeObject<VWCategoryViewModel>(content);
+            VWCategoryViewModel? category = JsonConvert.DeserializeObject<VWCategoryViewModel?>(content);
 
             return category;
         }
 
-        public VWSubCategoryViewModel GetSubByID(int id)
+        public VWSubCategoryViewModel? GetSubByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Categories/SubCategory/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            VWSubCategoryViewModel subcategory = JsonConvert.DeserializeObject<VWSubCategoryViewModel>(content);
+            VWSubCategoryViewModel? subcategory = JsonConvert.DeserializeObject<VWSubCategoryViewModel?>(content);
 
             return subcategory;
         }
 
-        public CategoryViewModel GetByID(int id)
+        public CategoryViewModel? GetByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Categories/GetCategory/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            CategoryViewModel category = JsonConvert.DeserializeObject<CategoryViewModel>(content);
+            CategoryViewModel? category = JsonConvert.DeserializeObject<CategoryViewModel?>(content);
 
             return category;
         }
         #endregion
 
         #region Update
-        public CategoryViewModel EditCategory(CategoryViewModel category)
+        public string EditCategory(CategoryViewModel category)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PutResponse("api/Categories/Category/", category);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
-
-                return categoryAPI;
+                string mensaje = content;
+                return content;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.Message;
             }
         }
 
-        public CategoryViewModel EditSubCategory(CategoryViewModel category)
+        public string EditSubCategory(CategoryViewModel category)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PutResponse("api/Categories/SubCategory/", category);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
-
-                return categoryAPI;
+                string mensaje = content;
+                return content;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.Message;
             }
         }
         #endregion
 
         #region Create
-        public CategoryViewModel AddCategory(CategoryViewModel category)
+        public string AddCategory(CategoryViewModel category)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PostResponse("api/Categories/Category", category);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
-                return categoryAPI;
+                string mensaje = content;
+                return content;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.Message;
             }
         }
 
-        public CategoryViewModel AddSubCategory(CategoryViewModel category)
+        public string AddSubCategory(CategoryViewModel category)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PostResponse("api/Categories/SubCategory", category);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                CategoryViewModel categoryAPI = JsonConvert.DeserializeObject<CategoryViewModel>(content);
-                return categoryAPI;
+                string mensaje = content;
+                return content;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.Message;
             }
 
         }
         #endregion
 
         #region Delete
-        public CategoryViewModel Delete(int id)
+        public string Delete(int id)
         {
             try
             {
-                CategoryViewModel category = new();
                 HttpResponseMessage responseMessage = repository.DeleteResponse("api/Categories/" + id);
-                return category;
+                var content = responseMessage.Content.ReadAsStringAsync().Result;
+                string mensaje = content;
+                return content;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return ex.Message;
             }
         }
         #endregion

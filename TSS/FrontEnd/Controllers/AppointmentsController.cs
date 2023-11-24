@@ -8,7 +8,7 @@ namespace FrontEnd.Controllers
 {
     public class AppointmentsController : Controller
     {
-        AppointmentsHelper appointmentsHelper = new();
+        private AppointmentsHelper appointmentsHelper = new();
 
         // GET: AppointmentsController
         public ActionResult Index()
@@ -37,18 +37,17 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Confirm(AppointmentViewModel model)
         {
-            try
+            model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
+            string mensaje = appointmentsHelper.Confirm(model);
+
+            if (mensaje.StartsWith("C"))
             {
-                model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
-                appointmentsHelper.Confirm(model);
-                TempData["Message"] = "Cita confirmada correctamente.";
-                return RedirectToAction(nameof(Index));
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "Usted no es la persona a nombre de esta cita. " + ex.Message;
-                return View("Index");
-            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Index");
         }
 
         [Authorize]
@@ -64,19 +63,15 @@ namespace FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Cancel(AppointmentViewModel model)
         {
-            try
+            model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
+            string mensaje = appointmentsHelper.Cancel(model);
+            if (mensaje.StartsWith("C"))
             {
-                model.Email = User.FindFirst(ClaimTypes.Email)?.Value;
-                appointmentsHelper.Cancel(model);
-                TempData["Message"] = "Cita cancelada correctamente.";
-
-                return RedirectToAction(nameof(Index));
+                TempData["Message"] = mensaje;
+                return RedirectToAction("MyAppointments", "Account");
             }
-            catch
-            {
-                TempData["Error"] = "No se pudo cancelar la cita, intente de nuevo.";
-                return View("Index");
-            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("MyAppointments", "Account");
         }
     }
 }

@@ -8,7 +8,6 @@
 <h1>Detalles Producto</h1>
 
 <div>
-  @*  <h4>VWProductViewModel</h4>*@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -56,6 +55,6 @@
     </dl>
 </div>
 <div style="text-align: center;">
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Volver a Producto</a>
-</>
+    @Html.ActionLink("Editar", "EditProduct", new { id = Model.ProductId }) |
+    <a asp-action="Products">Volver a Productos</a>
+</div>

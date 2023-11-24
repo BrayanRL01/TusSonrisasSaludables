@@ -66,7 +66,9 @@
                         <th>
                             @Html.DisplayNameFor(model => model.PhoneNumber)
                         </th>
-                        <th></th>
+                        <th>
+                            @Html.DisplayName("Acciones")
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,9 +97,9 @@
                                 @Html.DisplayFor(modelItem => item.PhoneNumber)
                             </td>
                             <td>
-                                @Html.ActionLink("Editar", "Edit" , new { id=item.UserId }  , new {@class="btn btn-warning" } )
-                                @Html.ActionLink("Detalles", "Details", new { id=item.UserId },new {@class="btn btn-info" } )
-                                @Html.ActionLink("Eliminar", "Delete", new { id=item.UserId } ,new {@class="btn btn-danger" } )
+                                @Html.ActionLink("Editar", "Edit", new { id = item.UserId }, new { @class = "btn btn-warning" })
+                                @* @Html.ActionLink("Detalles", "Details", new { id = item.UserId }, new { @class = "btn btn-info" }) *@
+                                @Html.ActionLink("Eliminar", "Delete", new { id = item.UserId }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }

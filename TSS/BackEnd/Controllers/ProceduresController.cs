@@ -19,6 +19,7 @@ namespace BackEnd.Controllers
             _context = context;
         }
 
+        #region Get
         // GET: api/<ProcedureController>
         [HttpGet("Procedures")]
         public async Task<ActionResult<IEnumerable<VwProcedure>>> SP_GetProcedureView()
@@ -55,6 +56,7 @@ namespace BackEnd.Controllers
                 return StatusCode(500, "El procedimiento no existe: " + ex.Message);
             }
         }
+        #endregion
 
         #region Post
         // POST api/<ProcedureController>
@@ -67,7 +69,7 @@ namespace BackEnd.Controllers
 
                 var param = new SqlParameter[]
                 {
-                   new SqlParameter()
+                   new()
                     {
                         ParameterName = "@Procedure",
                         SqlDbType = System.Data.SqlDbType.VarChar,
@@ -80,7 +82,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok("Procedimiento creado correctamente.");
             }
             catch (Exception ex)
             {
@@ -120,7 +122,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok($"Procedimiento {entity.ProcedureName} actualizado correctamente.");
             }
             catch (Exception ex)
             {
@@ -138,7 +140,7 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteProcedure {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Procedimiento eliminado correctamente.");
             }
             catch (Exception ex)
             {

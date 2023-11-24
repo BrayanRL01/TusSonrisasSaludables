@@ -7,7 +7,6 @@
 
 <h1>Editar Producto</h1>
 
-<h4>ProductViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -49,14 +48,9 @@
                 <span asp-validation-for="ProductImage" class="text-danger"></span>
             </div>
             <div style="text-align: center;">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <button class="btn btn-primary" asp-action="Index">Regresar a Productos</button>
+                <input type="submit" value="Modificar" class="btn btn-primary" />
+                <button class="btn btn-primary" asp-action="Products">Regresar a Productos</button>
             </div>
         </form>
     </div>
 </div>
-
-@*<div>
-    <a asp-action="Index">Volver a Producto</a>
-</div>
-*@

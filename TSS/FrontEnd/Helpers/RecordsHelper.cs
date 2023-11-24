@@ -13,45 +13,43 @@ namespace FrontEnd.Helpers
         }
 
         #region GetAll
-        public List<VWRecordViewModel> GetAllView()
+        public List<VWRecordViewModel>? GetAllView()
         {
-            List<VWRecordViewModel> list = new();
+            List<VWRecordViewModel>? list = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Records/Records");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                list = JsonConvert.DeserializeObject<List<VWRecordViewModel>>(content);
+                list = JsonConvert.DeserializeObject<List<VWRecordViewModel>?>(content);
             }
             return list;
         }
         #endregion
 
         #region GetByID
-        public VWRecordViewModel GetViewByID(int id)
+        public VWRecordViewModel? GetViewByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Records/RecordInfo/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            VWRecordViewModel record = JsonConvert.DeserializeObject<VWRecordViewModel>(content);
-
+            VWRecordViewModel? record = JsonConvert.DeserializeObject<VWRecordViewModel?>(content);
             return record;
         }
 
-        public RecordViewModel GetByID(int id)
+        public RecordViewModel? GetByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Records/Record/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            RecordViewModel record = JsonConvert.DeserializeObject<RecordViewModel>(content);
-
+            RecordViewModel? record = JsonConvert.DeserializeObject<RecordViewModel?>(content);
             return record;
         }
 
-        public List<VWRecordViewModel> GetUserRecords(string email)
+        public List<VWRecordViewModel>? GetUserRecords(string email)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.GetResponse("api/Records/UserRecords/" + email);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                List<VWRecordViewModel> Appointment = JsonConvert.DeserializeObject<List<VWRecordViewModel>>(content);
+                List<VWRecordViewModel>? Appointment = JsonConvert.DeserializeObject<List<VWRecordViewModel>?>(content);
                 return Appointment;
             }
             catch (Exception ex)
@@ -62,46 +60,47 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Update
-        public RecordViewModel Edit(RecordViewModel record)
+        public string Edit(RecordViewModel record)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PutResponse("api/Records/Record/", record);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                RecordViewModel recordAPI = JsonConvert.DeserializeObject<RecordViewModel>(content);
-
-                return recordAPI;
+                string mensaje = content;
+                return mensaje;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error: " + ex);
+                return ex.Message;
             }
         }
         #endregion
 
         #region Add
-        public RecordViewModel Add(RecordViewModel record)
+        public string Add(RecordViewModel record)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PostResponse("api/Records/Record", record);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                RecordViewModel recordAPI = JsonConvert.DeserializeObject<RecordViewModel>(content);
-                return recordAPI;
+                string mensaje = content;
+                return mensaje;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return ex.Message;
             }
         }
         #endregion
 
         #region Delete
-        public RecordViewModel Delete(int id)
+        public string Delete(int id)
         {
-            RecordViewModel record = new();
             HttpResponseMessage responseMessage = repository.DeleteResponse("api/Records/" + id);
-            return record;
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
+
         }
         #endregion
     }

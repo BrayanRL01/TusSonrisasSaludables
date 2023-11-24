@@ -19,6 +19,7 @@
     </dl>
 
     <form asp-action="DeleteSpecialty">
+        @Html.HiddenFor(Model => Model.SpecialtyId)
         <input type="submit" value="Eliminar" class="btn btn-danger" /> |
         <a asp-action="Specialties">Volver a Especialidades</a>
     </form>

@@ -12,14 +12,14 @@ namespace FrontEnd.Helpers
             repository = new ServiceRepository();
         }
 
-        public List<GenreViewModel> GetAllView()
+        public List<GenreViewModel>? GetAllView()
         {
-            List<GenreViewModel> list = new List<GenreViewModel>();
+            List<GenreViewModel>? list = new();
             HttpResponseMessage responseMessage = repository.GetResponse("api/Genres/Genres");
             if (responseMessage != null)
             {
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                list = JsonConvert.DeserializeObject<List<GenreViewModel>>(content);
+                list = JsonConvert.DeserializeObject<List<GenreViewModel>?>(content);
             }
             return list;
         }

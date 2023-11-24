@@ -84,9 +84,9 @@
                                 @Html.DisplayFor(modelItem => item.RecordDate)
                             </td>
                             <td>
-                                @Html.ActionLink("Editar", "EditRecord", new { id=item.RecordId }, new {@class="btn btn-warning" } ) 
-                                @Html.ActionLink("Detalles", "RecordDetails", new { id=item.RecordId },new {@class="btn btn-info" } ) 
-                                @Html.ActionLink("Eliminar", "DeleteRecord", new { id=item.RecordId },new {@class="btn btn-danger" } )
+                                @Html.ActionLink("Editar", "EditRecord", new { id = item.RecordId }, new { @class = "btn btn-warning" })
+                                @* @Html.ActionLink("Detalles", "RecordDetails", new { id = item.RecordId }, new { @class = "btn btn-info" }) *@
+                                @Html.ActionLink("Eliminar", "DeleteRecord", new { id = item.RecordId }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>
                     }

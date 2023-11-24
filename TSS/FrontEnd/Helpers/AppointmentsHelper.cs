@@ -32,11 +32,11 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public List<VWAdminAppointmentViewModel> GetAdminAppointmentsView()
+        public List<VWAdminAppointmentViewModel>? GetAdminAppointmentsView()
         {
             try
             {
-                List<VWAdminAppointmentViewModel> list = new();
+                List<VWAdminAppointmentViewModel>? list = new();
                 HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AdminAppointments");
                 if (responseMessage != null)
                 {
@@ -51,20 +51,20 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public VWAdminAppointmentViewModel GetViewByID(int id)
+        public VWAdminAppointmentViewModel? GetViewByID(int id)
         {
 
             HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AdminAppointment/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            VWAdminAppointmentViewModel Appointment = JsonConvert.DeserializeObject<VWAdminAppointmentViewModel>(content);
+            VWAdminAppointmentViewModel? Appointment = JsonConvert.DeserializeObject<VWAdminAppointmentViewModel>(content);
             return Appointment;
         }
 
-        public AppointmentViewModel GetByID(int id)
+        public AppointmentViewModel? GetByID(int id)
         {
             HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AppointmentInfo/" + id);
             string content = responseMessage.Content.ReadAsStringAsync().Result;
-            AppointmentViewModel Appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
+            AppointmentViewModel? Appointment = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
 
             return Appointment;
         }
@@ -86,66 +86,58 @@ namespace FrontEnd.Helpers
         #endregion
 
         #region Put
-        public AppointmentViewModel Edit(AppointmentViewModel Cita)
+        public string Edit(AppointmentViewModel Cita)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/Appointment/", Cita);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
-
-                return CitaAPI;
+                string mensaje = content.ToString();
+                return mensaje;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return ex.Message;
             }
         }
         #endregion
 
         #region Add
-        public AppointmentViewModel Add(AppointmentViewModel appointment)
+        public string Add(AppointmentViewModel appointment)
         {
             try
             {
                 HttpResponseMessage responseMessage = repository.PostResponse("api/Appointments/Appointment", appointment);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                AppointmentViewModel appointmentAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
-                return appointmentAPI;
+                string mensaje = content.ToString();
+                return mensaje;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return ex.Message;
             }
         }
         #endregion
 
         #region Delete
-        public AppointmentViewModel Delete(int id)
+        public string Delete(int id)
         {
-            try
-            {
-                AppointmentViewModel Cita = new();
-                HttpResponseMessage responseMessage = repository.DeleteResponse("api/Appointments/" + id);
-                return Cita;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            HttpResponseMessage responseMessage = repository.DeleteResponse("api/Appointments/" + id);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
         }
         #endregion
 
         #region Confirm and Cancel
-        public AppointmentViewModel Confirm(AppointmentViewModel model)
+        public string Confirm(AppointmentViewModel model)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/ConfirmAppointment/", model);
+                HttpResponseMessage? responseMessage = repository.PutResponse("api/Appointments/ConfirmAppointment/", model);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
-
-                return CitaAPI;
+                string mensaje = content.ToString();
+                return mensaje;
             }
             catch (Exception ex)
             {
@@ -153,19 +145,18 @@ namespace FrontEnd.Helpers
             }
         }
 
-        public AppointmentViewModel Cancel(AppointmentViewModel model)
+        public string Cancel(AppointmentViewModel model)
         {
             try
             {
-                HttpResponseMessage responseMessage = repository.PutResponse("api/Appointments/CancelAppointment/", model);
+                HttpResponseMessage? responseMessage = repository.PutResponse("api/Appointments/CancelAppointment/", model);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                AppointmentViewModel CitaAPI = JsonConvert.DeserializeObject<AppointmentViewModel>(content);
-
-                return CitaAPI;
+                string mensaje = content.ToString();
+                return mensaje;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return ex.Message;
             }
         }
         #endregion

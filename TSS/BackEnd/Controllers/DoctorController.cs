@@ -45,10 +45,10 @@ namespace BackEnd.Controllers
         {
             try
             {
-                var users = await _context.VwDoctors.FromSqlInterpolated($"EXEC SP_GetDoctorView {id}").ToListAsync();
-                var user = users.FirstOrDefault();
+                var doctors = await _context.VwDoctors.FromSqlInterpolated($"EXEC SP_GetDoctorView {id}").ToListAsync();
+                var doctor = doctors.FirstOrDefault();
 
-                return Ok(user);
+                return Ok(doctor);
             }
             catch (Exception ex)
             {
@@ -61,10 +61,10 @@ namespace BackEnd.Controllers
         {
             try
             {
-                var users = await _context.Doctors.FromSqlInterpolated($"EXEC SP_GetDoctor {id}").ToListAsync();
-                var user = users.FirstOrDefault();
+                var doctors = await _context.Doctors.FromSqlInterpolated($"EXEC SP_GetDoctor {id}").ToListAsync();
+                var doctor = doctors.FirstOrDefault();
 
-                return Ok(user);
+                return Ok(doctor);
             }
             catch (Exception ex)
             {
@@ -181,7 +181,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok($"Doctor/a {entity.DoctorName} {entity.FirstName} {entity.LastName} creado correctamente.");
             }
             catch (Exception ex)
             {
@@ -291,7 +291,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
 
-                return Ok(entity);
+                return Ok($"Doctor/a {entity.DoctorName} {entity.FirstName} {entity.LastName} actualizado correctamente.");
             }
             catch (Exception ex)
             {
@@ -308,11 +308,11 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteDoctor {id}");
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok("Doctor/a eliminado correctamente.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "No se pudo eliminar el usuario: " + ex.Message);
+                return StatusCode(500, "No se pudo eliminar: " + ex.Message);
             }
         }
         #endregion

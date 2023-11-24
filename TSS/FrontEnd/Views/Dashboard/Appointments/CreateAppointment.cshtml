@@ -1,6 +1,8 @@
 ﻿@model FrontEnd.Models.AppointmentViewModel
 
 @{
+    var Model = new List<AppointmentViewModel>();
+    var today = DateTime.Today;
     ViewData["Title"] = "CreateAppointment";
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
@@ -17,47 +19,119 @@
 
 @*<div class="row padding">*@
 
-    <div class="row">
+@* <div class="row">
     <div class="col">
         <form asp-action="CreateAppointment">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col">
-                @*<label asp-for="DoctorId" class="control-label"></label>*@
-                @*<center><h6>Doctor</h6></center>*@
                 @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Seleccione un doctor", new { @class = "form-control" })
                 <span asp-validation-for="DoctorId" class="text-danger"></span>
             </div>
             <br />
             <div class="col">
-                @*<label asp-for="SpecialtyId" class="control-label"></label>*@
-                @*<center><h6>Especialidad</h6></center>*@
                 @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
                 <span asp-validation-for="SpecialtyId" class="text-danger"></span>
             </div>
             <br />
             <div class="col">
-                @*<label asp-for="StartTime" class="control-label"></label>*@
-                <center><h6>Inicio</h6></center>
+                <center><h6>Hora de Inicio</h6></center>
                 <input asp-for="StartTime" class="form-control" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <br />
             <div class="col">
-               @* <label asp-for="EndTime" class="control-label"></label>*@
-                <center><h6>Fin</h6></center>
+                <center><h6>Hora de Fin</h6></center>
                 <input asp-for="EndTime" class="form-control" />
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
-            <br /> 
+            <br />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
                 <button class="btn btn-primary" asp-action="Appointments">Regresar a Citas</button>
             </div>
         </form>
     </div>
+</div> *@
+
+
+<div class="container mt-5">
+    <form asp-action="CreateAppointment">
+        <div class="col">
+            @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Select Doctor", new { @class = "form-control" })
+            <span asp-validation-for="DoctorId" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="col">
+            @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Select Specialty", new { @class = "form-control" })
+            <span asp-validation-for="SpecialtyId" class="text-danger"></span>
+        </div>
+        <table class="table table-bordered">
+            <br />
+            <thead>
+                <tr>
+                    <th>Espacios de Citas</th>
+                    @for (int i = 0; i < 10; i++)
+                    {
+                        var nextDate = today.AddDays(i);
+                        <th>@nextDate.ToString("yyyy-MM-dd")</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (int hour = 9; hour <= 18; hour++)
+                {
+                    <tr>
+                        <td>@hour:00</td>
+                        @for (int i = 0; i < 10; i++)
+                        {
+                            var nextDate = today.AddDays(i);
+                            <td>
+                                <input type="checkbox" name="StartTime" value="@nextDate.ToString("yyyy-MM-dd") @hour:00" />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Crear Citas</button>
+    </form>
 </div>
-@*
-<div>
-    <a asp-action="Appointments">Regresar a Citas</a>
+
+@* <div class="container mt-5">
+    <form asp-action="CreateAppointment">
+        <div class="col">
+            @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Select Doctor", new { @class = "form-control" })
+            <span asp-validation-for="DoctorId" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="col">
+            @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Select Specialty", new { @class = "form-control" })
+            <span asp-validation-for="SpecialtyId" class="text-danger"></span>
+        </div>
+        <table class="table table-bordered">
+            <br />
+            <thead>
+                <tr>
+                    <th>Appointment Slots</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < 10; i++)
+                {
+                    var nextDate = today.AddDays(i);
+                    <tr>
+                        <td>@nextDate.ToString("yyyy-MM-dd")</td>
+                        @for (int hour = 9; hour <= 18; hour++)
+                        {
+                            <td>
+                                <input type="checkbox" name="StartTime" value="@nextDate.ToString("yyyy-MM-dd") @hour:00" />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Create Appointments</button>
+    </form>
 </div>
-*@
+ *@
