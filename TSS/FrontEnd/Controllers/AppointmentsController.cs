@@ -2,6 +2,7 @@
 using FrontEnd.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 using System.Security.Claims;
 
 namespace FrontEnd.Controllers
@@ -13,8 +14,10 @@ namespace FrontEnd.Controllers
         // GET: AppointmentsController
         public ActionResult Index()
         {
-            List<VWAppointmentViewModel>? Appointments = appointmentsHelper.GetAppointmentsView();
-            return View(Appointments);
+            List<VWAppointmentViewModel>? appointments = appointmentsHelper.GetAppointmentsView();
+            var citas = appointmentsHelper.GetAppointmentsView();
+            ViewData["citas"] = citas.ToJson();
+            return View(appointments);
         }
 
         // GET: AppointmentsController/Details/5

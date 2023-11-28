@@ -71,3 +71,14 @@ else if (TempData.ContainsKey("Error"))
     </table>
 </div>
 
+<div id="calendar"></div>
+
+<script>
+    $(function () {
+        $('#calendar').fullCalendar({
+            locale: 'es',
+            events: @Html.Raw(ViewData["citas"])
+            });
+    });
+</script>
+
