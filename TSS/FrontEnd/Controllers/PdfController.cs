@@ -62,8 +62,34 @@ namespace FrontEnd.Controllers
 </body>
 </html>";
 
+            var info = $@"<!DOCTYPE html>
+<html lang=""es"">
+<head>
+  <title>Reporte de cita de Sonrisas Saludables</title>
+</head>
+<body>
+  <h1>Reporte de cita</h1>
+  <p>
+    Información relacionada a la cita del usuario:
+  </p>
+  <p>
+    Doctor/a: {formData.Doctor}
+
+    Especialidad: {formData.SpecialtyName}
+
+    Paciente: {formData.PacientName}
+
+    Hora Inicio: {formData.StartTime}
+
+    Hora Fin: {formData.EndTime}
+
+    Fecha de Creación: {DateTime.Now}
+  </p>
+</body>
+</html>"
+
             var renderer = pdf;
-            var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
+            var pdfDocument = renderer.RenderHtmlAsPdf(info);
 
             var pdfStream = pdfDocument.BinaryData;
 
