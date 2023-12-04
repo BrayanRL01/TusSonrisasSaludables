@@ -1098,6 +1098,13 @@ namespace FrontEnd.Controllers
 
         #endregion
 
+        #region
+        public ActionResult Blog()
+        {
+            return View("Blog/Blog");
+        }
+        #endregion
+
         public IActionResult Privacy()
         {
             return View();
