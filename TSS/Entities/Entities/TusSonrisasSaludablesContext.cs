@@ -433,6 +433,8 @@ namespace Entities.Entities
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasIndex(e => e.IdNumber, "IDX_IdNumber");
+
                 entity.HasIndex(e => e.Email, "IDX_UserEmails");
 
                 entity.HasIndex(e => e.IdNumber, "UQ__Users__62DF8033E5901911")

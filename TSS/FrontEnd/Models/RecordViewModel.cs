@@ -23,6 +23,6 @@ namespace FrontEnd.Models
         [Required(ErrorMessage = "El tratamiento es requerido."), Display(Name = "Tratamiento")]
         public string Treatment { get; set; } = null!;
         [Display(Name = "Fecha de la Cita")]
-        public DateTime RecordDate { get; set; }
+        public DateTime RecordDate { get; set; } = DateTime.Now.Date;
     }
 }

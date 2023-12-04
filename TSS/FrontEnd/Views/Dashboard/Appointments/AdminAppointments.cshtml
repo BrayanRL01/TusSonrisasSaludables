@@ -119,7 +119,7 @@ else if (TempData.ContainsKey("Error"))
                             </td>
                             <td>
                                 @Html.ActionLink("Editar", "EditAppointment", new { id = item.AppointmentId }, new { @class = "btn btn-warning" })
-                                @* @Html.ActionLink("Detalles", "AppointmentDetails", new { id = item.AppointmentId }, new { @class = "btn btn-info" }) *@
+                                @Html.ActionLink("Detalles", "AppointmentDetails", new { id = item.AppointmentId }, new { @class = "btn btn-info" })
                                 @Html.ActionLink("Eliminar", "DeleteAppointment", new { id = item.AppointmentId }, new { @class = "btn btn-danger" })
                             </td>
                         </tr>

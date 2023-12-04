@@ -160,5 +160,33 @@ namespace FrontEnd.Helpers
             }
         }
         #endregion
+
+        #region Counts
+        public string AvailableAppointments()
+        {
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/AvailableAppointments/");
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string count = content;
+            return count;
+        }
+
+        public string ReservedAppointments()
+        {
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/ReservedAppointments/");
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string count = content;
+            return count;
+        }
+        #endregion
+
+        #region Next
+        public string NextAppointments()
+        {
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/NextAppointment/");
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string next = content;
+            return next;
+        }
+        #endregion
     }
 }

@@ -60,6 +60,56 @@ namespace BackEnd.Controllers
         }
         #endregion
 
+        #region Counts
+        [HttpGet("AvailableAppointments")]
+        public async Task<ActionResult> AvailableAppointments()
+        {
+            try
+            {
+                SqlParameter outputParam = new()
+                {
+                    ParameterName = "@Count",
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                    Size = 5,
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_AvailableAppointmentsCount {outputParam} OUTPUT");
+
+                string count = (string)outputParam.Value;
+                return Ok(count);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("ReservedAppointments")]
+        public async Task<ActionResult> ReservedAppointments()
+        {
+            try
+            {
+                SqlParameter outputParam = new()
+                {
+                    ParameterName = "@Count",
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                    Size = 5,
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ReservedAppointmentsCount {outputParam} OUTPUT");
+
+                string count = (string)outputParam.Value;
+                return Ok(count);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
+
         #region GetBy
         // GET api/<AppointmentsController>/5
         [HttpGet("AppointmentInfo/{id}")]
@@ -304,6 +354,33 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"No se ha podido confirmar la cita: {ex.Message}");
+            }
+        }
+        #endregion
+
+        #region NextAppointment
+        [HttpGet("NextAppointment")]
+        public async Task<ActionResult> NextAppointment()
+        {
+            try
+            {
+                DateTime date = DateTime.Now;
+                SqlParameter outputParam = new()
+                {
+                    ParameterName = "@Next",
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                    Size = 30,
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_NextAppointment {outputParam} OUTPUT");
+
+                string next = (string)outputParam.Value;
+                return Ok(next);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
         #endregion
