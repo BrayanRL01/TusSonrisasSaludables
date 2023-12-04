@@ -60,87 +60,91 @@
 </div>
 <!-- Carousel End -->
 <!-- Banner Start -->
-<div class="container-fluid banner mb-5">
-    <div class="container">
-        <div class="row gx-0">
-            <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s">
-                <div class="bg-primary d-flex flex-column p-5" style="height: 300px;">
-                    <h3 class="text-white mb-3">Horarios</h3>
-                    <div class="d-flex justify-content-between text-white mb-3">
-                        <h6 class="text-white mb-0">Lunes a Viernes</h6>
-                        <p class="mb-0"> 9:00am - 7:00pm</p>
+<center>
+    <div class="container-fluid banner mb-5">
+        <div class="container">
+            <div class="row gx-0">
+                <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s">
+                    <div class="bg-primary d-flex flex-column p-5" style="height: 300px;">
+                        <h3 class="text-white mb-3">Horarios</h3>
+                        <div class="d-flex justify-content-between text-white mb-3">
+                            <h6 class="text-white mb-0">Lunes a Viernes</h6>
+                            <p class="mb-0"> 9:00am - 7:00pm</p>
+                        </div>
+                        <div class="d-flex justify-content-between text-white mb-3">
+                            <h6 class="text-white mb-0">Sábados</h6>
+                            <p class="mb-0"> 9:00am - 12:00pm</p>
+                        </div>
+                        <div class="d-flex justify-content-between text-white mb-3">
+                            <h6 class="text-white mb-0">Domingos</h6>
+                            <p class="mb-0"> Cerrados</p>
+                        </div>
+                        <a class="btn btn-light" asp-controller="Appointments" asp-action="Index">Citas</a>
                     </div>
-                    <div class="d-flex justify-content-between text-white mb-3">
-                        <h6 class="text-white mb-0">Sábados</h6>
-                        <p class="mb-0"> 9:00am - 12:00pm</p>
-                    </div>
-                    <div class="d-flex justify-content-between text-white mb-3">
-                        <h6 class="text-white mb-0">Domingos</h6>
-                        <p class="mb-0"> Cerrados</p>
-                    </div>
-                    <a class="btn btn-light" asp-controller="Appointments" asp-action="Index">Citas</a>
                 </div>
-            </div>
-            <div class="col-lg-4 wow zoomIn" data-wow-delay="0.3s">
+                @*             <div class="col-lg-4 wow zoomIn" data-wow-delay="0.3s">
                 <div class="bg-dark d-flex flex-column p-5" style="height: 300px;">
-                    <h3 class="text-white mb-3">Buscar Doctor</h3>
-                    <div class="date mb-3" id="date" data-target-input="nearest">
-                        <input type="text" class="form-control bg-light border-0 datetimepicker-input"
-                               placeholder="Appointment Date" data-target="#date" data-toggle="datetimepicker" style="height: 40px;">
-                    </div>
-                    <select class="form-select bg-light border-0 mb-3" style="height: 40px;">
-                        <option selected>Seleccionar un servicio</option>
-                        <option value="1">Consulta General</option>
-                        <option value="2">Tratamientos</option>
-                        <option value="3">Cirugías</option>
-                    </select>
-                    <a class="btn btn-light" href="">Buscar Doctor</a>
+                <h3 class="text-white mb-3">Buscar Doctor</h3>
+                <div class="date mb-3" id="date" data-target-input="nearest">
+                <input type="text" class="form-control bg-light border-0 datetimepicker-input"
+                placeholder="Appointment Date" data-target="#date" data-toggle="datetimepicker" style="height: 40px;">
                 </div>
-            </div>
-            <div class="col-lg-4 wow zoomIn" data-wow-delay="0.6s">
-                <div class="bg-secondary d-flex flex-column p-5" style="height: 300px;">
-                    <h3 class="text-white mb-3">Reservar cita</h3>
-                    <p class="text-white">
-                        Tu bienestar bucal es nuestra prioridad.
-                        Reserva tu cita y déjanos cuidar de ti.
-                    </p>
-                    <h2 class="text-white mb-0">2221 4316</h2>
+                <select class="form-select bg-light border-0 mb-3" style="height: 40px;">
+                <option selected>Seleccionar un servicio</option>
+                <option value="1">Consulta General</option>
+                <option value="2">Tratamientos</option>
+                <option value="3">Cirugías</option>
+                </select>
+                <a class="btn btn-light" href="">Buscar Doctor</a>
+                </div>
+                </div> *@
+                <div class="col-lg-4 wow zoomIn" data-wow-delay="0.6s">
+                    <div class="bg-secondary d-flex flex-column p-5" style="height: 300px;">
+                        <h3 class="text-white mb-3">Reservar cita</h3>
+                        <p class="text-white">
+                            Tu bienestar bucal es nuestra prioridad.
+                            Reserva tu cita y déjanos cuidar de ti.
+                        </p>
+                        <h2 class="text-white mb-0">2221 4316</h2>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</center>
 <!-- Banner Start -->
 <!-- About Start -->
 <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-7">
-                <div class="section-title mb-4">
-                    <h5 class="position-relative d-inline-block text-primary text-uppercase">Sobre Nosotros</h5>
-                    <h1 class="display-5 mb-0">La salud de tus dientes no puede esperar. Agenda una cita ahora y sonríe con confianza.</h1>
-                </div>
-                <h4 class="text-body fst-italic mb-4">Nuestro equipo altamente capacitado te guiará a través de cada paso de tu tratamiento, para que te sientas seguro y confiado.</h4>
-                <p class="mb-4">En nuestra clínica dental, el cuidado de tu sonrisa está en manos de expertos que trabajan incansablemente para garantizar tu comodidad y confianza en cada etapa de tu tratamiento.</p>
-                <div class="row g-3">
-                    <div class="col-sm-6 wow zoomIn" data-wow-delay="0.3s">
-                        <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Profesionales capacitados</h5>
-                        <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Ambiente seguro</h5>
+    <center>
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-7">
+                    <div class="section-title mb-4">
+                        <h5 class="position-relative d-inline-block text-primary text-uppercase">Sobre Nosotros</h5>
+                        <h1 class="display-5 mb-0">La salud de tus dientes no puede esperar. Agenda una cita ahora y sonríe con confianza.</h1>
                     </div>
-                    <div class="col-sm-6 wow zoomIn" data-wow-delay="0.6s">
-                        <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Personal amable</h5>
-                        <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Procedimientos Innovadores</h5>
+                    <h4 class="text-body fst-italic mb-4">Nuestro equipo altamente capacitado te guiará a través de cada paso de tu tratamiento, para que te sientas seguro y confiado.</h4>
+                    <p class="mb-4">En nuestra clínica dental, el cuidado de tu sonrisa está en manos de expertos que trabajan incansablemente para garantizar tu comodidad y confianza en cada etapa de tu tratamiento.</p>
+                    <div class="row g-3">
+                        <div class="col-sm-6 wow zoomIn" data-wow-delay="0.3s">
+                            <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Profesionales capacitados</h5>
+                            <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Ambiente seguro</h5>
+                        </div>
+                        <div class="col-sm-6 wow zoomIn" data-wow-delay="0.6s">
+                            <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Personal amable</h5>
+                            <h5 class="mb-3"><i class="fa fa-check-circle text-primary me-3"></i>Procedimientos Innovadores</h5>
+                        </div>
                     </div>
+                    <a href="appointment.html" class="btn btn-primary py-3 px-5 mt-4 wow zoomIn" data-wow-delay="0.6s">Reservar cita</a>
                 </div>
-                <a href="appointment.html" class="btn btn-primary py-3 px-5 mt-4 wow zoomIn" data-wow-delay="0.6s">Reservar cita</a>
-            </div>
-            <div class="col-lg-5" style="min-height: 500px;">
-                <div class="position-relative h-100">
-                    <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s" src="img/about.jpg" style="object-fit: cover;">
+                <div class="col-lg-5" style="min-height: 500px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s" src="img/about.jpg" style="object-fit: cover;">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </center>
 </div>
 <!-- About End -->
 <!-- Appointment Start -->
@@ -153,54 +157,54 @@
                     <p class="text-white mb-0">La clínica dental se enorgullece de ofrecer atención odontológica excepcional, donde la experiencia y la confianza establecida con los pacientes son fundamentales. La experiencia se refiere a la habilidad y conocimientos acumulados, mientras que la confianza representa un compromiso de proporcionar comodidad emocional. La clínica se esfuerza por brindar atención de la más alta calidad al combinar estas cualidades.</p>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="appointment-form h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
-                    <h1 class="text-white mb-4">Reservar Cita</h1>
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-12 col-sm-6">
-                                <select class="form-select bg-light border-0" style="height: 55px;">
-                                    <option selected>Seleccionar Servicio</option>
-                                    <option value="1">Estética Dental</option>
-                                    <option value="2">Protesis</option>
-                                    <option value="3">Ortodoncia</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <select class="form-select bg-light border-0" style="height: 55px;">
-                                    <option selected>Seleccionar Doctor</option>
-                                    <option value="1">Irene Salazar</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control bg-light border-0" placeholder="Nombre Completo" style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="email" class="form-control bg-light border-0" placeholder="Correo electrónico" style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="date" id="date1" data-target-input="nearest">
-                                    <input type="text"
-                                           class="form-control bg-light border-0 datetimepicker-input"
-                                           placeholder="Fecha de la Cita" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;">
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="time" id="time1" data-target-input="nearest">
-                                    <input type="text"
-                                           class="form-control bg-light border-0 datetimepicker-input"
-                                           placeholder="Hora de la Cita" data-target="#time1" data-toggle="datetimepicker" style="height: 55px;">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-dark w-100 py-3" type="submit">Continuar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            @*  <div class="col-lg-6">
+            <div class="appointment-form h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
+            <h1 class="text-white mb-4">Reservar Cita</h1>
+            <form>
+            <div class="row g-3">
+            <div class="col-12 col-sm-6">
+            <select class="form-select bg-light border-0" style="height: 55px;">
+            <option selected>Seleccionar Servicio</option>
+            <option value="1">Estética Dental</option>
+            <option value="2">Protesis</option>
+            <option value="3">Ortodoncia</option>
+            </select>
             </div>
+            <div class="col-12 col-sm-6">
+            <select class="form-select bg-light border-0" style="height: 55px;">
+            <option selected>Seleccionar Doctor</option>
+            <option value="1">Irene Salazar</option>
+            </select>
+            </div>
+            <div class="col-12 col-sm-6">
+            <input type="text" class="form-control bg-light border-0" placeholder="Nombre Completo" style="height: 55px;">
+            </div>
+            <div class="col-12 col-sm-6">
+            <input type="email" class="form-control bg-light border-0" placeholder="Correo electrónico" style="height: 55px;">
+            </div>
+            <div class="col-12 col-sm-6">
+            <div class="date" id="date1" data-target-input="nearest">
+            <input type="text"
+            class="form-control bg-light border-0 datetimepicker-input"
+            placeholder="Fecha de la Cita" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;">
+            </div>
+            </div>
+            <div class="col-12 col-sm-6">
+            <div class="time" id="time1" data-target-input="nearest">
+            <input type="text"
+            class="form-control bg-light border-0 datetimepicker-input"
+            placeholder="Hora de la Cita" data-target="#time1" data-toggle="datetimepicker" style="height: 55px;">
+            </div>
+            </div>
+            <div class="col-12">
+            <button class="btn btn-dark w-100 py-3" type="submit">Continuar</button>
+            </div>
+            </div>
+            </form>
+            </div> *@
         </div>
     </div>
+</div>
 </div>
 <!-- Appointment End -->
 <!-- Service Start -->
@@ -278,7 +282,7 @@
                 <div class="offer-text text-center rounded p-5">
                     <h1 class="display-5 text-white">Ahorra un 30% en tu primer procedimiento dental.</h1>
                     <p class="text-white mb-4">Contactános hoy mismo.</p>
-                    <a href="appointment.html" class="btn btn-dark py-3 px-5 me-3">Cita</a>
+                    <a asp-controller="Appointments" asp-action="Index" class="btn btn-dark py-3 px-5 me-3">Cita</a>
                     <a href="" class="btn btn-light py-3 px-5">Leer más al respecto.</a>
                 </div>
             </div>
@@ -345,7 +349,7 @@
                             <hr class="text-primary w-50 mx-auto mt-0">
                             <div class="d-flex justify-content-between mb-3"><span>Moderno equipo</span><i class="fa fa-check text-primary pt-1"></i></div>
                             <div class="d-flex justify-content-between mb-3"><span>Profesionales capacitados</span><i class="fa fa-check text-primary pt-1"></i></div>
-                            <div class="d-flex justify-content-between mb-2"><span>Cómodos Espacios><i class="fa fa-check text-primary pt-1"></i></div>
+                            <div class="d-flex justify-content-between mb-2"><span>Cómodos Espacios</span><i class="fa fa-check text-primary pt-1"></i></div>
                             <a href="appointment.html" class="btn btn-primary py-2 px-4 position-absolute top-100 start-50 translate-middle">Reservar</a>
                         </div>
                     </div>

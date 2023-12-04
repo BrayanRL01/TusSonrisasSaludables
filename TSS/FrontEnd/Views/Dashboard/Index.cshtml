@@ -4,6 +4,7 @@
     AppointmentsHelper appointmentsHelper = new();
     string available = appointmentsHelper.AvailableAppointments();
     string reserved = appointmentsHelper.ReservedAppointments();
+    string next = appointmentsHelper.NextAppointments();
     Layout = "_DashLayout";
 }
 
@@ -29,41 +30,6 @@ else @if (TempData.ContainsKey("Error"))
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <button id="generarPDF">Generar PDF</button>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-    <script>
-        document.getElementById("generarPDF").addEventListener("click", function () {
-            const divContent = document.getElementById("contenidoParaPDF").innerHTML;
-            // Enviar el contenido del div al controlador para generar el PDF
-            fetch('/Pdf/GenerarPDF', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ contenido: divContent })
-            })
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'Dashboard.pdf';
-                    a.style.display = 'none';
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                });
-        });
-    </script>
-
-
     <div id="contenidoParaPDF">
         <!-- Content Row -->
         <div class="row">
@@ -113,24 +79,17 @@ else @if (TempData.ContainsKey("Error"))
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Tareas
+                                    Próxima Cita
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar"
-                                                 style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                 aria-valuemax="100"></div>
-                                        </div>
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@next</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
+                            @*                 <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                            </div> *@
                         </div>
                     </div>
                 </div>
