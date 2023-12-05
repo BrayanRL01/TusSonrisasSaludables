@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Detalles de la Cita</h1>
+        <center><h1 class="h3 mb-0 text-gray-800">Detalles de la Cita</h1></center>
         <button type="button" id="openModalButton" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
             @Html.HiddenFor(Model => Model.AppointmentId) Reporte
         </button>
@@ -146,9 +146,9 @@
             </dd>
         </dl>
     </div>
-    <div>
+    <div style="text-align: center;">
         @Html.ActionLink("Editar", "Edit", new { /* id = Model.PrimaryKey */ }) |
-        <a asp-action="Appointments">Regresar a Citas</a>
+        <button class="btn btn-primary" asp-action="Appointments">Regresar a Citas</button>
     </div>
 </center>
 

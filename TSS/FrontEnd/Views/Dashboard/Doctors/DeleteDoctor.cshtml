@@ -6,9 +6,9 @@
 }
 
 <center>
-    <h3>¿Desea eliminarlo?</h3>
+    <center><h3>¿Seguro que desea eliminar?</h3></center>
 
-    <div>
+    <div style="text-align: center; padding-left:180px;">
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -54,11 +54,13 @@
                 <partial name="Photo/_DoctorPhotoView" model="Model" />
             </dd>
         </dl>
-
+        </div>
+        <div style="text-align: center;">
         <form asp-action="DeleteDoctor">
             @Html.HiddenFor(Model => Model.DoctorId)
-            <input type="submit" value="Delete" class="btn btn-danger" /> |
-            <a asp-action="Index">Regresar a Doctores</a>
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+                <button class="btn btn-primary" asp-action="Doctors">Regresar a Doctores</button>
+               
         </form>
     </div>
 </center>

@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 <center>
-    <h1>Eliminar Procedimiento</h1>
+@*    <h1>Eliminar Procedimiento</h1>*@
 
-    <h3>¿Desea eliminarlo?</h3>
-    <div>
+    <center><h3>¿Seguro que desea eliminar?</h3></center>
+    <div style="text-align: center; padding-left:180px;">
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -18,11 +18,12 @@
                 @Html.DisplayFor(model => model.ProcedureName)
             </dd>
         </dl>
-
+        </div> 
+        <div style="text-align: center;">
         <form asp-action="DeleteProcedure">
             @Html.HiddenFor(Model => Model.ProcedureId)
-            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-            <a asp-action="Procedures">Regresar a Procedimientos</a>
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+            <button class="btn btn-primary" asp-action="Procedures">Regresar a Procedimientos</button>
         </form>
     </div>
 </center>
