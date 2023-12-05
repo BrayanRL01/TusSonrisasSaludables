@@ -86,7 +86,7 @@ namespace FrontEnd.Controllers
     Fecha de Creación: {DateTime.Now}
   </p>
 </body>
-</html>"
+</html>";
 
             var renderer = pdf;
             var pdfDocument = renderer.RenderHtmlAsPdf(info);

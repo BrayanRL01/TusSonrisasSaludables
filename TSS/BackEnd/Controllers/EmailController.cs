@@ -78,9 +78,9 @@ namespace BackEnd.Controllers
                 }
                 return Ok("Se ha recibido su solicitud para efectuar un cambio de contraseña, revise su correo electrónico validando que llegó dicho cambio.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BadRequest("No se efectuó el cambio de contraseña: " + ex.Message);
+                return BadRequest("Se ha recibido su solicitud para efectuar un cambio de contraseña, revise su correo electrónico validando que llegó dicho cambio.");
             }
         }
 
