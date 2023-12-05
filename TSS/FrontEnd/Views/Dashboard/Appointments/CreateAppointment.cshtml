@@ -95,3 +95,9 @@
         <button type="submit" class="btn btn-primary">Crear Citas</button>
     </form>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

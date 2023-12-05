@@ -14,9 +14,13 @@ namespace FrontEnd.Controllers
         <body>
             <h1>Cita</h1>
             <p>Nombre: {formData.Nombre}</p>
+</br>
             <p>Edad: {formData.Edad}</p>
+</br>
             <p>Fecha: {formData.Fecha}</p>
+</br>
             <p>Correo: {formData.Correo}</p>
+</br>
         </body>
     </html>";
 
@@ -33,7 +37,7 @@ namespace FrontEnd.Controllers
             var htmlContent = $@"<!DOCTYPE html>
 <html>
 <head>
-    <title>Reporte de Cita Agendada</title>
+  <title>Reporte de cita de Sonrisas Saludables</title>
 </head>
 <body>
     <div style='width: 600px;
@@ -89,7 +93,7 @@ namespace FrontEnd.Controllers
 </html>";
 
             var renderer = pdf;
-            var pdfDocument = renderer.RenderHtmlAsPdf(info);
+            var pdfDocument = renderer.RenderHtmlAsPdf(htmlContent);
 
             var pdfStream = pdfDocument.BinaryData;
 

@@ -58,8 +58,9 @@
         </form>
     </div>
 </div>
-<br />
-@*<div>
-    <a asp-action="Records">Regresar a Registros</a>
-</div>*@
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

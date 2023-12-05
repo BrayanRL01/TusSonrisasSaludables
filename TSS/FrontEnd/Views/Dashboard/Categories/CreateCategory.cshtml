@@ -28,7 +28,8 @@
     </div>
 </div>
 
-@*<div>
-    <button> <a asp-action="Categories">Volver a Categorias</a> </button>
-</div>
-*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

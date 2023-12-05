@@ -393,7 +393,7 @@ namespace FrontEnd.Controllers
 
                     mensaje = appointmentsHelper.Add(appointment);
                 };
-            } 
+            }
             else
             {
                 TempData["Error"] = "Se debe escoger un doctor y una especialidad.";
@@ -685,6 +685,17 @@ namespace FrontEnd.Controllers
             return View("Doctors/CreateDoctor", doctor);
         }
 
+        public ActionResult CreateDoctors()
+        {
+            DoctorViewModel doctor = new();
+            var specialties = specialtiesHelper.GetAllView();
+            var types = idHelper.GetAllView();
+            var genres = genresHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Types = new SelectList(types, "TypeId", "IdType");
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            return View("Doctors/CreateDoctor", doctor);
+        }
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

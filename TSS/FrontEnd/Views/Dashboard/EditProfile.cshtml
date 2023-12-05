@@ -57,17 +57,15 @@
             <textarea asp-for="UserAddress" class="form-control" placeholder="Dirección" rows="3"></textarea>
             <span asp-validation-for="UserAddress" class="text-danger"></span>
         </div>
-        @*         <div class="col-12">
-        <input asp-for="PasswordHash" class="form-control" placeholder="Contraseña">
-        <span asp-validation-for="PasswordHash" class="text-danger"></span>
-        </div> *@
-
         <div style="text-align: center;">
             <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
             <a style="padding-left: 10px;" asp-action="Users" class="btn btn-primary">Regresar a Inicio</a>
-            
-        </>
+        </div>
     </form>
 </div>
 
-
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

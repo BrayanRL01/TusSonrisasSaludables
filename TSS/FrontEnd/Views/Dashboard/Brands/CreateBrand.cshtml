@@ -23,7 +23,8 @@
     </div>
 </div>
 
-@*<div>
-    <a asp-action="Brands">Volver a Marcas</a>
-</div>
-*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
