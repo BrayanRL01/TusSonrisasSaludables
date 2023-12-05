@@ -56,12 +56,12 @@
 <div class="container mt-5">
     <form asp-action="CreateAppointment">
         <div class="col">
-            @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Select Doctor", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Seleccionar Doctor", new { @class = "form-control" })
             <span asp-validation-for="DoctorId" class="text-danger"></span>
         </div>
         <br />
         <div class="col">
-            @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Select Specialty", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccionar Especilidad", new { @class = "form-control" })
             <span asp-validation-for="SpecialtyId" class="text-danger"></span>
         </div>
         <table class="table table-bordered">
