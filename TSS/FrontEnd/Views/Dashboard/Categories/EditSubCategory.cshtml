@@ -34,7 +34,8 @@
     </div>
 </div>
 
-@*<div>
-    <a asp-action="SubCategories">Volver a Subcategorías</a>
-</div>
-*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

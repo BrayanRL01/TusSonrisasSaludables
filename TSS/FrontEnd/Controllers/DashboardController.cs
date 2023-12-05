@@ -379,20 +379,26 @@ namespace FrontEnd.Controllers
         {
 
             var startTimes = Request.Form["StartTime"];
-
-            // Creamos las citas
-            foreach (var startTime in startTimes)
+            if (appointments.DoctorId != null && appointments?.SpecialtyId != null)
             {
-                var appointment = new AppointmentViewModel
+                foreach (var startTime in startTimes)
                 {
-                    DoctorId = appointments.DoctorId,
-                    SpecialtyId = appointments.SpecialtyId,
-                    StartTime = DateTime.Parse(startTime),
-                    EndTime = DateTime.Parse(startTime).AddHours(1),
-                };
+                    var appointment = new AppointmentViewModel
+                    {
+                        DoctorId = appointments.DoctorId,
+                        SpecialtyId = appointments.SpecialtyId,
+                        StartTime = DateTime.Parse(startTime),
+                        EndTime = DateTime.Parse(startTime).AddHours(1),
+                    };
 
-                mensaje = appointmentsHelper.Add(appointment);
-            };
+                    mensaje = appointmentsHelper.Add(appointment);
+                };
+            }
+            else
+            {
+                TempData["Error"] = "Se debe escoger un doctor y una especialidad.";
+                return RedirectToAction("Appointments");
+            }
 
             if (mensaje.StartsWith("C"))
             {
@@ -679,6 +685,17 @@ namespace FrontEnd.Controllers
             return View("Doctors/CreateDoctor", doctor);
         }
 
+        public ActionResult CreateDoctors()
+        {
+            DoctorViewModel doctor = new();
+            var specialties = specialtiesHelper.GetAllView();
+            var types = idHelper.GetAllView();
+            var genres = genresHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Types = new SelectList(types, "TypeId", "IdType");
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            return View("Doctors/CreateDoctor", doctor);
+        }
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

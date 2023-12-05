@@ -357,5 +357,32 @@ namespace BackEnd.Controllers
             }
         }
         #endregion
+
+        #region NextAppointment
+        [HttpGet("NextAppointment")]
+        public async Task<ActionResult> NextAppointment()
+        {
+            try
+            {
+                DateTime date = DateTime.Now;
+                SqlParameter outputParam = new()
+                {
+                    ParameterName = "@Next",
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                    Size = 30,
+                    Direction = System.Data.ParameterDirection.Output,
+                };
+
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_NextAppointment {outputParam} OUTPUT");
+
+                string next = (string)outputParam.Value;
+                return Ok(next);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
     }
 }
