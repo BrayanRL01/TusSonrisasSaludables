@@ -76,8 +76,8 @@ namespace FrontEnd.Helpers
             {
                 HttpResponseMessage responseMessage = repository.PostResponse("api/Users/AdminUser", Usuario!);
                 var content = responseMessage.Content.ReadAsStringAsync().Result;
-                string Mensaje = content;
-                return content;
+                string mensaje = content;
+                return mensaje;
             }
             catch (Exception ex)
             {
@@ -90,6 +90,16 @@ namespace FrontEnd.Helpers
         public string Delete(int id)
         {
             HttpResponseMessage responseMessage = repository.DeleteResponse("api/Users/" + id);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
+        }
+        #endregion
+
+        #region Count 
+        public string Count()
+        {
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Users/Count");
             var content = responseMessage.Content.ReadAsStringAsync().Result;
             string mensaje = content;
             return mensaje;

@@ -5,11 +5,11 @@ namespace FrontEnd.Models
     public class VWRecordViewModel
     {
         public int RecordId { get; set; }
-        [Display(Name = "Nombre del Paciente")]
+        [Display(Name = "Paciente")]
         public string PatientName { get; set; } = null!;
         [Display(Name = "Número de Cédula")]
         public string IdNumber { get; set; } = null!;
-        [Display(Name = "Nombre del Doctor/a")]
+        [Display(Name = "Doctor/a")]
         public string DoctorName { get; set; } = null!;
         [Display(Name = "Procedimiento")]
         public string ProcedureName { get; set; } = null!;

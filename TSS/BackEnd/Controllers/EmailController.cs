@@ -4,6 +4,7 @@ using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +16,7 @@ namespace BackEnd.Controllers
     {
         private readonly TusSonrisasSaludablesContext _context;
         private readonly IConfiguration _configuration;
+
 
         public EmailController(IConfiguration configuration, TusSonrisasSaludablesContext context)
         {
