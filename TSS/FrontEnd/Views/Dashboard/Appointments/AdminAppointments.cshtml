@@ -93,9 +93,8 @@ else if (TempData.ContainsKey("Error"))
                             @Html.DisplayNameFor(model => model.StartTime)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.EndTime)
+                            @Html.DisplayName("Acciones")
                         </th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,9 +112,6 @@ else if (TempData.ContainsKey("Error"))
                             </td>
                             <td id="StartTime">
                                 @Html.DisplayFor(modelItem => item.StartTime, new { @id = "StartTime" })
-                            </td>
-                            <td id="EndTime">
-                                @Html.DisplayFor(modelItem => item.EndTime, new { @id = "EndTime" })
                             </td>
                             <td>
                                 @Html.ActionLink("Editar", "EditAppointment", new { id = item.AppointmentId }, new { @class = "btn btn-warning" })

@@ -1152,6 +1152,31 @@ namespace FrontEnd.Controllers
             }
         }
 
+        public IActionResult ChangePassword()
+        {
+            PasswordModel model = new();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(PasswordModel model)
+        {
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            model.Email = email!;
+            string message = securityHelper.ChangePassword(model);
+            if (message.StartsWith("Se"))
+            {
+                TempData["Message"] = message;
+                return RedirectToAction("ChangePassword");
+            }
+            else
+            {
+                TempData["Error"] = message;
+                return RedirectToAction("ChangePassword");
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

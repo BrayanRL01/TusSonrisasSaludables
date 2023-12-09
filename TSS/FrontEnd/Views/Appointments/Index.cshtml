@@ -26,42 +26,48 @@
             @TempData["Error"]
         </div>
     }
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Doctor)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SpecialtyName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartTime)
-                </th>
-                <th>
-                    @Html.DisplayName("Acción")
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Doctor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SpecialtyName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartTime)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Reservar Cita", "Confirm", new { id = item.AppointmentId }, new { @class = "btn btn-primary" })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
 
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Doctor)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SpecialtyName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.StartTime)
+                            </th>
+                            <th>
+                                @Html.DisplayName("Acción")
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Doctor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SpecialtyName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartTime)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Reservar Cita", "Confirm", new { id = item.AppointmentId }, new { @class = "btn btn-primary" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
