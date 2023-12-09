@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>VWCategoryViewModel</h4>
+<center><h3>¿Seguro que desea eliminar?</h3></center>
+<div style="text-align: center; padding-left:180px;">
+ @*   <h4>VWCategoryViewModel</h4>*@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -17,10 +17,11 @@
             @Html.DisplayFor(model => model.CategoryName)
         </dd>
     </dl>
-
+    </div>
+    <div style="text-align: center;">
     <form asp-action="DeleteCategory">
         @Html.HiddenFor(Model => Model.CategoryId)
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Categories">Volver a Categorías</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+            <button class="btn btn-primary" asp-action="Categories">Regresar a Categorías</button>
     </form>
 </div>

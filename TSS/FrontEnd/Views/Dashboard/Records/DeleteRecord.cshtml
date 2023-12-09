@@ -4,11 +4,11 @@
     ViewData["Title"] = "DeleteRecord";
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
+@*
+<h1>DeleteRecord</h1>*@
 
-<h1>DeleteRecord</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
+<center><h3>¿Seguro que desea eliminar?</h3></center>
+    <div style="text-align: center; padding-left:180px;">
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -54,10 +54,13 @@
             @Html.DisplayFor(model => model.RecordDate)
         </dd>
     </dl>
+    </div>
 
+    <div style="text-align: center;">
     <form asp-action="DeleteRecord">
         @Html.HiddenFor(Model => Model.RecordId)
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Records">Regresar a Registros</a>
-    </form>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+        <button class="btn btn-primary" asp-action="Records">Regresar a Registros</button>
+
+        </form>
 </div>
