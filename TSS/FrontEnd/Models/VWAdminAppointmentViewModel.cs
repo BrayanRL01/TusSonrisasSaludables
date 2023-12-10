@@ -5,10 +5,10 @@ namespace FrontEnd.Models
     public class VWAdminAppointmentViewModel
     {
         public int AppointmentId { get; set; }
-        [Display(Name = "Nombre del Doctor/a")]
+        [Display(Name = "Doctor/a")]
 
         public string Doctor { get; set; } = null!;
-        [Display(Name = "Nombre del Paciente")]
+        [Display(Name = "Paciente")]
 
         public string PacientName { get; set; } = null!;
 
@@ -16,13 +16,12 @@ namespace FrontEnd.Models
         public string Cédula { get; set; } = null!;
 
         [Display(Name = "Especialidad")]
-
         public string SpecialtyName { get; set; } = null!;
+
         [Display(Name = "Hora de Inicio")]
-
         public DateTime StartTime { get; set; }
-        [Display(Name = "Hora de Fin")]
 
+        [Display(Name = "Hora de Fin")]
         public DateTime EndTime { get; set; }
     }
 }

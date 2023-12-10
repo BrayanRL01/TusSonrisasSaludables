@@ -11,6 +11,7 @@ namespace FrontEnd.Models
         [DataType(DataType.Password)]
         public string PasswordHash { get; set; } = null!;
         public string Roles { get; set; } = string.Empty;
+        [Display(Name = "Recordar Sesión")]
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; } = string.Empty;
     }

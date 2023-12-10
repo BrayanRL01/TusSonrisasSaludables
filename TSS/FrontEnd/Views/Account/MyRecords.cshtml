@@ -10,18 +10,12 @@
     {
         <div class="alert alert-success" role="alert">
             @TempData["Message"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     }
     else @if (TempData.ContainsKey("Error"))
     {
         <div class="alert alert-danger" role="alert">
             @TempData["Error"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     }
     <center><h1>Mis Registros</h1></center>
@@ -50,9 +44,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.RecordDate)
                 </th>
-                <th></th>
             </tr>
         </thead>
+        <br />
         <tbody>
             @foreach (var item in Model)
             {
@@ -77,9 +71,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.RecordDate)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
                     </td>
                 </tr>
             }

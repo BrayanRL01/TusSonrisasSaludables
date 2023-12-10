@@ -9,7 +9,6 @@ namespace Entities.Entities
         {
             Appointments = new HashSet<Appointment>();
             PatientRecords = new HashSet<PatientRecord>();
-            Recomendations = new HashSet<Recomendation>();
             ShoppingCarts = new HashSet<ShoppingCart>();
         }
 
@@ -34,7 +33,6 @@ namespace Entities.Entities
         public virtual IdentificationType Type { get; set; } = null!;
         public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<PatientRecord> PatientRecords { get; set; }
-        public virtual ICollection<Recomendation> Recomendations { get; set; }
         public virtual ICollection<ShoppingCart> ShoppingCarts { get; set; }
     }
 }

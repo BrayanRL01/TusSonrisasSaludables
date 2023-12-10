@@ -326,5 +326,22 @@ namespace BackEnd.Controllers
             }
         }
         #endregion
+
+        #region Count
+        [HttpGet("Count")]
+        public async Task<ActionResult> GetCountUsers()
+        {
+            var count = new SqlParameter
+            {
+                ParameterName = "@Count",
+                SqlDbType = System.Data.SqlDbType.VarChar,
+                Size = 10,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CountUsers {count} OUTPUT");
+            string result = (string)count.Value;
+            return Ok(result);
+        }
+        #endregion
     }
 }

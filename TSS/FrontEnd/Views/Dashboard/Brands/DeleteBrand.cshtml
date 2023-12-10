@@ -4,12 +4,12 @@
     ViewData["Title"] = "DeleteBrand";
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
+@*
+<h1>Eliminar Marca</h1>*@
 
-<h1>Eliminar Marca</h1>
-
-<h3>Esta seguro de eliminar esta Marca?</h3>
-<div>
-    <h4>BrandViewModel</h4>
+<center><h3>¿Seguro que desea eliminar?</h3></center>
+<div style="text-align: center; padding-left:180px;">
+   @* <h4>BrandViewModel</h4>*@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -19,10 +19,12 @@
             @Html.DisplayFor(model => model.BrandName)
         </dd>
     </dl>
+    </div>
 
+<div style="text-align: center;">
     <form asp-action="DeleteBrand">
         @Html.HiddenFor(Model => Model.BrandId)
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Brands">Volver a Marcas</a>
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+        <button class="btn btn-primary" asp-action="Brands">Regresar a Marcas</button>
     </form>
 </div>

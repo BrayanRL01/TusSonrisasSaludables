@@ -178,5 +178,15 @@ namespace FrontEnd.Helpers
             return count;
         }
         #endregion
+
+        #region Next
+        public string NextAppointments()
+        {
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Appointments/NextAppointment/");
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string next = content;
+            return next;
+        }
+        #endregion
     }
 }
