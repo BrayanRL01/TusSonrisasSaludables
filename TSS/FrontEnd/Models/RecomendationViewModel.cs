@@ -3,9 +3,9 @@
     public class RecomendationViewModel
     {
         public int RecomendationId { get; set; }
-        public DateTime PostDate { get; set; }
-        public string FullName { get; set; } = null!;
-        public string SpecialtyName { get; set; } = null!;
+        public int UserId { get; set; }
+        public int SpecialtyId { get; set; }
         public string Information { get; set; } = null!;
+        public DateTime PostDate { get; set; }
     }
 }

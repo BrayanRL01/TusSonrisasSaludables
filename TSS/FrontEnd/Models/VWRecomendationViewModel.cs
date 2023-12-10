@@ -5,7 +5,9 @@ namespace FrontEnd.Models
     public class VWRecomendationViewModel
     {
         public int RecomendationId { get; set; }
-        [Display(Name = "Informacion")]
-        public string Info { get; set; } = null!;
+        public DateTime PostDate { get; set; }
+        public string FullName { get; set; } = null!;
+        public string SpecialtyName { get; set; } = null!;
+        public string Information { get; set; } = null!;
     }
 }
