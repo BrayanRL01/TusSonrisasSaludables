@@ -46,6 +46,8 @@ namespace FrontEnd.Controllers
         ProceduresHelper proceduresHelper = new();
         #endregion
 
+        private RecomendationsHelper recomendationsHelper = new();
+
         #endregion
 
         public DashboardController(ILogger<DashboardController> logger)
@@ -1146,6 +1148,13 @@ namespace FrontEnd.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+        public ActionResult Blogs()
+        {
+            List<VWRecomendationViewModel>? recomendations = recomendationsHelper.GetRecomendationsView();
+            return View("Blog/Blog", recomendations);
         }
     }
 }

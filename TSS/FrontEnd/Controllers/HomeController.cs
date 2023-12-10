@@ -15,6 +15,8 @@ namespace FrontEnd.Controllers
             _logger = logger;
         }
 
+        private RecomendationsHelper recomendationsHelper = new();
+
         public IActionResult Index()
         {
             return View();
@@ -25,9 +27,10 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public IActionResult Blog()
+        public ActionResult Blogs()
         {
-            return View();
+            List<VWRecomendationViewModel>? recomendations = recomendationsHelper.GetRecomendationsView();
+            return View("Blog/Blog", recomendations);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

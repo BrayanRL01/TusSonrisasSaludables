@@ -1,57 +1,46 @@
-﻿
+﻿@model IEnumerable<FrontEnd.Models.VWRecomendationViewModel>
+
 @{
     ViewData["Title"] = "Blog";
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
-<div class="projcard-container">
-		
-	<div class="projcard projcard-blue">
-		<div class="projcard-innerbox">
-			<img class="projcard-img" src="https://cdn.pixabay.com/photo/2020/02/04/16/37/teeth-4818711_1280.jpg" />
-			<div class="projcard-textbox">
-				<div class="projcard-title">Cepillarse los dientes adecuadamente.</div>
-				<div class="projcard-subtitle"></div>
-				<div class="projcard-bar"></div>
-				<div class="projcard-description">Cepillarse los dientes por la mañana y antes de acostarse ayuda a eliminar los restos de alimentos y la placa bacteriana que se acumulan durante el día. Esto es fundamental para prevenir la formación de caries y mantener una buena salud oral.</div>
-				<div class="projcard-tagbox">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="projcard projcard-red">
-		<div class="projcard-innerbox">
-			<img class="projcard-img" src="https://cdn.pixabay.com/photo/2018/08/10/21/09/interdental-3597593_1280.jpg" />
-			<div class="projcard-textbox">
-				<div class="projcard-title">Usar hilo dental diariamente</div>
-				<div class="projcard-subtitle"></div>
-				<div class="projcard-bar"></div>
-				<div class="projcard-description">El hilo dental llega a áreas donde el cepillo no puede alcanzar, eliminando la placa y los residuos entre los dientes. Esta práctica diaria es esencial para prevenir enfermedades de las encías, como la gingivitis, y mantener una sonrisa saludable.</div>
-				<div class="projcard-tagbox">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="projcard projcard-green">
-		<div class="projcard-innerbox">
-			<img class="projcard-img" src="https://cdn.pixabay.com/photo/2018/03/01/16/43/toothbrush-3191097_1280.jpg" />
-			<div class="projcard-textbox">
-				<div class="projcard-title">Reemplazar el cepillo dental cada tres meses.</div>
-				<div class="projcard-subtitle"></div>
-				<div class="projcard-bar"></div>
-				<div class="projcard-description">Con el tiempo, las cerdas de los cepillos dentales se desgastan y acumulan bacterias. Cambiar el cepillo cada tres meses asegura una limpieza óptima y evita la proliferación de microorganismos no deseados en el cepillo.</div>
-				<div class="projcard-tagbox">
-					
-				</div>
-			</div>
-		</div>
-	</div>
-	
-</div>
+@if (Model != null)
+{
+    <div class="projcard-container">
+        @foreach (var item in Model)
+        {
+            <div class="projcard projcard-blue">
+                <div class="projcard-innerbox">
+                    <img class="projcard-img" src="https://cdn.pixabay.com/photo/2020/02/04/16/37/teeth-4818711_1280.jpg" />
+                    <div class="projcard-textbox">
+                        <div class="projcard-title">Prueba</div>
+                        <div class="projcard-subtitle"></div>
+                        <div class="projcard-bar"></div>
+                        <div class="projcard-description">
+                            @if (item.Info != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.Info)
+                            }
+                            else
+                            {
+                                <p>No hay información disponible.</p>
+                            }
+                        </div>
+                        <div class="projcard-tagbox">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No hay datos para mostrar.</p>
+}
+
 
 <style>
 	/* Demo Code: */
