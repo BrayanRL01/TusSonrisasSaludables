@@ -58,10 +58,10 @@ namespace Entities.Entities
         {
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.HasIndex(e => e.StartTime, "UQ__Appointm__18D8086CB972BA6D")
+                entity.HasIndex(e => e.StartTime, "UQ__Appointm__18D8086C56C4AEFE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.EndTime, "UQ__Appointm__C7752F0EC1C3DADC")
+                entity.HasIndex(e => e.EndTime, "UQ__Appointm__C7752F0E81609ECC")
                     .IsUnique();
 
                 entity.Property(e => e.AppointmentId).HasColumnName("AppointmentID");
@@ -99,7 +99,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Brand>(entity =>
             {
-                entity.HasIndex(e => e.BrandName, "UQ__Brands__2206CE9B565879DA")
+                entity.HasIndex(e => e.BrandName, "UQ__Brands__2206CE9B0968A5C7")
                     .IsUnique();
 
                 entity.Property(e => e.BrandId).HasColumnName("BrandID");
@@ -111,7 +111,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E027AD33A7")
+                entity.HasIndex(e => e.CategoryName, "UQ__Categori__8517B2E01FAE4711")
                     .IsUnique();
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -126,9 +126,9 @@ namespace Entities.Entities
             modelBuilder.Entity<ClinicProcedure>(entity =>
             {
                 entity.HasKey(e => e.ProcedureId)
-                    .HasName("PK__ClinicPr__54C2E50D0D451FFF");
+                    .HasName("PK__ClinicPr__54C2E50DB6331964");
 
-                entity.HasIndex(e => e.ProcedureName, "UQ__ClinicPr__3950E7D4B1C65DB1")
+                entity.HasIndex(e => e.ProcedureName, "UQ__ClinicPr__3950E7D4A1A7E582")
                     .IsUnique();
 
                 entity.Property(e => e.ProcedureId).HasColumnName("ProcedureID");
@@ -140,13 +140,13 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Doctor>(entity =>
             {
-                entity.HasIndex(e => e.IdNumber, "UQ__Doctors__62DF8033AA45FEDC")
+                entity.HasIndex(e => e.IdNumber, "UQ__Doctors__62DF8033DF75AB54")
                     .IsUnique();
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__Doctors__85FB4E383E03FDFB")
+                entity.HasIndex(e => e.PhoneNumber, "UQ__Doctors__85FB4E38ED694BED")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Doctors__A9D10534B7EB3322")
+                entity.HasIndex(e => e.Email, "UQ__Doctors__A9D10534D72A8537")
                     .IsUnique();
 
                 entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
@@ -208,7 +208,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Genre>(entity =>
             {
-                entity.HasIndex(e => e.GenreName, "UQ__Genres__BBE1C3397BF541AF")
+                entity.HasIndex(e => e.GenreName, "UQ__Genres__BBE1C339064EF26F")
                     .IsUnique();
 
                 entity.Property(e => e.GenreId).HasColumnName("GenreID");
@@ -221,9 +221,9 @@ namespace Entities.Entities
             modelBuilder.Entity<IdentificationType>(entity =>
             {
                 entity.HasKey(e => e.TypeId)
-                    .HasName("PK__Identifi__516F039598FB0C14");
+                    .HasName("PK__Identifi__516F0395AC1C4860");
 
-                entity.HasIndex(e => e.IdType, "UQ__Identifi__9A39EABDEFBF755A")
+                entity.HasIndex(e => e.IdType, "UQ__Identifi__9A39EABD5D611B73")
                     .IsUnique();
 
                 entity.Property(e => e.TypeId).HasColumnName("TypeID");
@@ -236,7 +236,7 @@ namespace Entities.Entities
             modelBuilder.Entity<PatientRecord>(entity =>
             {
                 entity.HasKey(e => e.RecordId)
-                    .HasName("PK__PatientR__FBDF78C9899BE213");
+                    .HasName("PK__PatientR__FBDF78C9F12A363C");
 
                 entity.Property(e => e.RecordId).HasColumnName("RecordID");
 
@@ -283,7 +283,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasIndex(e => e.ProductName, "UQ__Products__DD5A978A20BD66BD")
+                entity.HasIndex(e => e.ProductName, "UQ__Products__DD5A978A4BE84022")
                     .IsUnique();
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
@@ -319,7 +319,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Province>(entity =>
             {
-                entity.HasIndex(e => e.ProvinceName, "UQ__Province__B27F2372A1C1679C")
+                entity.HasIndex(e => e.ProvinceName, "UQ__Province__B27F2372F0BF0910")
                     .IsUnique();
 
                 entity.Property(e => e.ProvinceId).HasColumnName("ProvinceID");
@@ -333,6 +333,8 @@ namespace Entities.Entities
             {
                 entity.Property(e => e.RecomendationId).HasColumnName("RecomendationID");
 
+                entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
+
                 entity.Property(e => e.Information).IsUnicode(false);
 
                 entity.Property(e => e.PostDate)
@@ -341,26 +343,24 @@ namespace Entities.Entities
 
                 entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+                entity.HasOne(d => d.Doctor)
+                    .WithMany(p => p.Recomendations)
+                    .HasForeignKey(d => d.DoctorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Recomenda__Docto__2F9A1060");
 
                 entity.HasOne(d => d.Specialty)
                     .WithMany(p => p.Recomendations)
                     .HasForeignKey(d => d.SpecialtyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Recomenda__Speci__05D8E0BE");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Recomendations)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Recomenda__UserI__04E4BC85");
+                    .HasConstraintName("FK__Recomenda__Speci__308E3499");
             });
 
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.HasIndex(e => e.RoleType, "IDX_RoleTypes");
 
-                entity.HasIndex(e => e.RoleType, "UQ__Roles__5D0A2E947603CBE2")
+                entity.HasIndex(e => e.RoleType, "UQ__Roles__5D0A2E942B6007F4")
                     .IsUnique();
 
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
@@ -373,7 +373,7 @@ namespace Entities.Entities
             modelBuilder.Entity<ShoppingCart>(entity =>
             {
                 entity.HasKey(e => e.CartId)
-                    .HasName("PK__Shopping__51BCD79759E0B58A");
+                    .HasName("PK__Shopping__51BCD797C9E5612D");
 
                 entity.Property(e => e.CartId).HasColumnName("CartID");
 
@@ -394,7 +394,7 @@ namespace Entities.Entities
             modelBuilder.Entity<ShoppingDetail>(entity =>
             {
                 entity.HasKey(e => e.DetailId)
-                    .HasName("PK__Shopping__135C314D61422E35");
+                    .HasName("PK__Shopping__135C314DDEB7281A");
 
                 entity.Property(e => e.DetailId).HasColumnName("DetailID");
 
@@ -421,7 +421,7 @@ namespace Entities.Entities
 
             modelBuilder.Entity<Specialty>(entity =>
             {
-                entity.HasIndex(e => e.SpecialtyName, "UQ__Specialt__7DCA57483353DAA1")
+                entity.HasIndex(e => e.SpecialtyName, "UQ__Specialt__7DCA5748081E2F2F")
                     .IsUnique();
 
                 entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
@@ -437,13 +437,13 @@ namespace Entities.Entities
 
                 entity.HasIndex(e => e.Email, "IDX_UserEmails");
 
-                entity.HasIndex(e => e.IdNumber, "UQ__Users__62DF8033E5901911")
+                entity.HasIndex(e => e.IdNumber, "UQ__Users__62DF8033BC1A0692")
                     .IsUnique();
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__Users__85FB4E380D103914")
+                entity.HasIndex(e => e.PhoneNumber, "UQ__Users__85FB4E3843782202")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534E5819C15")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534C0ACFA15")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
@@ -520,7 +520,7 @@ namespace Entities.Entities
             modelBuilder.Entity<UsersTrigger>(entity =>
             {
                 entity.HasKey(e => e.TriggerId)
-                    .HasName("PK__UsersTri__11321F02DD5D8006");
+                    .HasName("PK__UsersTri__11321F0226E35DD1");
 
                 entity.Property(e => e.TriggerId).HasColumnName("TriggerID");
 
@@ -754,7 +754,7 @@ namespace Entities.Entities
                 entity.ToView("VW_Recomendations");
 
                 entity.Property(e => e.FullName)
-                    .HasMaxLength(302)
+                    .HasMaxLength(82)
                     .IsUnicode(false)
                     .HasColumnName("Full Name");
 
