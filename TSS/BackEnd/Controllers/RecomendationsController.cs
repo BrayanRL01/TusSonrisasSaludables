@@ -111,7 +111,7 @@ namespace BackEnd.Controllers
         {
             try
             {
-                string Query = "EXEC SP_EditRecomendation @ID, @Specialty, @Info, @Image";
+                string Query = "EXEC SP_EditRecomendation @ID, @Specialty, @Info";
 
                 var param = new SqlParameter[]
                {
@@ -137,13 +137,6 @@ namespace BackEnd.Controllers
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.Information
                     },
-                     new SqlParameter()
-                     {
-                        ParameterName = "@Image",
-                        SqlDbType = System.Data.SqlDbType.Image,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.PostImage
-                     }
                };
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
@@ -169,6 +162,43 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "No se pudo eliminar la recomendación: " + ex.Message);
+            }
+        }
+
+        [HttpPut("ChangeImage")]
+        public async Task<ActionResult<Recomendation>> ChangeImage([FromBody] RecomendationModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_ChangeRecomendationImage @ID, @Image";
+
+                var param = new SqlParameter[]
+               {
+
+                    new SqlParameter()
+                    {
+                        ParameterName = "@ID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.RecomendationId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Image",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PostImage
+                    },
+               };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Imagen editada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se editó la imagen: " + ex.Message);
             }
         }
     }

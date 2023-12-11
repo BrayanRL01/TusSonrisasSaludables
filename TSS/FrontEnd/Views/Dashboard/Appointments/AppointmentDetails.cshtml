@@ -56,9 +56,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    @* <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> *@
-                    @* <button type="submit" form="formulario" class="btn btn-primary">Enviar</button> *@
-                    <button id="generarInforme">Generar Informe</button>
+                    <button class="btn btn-primary" id="generarInforme">Generar Informe</button>
                 </div>
             </div>
         </div>
@@ -75,8 +73,6 @@
             var pacientName = document.getElementById("PacientName").value;
             var specialtyName = document.getElementById("SpecialtyName").value;
             var startTime = document.getElementById("StartTime").value;
-            var endTime = document.getElementById("EndTime").value;
-
 
             // Crea un objeto con los datos del formulario
             var formData = {
@@ -84,7 +80,6 @@
                 PacientName: pacientName,
                 SpecialtyName: specialtyName,
                 StartTime: startTime,
-                EndTime: endTime,
             };
 
             // Realiza una solicitud AJAX para generar el informe PDF
@@ -111,7 +106,7 @@
 </script>
 
 <center>
-    <div style="background-color: white; padding-bottom: 30px; padding-left: 250px; border-radius: 20px; width: 1000px; height: 220px;">
+    <div style="background-color: white; padding-bottom: 30px; padding-left: 250px; border-radius: 20px; width: 1000px; height: 200px;">
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -146,8 +141,9 @@
             </dd>
         </dl>
     </div>
+    <br />
     <div style="text-align: center;">
-        @Html.ActionLink("Editar", "Edit", new { @class = "btn btn-primary" /* id = Model.PrimaryKey */ })
+        @Html.ActionLink("Editar", "EditAppointment", new { id = Model.AppointmentId }, new { @class = "btn btn-warning" })
         <a class="btn btn-primary" asp-action="Appointments">Regresar a Citas</a>
     </div>
 </center>

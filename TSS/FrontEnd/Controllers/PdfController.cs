@@ -59,9 +59,6 @@ namespace FrontEnd.Controllers
         <div style='margin-bottom: 10px;'>
             <p> Hora de Inicio: {formData.StartTime}</ p>
         </div>
-        <div style='margin-bottom: 10px;'>
-          <p> Hora de Fin: {formData.EndTime} </p>
-        </div>
     </div>
 </body>
 </html>";

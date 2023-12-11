@@ -81,5 +81,15 @@ namespace FrontEnd.Helpers
             return mensaje;
         }
         #endregion
+
+        #region ChangeImage
+        public string ChangeImage(DoctorViewModel doctor)
+        {
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Doctor/ChangeImage/", doctor);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
+        }
+        #endregion
     }
 }

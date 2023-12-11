@@ -7,11 +7,10 @@
 
 <center><h1>Editar Doctor</h1></center>
 
-@*<h4>DoctorViewModel style="padding-left: 120px;</h4>*@
 <hr />
- <div class="row">
+<div class="row">
     <div class="col">
-        <form asp-action="EditDoctor" method="post" enctype="multipart/form-data">
+        <form asp-action="EditDoctor">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.HiddenFor(Model => Model.DoctorId)
             <div class="col">
@@ -25,7 +24,7 @@
                 @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccione una especialidad", new { @class = "form-control" })
                 <span asp-validation-for="SpecialtyId" class="text-danger"></span>
             </div>
-           <br />
+            <br />
             <div class="col">
                 <label asp-for="GenreId" class="form-label"></label>
                 @Html.DropDownListFor(model => model.GenreId, (SelectList)ViewBag.Genres, "Seleccione un género", new { @class = "form-control" })
@@ -74,14 +73,6 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <br />
-            <div class="col">
-                <input type="file" asp-for="DoctorPhoto" class="form-control" name="files" />
-                <span asp-validation-for="DoctorPhoto" class="text-danger"></span>
-            </div>
-            <partial name="Photo/_DoctorPhoto" model="Model" />
-
-            <br /> 
-
             <div style="text-align: center;">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
                 <button class="btn btn-primary" asp-action="Doctors">Regresar a Doctores</button>
@@ -89,6 +80,42 @@
         </form>
     </div>
 </div>
+<hr />
+
+<center><h1>Editar Imagen</h1></center>
+
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="EditDoctorImage" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(Model => Model.DoctorId)
+            @Html.HiddenFor(Model => Model.SpecialtyId)
+            @Html.HiddenFor(Model => Model.TypeId)
+            @Html.HiddenFor(Model => Model.IdNumber)
+            @Html.HiddenFor(Model => Model.BirthDate)
+            @Html.HiddenFor(Model => Model.Email)
+            @Html.HiddenFor(Model => Model.DoctorName)
+            @Html.HiddenFor(Model => Model.LastName)
+            @Html.HiddenFor(Model => Model.FirstName)
+            @Html.HiddenFor(Model => Model.PhoneNumber)
+            <div class="col">
+                <input type="file" asp-for="DoctorPhoto" class="form-control" name="files" />
+                <span asp-validation-for="DoctorPhoto" class="text-danger"></span>
+            </div>
+            <br />
+            <div style="text-align: center;">
+                <partial name="Photo/_DoctorPhoto" model="Model" />
+            </div>
+            <br />
+            <div style="text-align: center;">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <button class="btn btn-primary" asp-action="Doctors">Regresar a Doctores</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 @section Scripts {
     @{

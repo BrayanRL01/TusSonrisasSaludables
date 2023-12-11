@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col">
-        <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
+        <form asp-action="EditProduct">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.HiddenFor(Model => Model.ProductId)
             <br />
@@ -50,9 +50,36 @@
                 <span asp-validation-for="Stock" class="text-danger"></span>
             </div>
             <br />
+            <div style="text-align: center;">
+                <input type="submit" value="Modificar" class="btn btn-primary" />
+                <button class="btn btn-primary" asp-action="Products">Regresar a Productos</button>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+
+<center><h1>Editar Imagen</h1></center>
+
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="EditProductImage" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(Model => Model.ProductId)
+            @Html.HiddenFor(Model => Model.UnitPrice)
+            @Html.HiddenFor(Model => Model.ProductName)
+            @Html.HiddenFor(Model => Model.BrandId)
+            @Html.HiddenFor(Model => Model.CategoryId)
+            @Html.HiddenFor(Model => Model.ProductDescription)
+            @Html.HiddenFor(Model => Model.Stock)
             <div class="col">
                 <input type="file" asp-for="ProductImage" class="form-control" name="files" />
                 <span asp-validation-for="ProductImage" class="text-danger"></span>
+            </div>
+            <br />
+            <div style="text-align: center;">
+                <partial name="Photo/_ProductPhoto" model="Model" />
             </div>
             <br />
             <div style="text-align: center;">
