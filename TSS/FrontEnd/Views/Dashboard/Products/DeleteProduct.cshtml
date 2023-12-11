@@ -51,14 +51,14 @@
             @Html.DisplayNameFor(model => model.ProductImage)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductImage)
+            <partial name="Photo/_ProductPhotoView" model="Model" />
         </dd>
     </dl>
-    </div>
+</div>
 <div style="text-align: center;">
     <form asp-action="DeleteProduct">
         @Html.HiddenFor(Model => Model.ProductId)
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
         <button class="btn btn-primary" asp-action="Products">Regresar a Productos</button>
         @*<a asp-action="Products">Volver a Productos</a>*@
     </form>
