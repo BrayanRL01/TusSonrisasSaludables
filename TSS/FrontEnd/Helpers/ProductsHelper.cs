@@ -80,5 +80,15 @@ namespace FrontEnd.Helpers
             return mensaje;
         }
         #endregion
+
+        #region ChangeImage
+        public string ChangeImage(ProductViewModel product)
+        {
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Products/ChangeImage/", product);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
+        }
+        #endregion
     }
 }

@@ -14,10 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Remove="Views\Dashboard\Appointments\Calendar.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="DinkToPdf" Version="1.0.8" />
 		<PackageReference Include="IronPdf" Version="2023.11.8" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
@@ -31,7 +27,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Views\Dashboard\Appointments\Calendar.cshtml" />
 	  <None Include="wwwroot\images\.DS_Store" />
 	</ItemGroup>
 

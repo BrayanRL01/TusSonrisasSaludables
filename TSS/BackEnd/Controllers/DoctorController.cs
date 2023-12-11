@@ -197,7 +197,7 @@ namespace BackEnd.Controllers
             try
             {
                 string Query = "EXEC SP_EditDoctor @DoctorID, @TypeID, @SpecialtyID, @GenreID, @IDNumber, @DoctorName," +
-                       "@FirstName, @LastName, @BirthDate, @Email, @Phone, @Photo";
+                       "@FirstName, @LastName, @BirthDate, @Email, @Phone";
 
                 var param = new SqlParameter[]
                {
@@ -278,13 +278,6 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.PhoneNumber
-                    },
-                   new SqlParameter()
-                    {
-                        ParameterName = "@Photo",
-                        SqlDbType = System.Data.SqlDbType.Image,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.DoctorPhoto
                     }
                };
 
@@ -316,5 +309,42 @@ namespace BackEnd.Controllers
             }
         }
         #endregion
+
+        [HttpPut("ChangeImage")]
+        public async Task<ActionResult<Recomendation>> ChangeImage([FromBody] DoctorModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_ChangeDoctorImage @ID, @Image";
+
+                var param = new SqlParameter[]
+               {
+
+                    new SqlParameter()
+                    {
+                        ParameterName = "@ID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.DoctorId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Image",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.DoctorPhoto
+                    },
+               };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Imagen editada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se editó la imagen: " + ex.Message);
+            }
+        }
     }
 }

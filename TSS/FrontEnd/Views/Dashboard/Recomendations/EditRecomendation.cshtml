@@ -30,13 +30,32 @@
                 <span asp-validation-for="Information" class="text-danger"></span>
             </div>
             <hr />
+            <div style="text-align: center;">
+                <input type="submit" value="Actualizar" class="btn btn-primary" />
+                <a asp-action="Recomendations" class="btn btn-primary">Regresar a Recomendaciones</a>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
 
+<center>
+    <h1>Cambiar Imagen</h1>
+
+</center>
+<div class="row">
+    <div class="col">
+        <form asp-action="ChangeImage" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(Model => Model.RecomendationId)
+            @Html.HiddenFor(Model => Model.DoctorId)
+            @Html.HiddenFor(Model => Model.SpecialtyId)
+            @Html.HiddenFor(Model => Model.Information)
             <div class="col">
                 <input type="file" asp-for="PostImage" class="form-control" name="files" />
                 <span asp-validation-for="PostImage" class="text-danger"></span>
             </div>
             <hr />
-
             <div style="text-align: center;">
                 <input type="submit" value="Actualizar" class="btn btn-primary" />
                 <a asp-action="Recomendations" class="btn btn-primary">Regresar a Recomendaciones</a>
