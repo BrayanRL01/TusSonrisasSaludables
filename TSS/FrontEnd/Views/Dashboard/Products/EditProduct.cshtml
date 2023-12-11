@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col">
-        <form asp-action="EditProduct">
+        <form asp-action="EditProduct" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.HiddenFor(Model => Model.ProductId)
             <br />
