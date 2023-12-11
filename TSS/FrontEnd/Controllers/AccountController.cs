@@ -105,19 +105,22 @@ namespace FrontEnd.Controllers
             var gRecaptchaResponse = Request.Form["g-recaptcha-response"];
             var secretKey = _configuration["RecaptchaSettings:SecretKey"];
             bool response = await IsReCaptchaPassedAsync(gRecaptchaResponse, secretKey);
-
-            string mensaje = _securityHelper.Register(user);
-            if (response && ModelState.IsValid && mensaje.StartsWith("U"))
+            if (response && ModelState.IsValid)
             {
-                //TempData["Message"] = "Usuario creado correctamente.";
-                TempData["Message"] = mensaje;
-                return RedirectToAction("Login");
+                string mensaje = _securityHelper.Register(user);
+                if (mensaje.StartsWith("U"))
+                {
+                    TempData["Message"] = mensaje;
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    TempData["Error"] = mensaje;
+                    return RedirectToAction("Register");
+                }
             }
-            else
-            {
-                TempData["Error"] = mensaje;
-                return RedirectToAction("Register");
-            }
+            TempData["Error"] = "Debe marcar el checkbox del Recaptcha para poder crear su usuario.";
+            return RedirectToAction("Register");
         }
 
         [Authorize]
