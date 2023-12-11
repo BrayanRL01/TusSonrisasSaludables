@@ -181,7 +181,7 @@ namespace BackEnd.Controllers
             try
             {
                 string Query = "EXEC SP_EditProduct @ProductID ,@BrandID, " +
-                    "@CategoryID, @ProductName, @Description, @Price, @Stock, @Image";
+                    "@CategoryID, @ProductName, @Description, @Price, @Stock";
 
                 var param = new SqlParameter[]
                 {
@@ -233,13 +233,6 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.Stock
-                    },
-                     new SqlParameter()
-                    {
-                        ParameterName = "@Image",
-                        SqlDbType = System.Data.SqlDbType.Image,
-                        Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.ProductImage
                     }
                 };
 
@@ -254,5 +247,41 @@ namespace BackEnd.Controllers
             }
         }
 
+        [HttpPut("ChangeImage")]
+        public async Task<ActionResult<Recomendation>> ChangeImage([FromBody] ProductModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_ChangeProductImage @ID, @Image";
+
+                var param = new SqlParameter[]
+               {
+
+                    new SqlParameter()
+                    {
+                        ParameterName = "@ID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProductId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Image",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.ProductImage
+                    },
+               };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Imagen editada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se editó la imagen: " + ex.Message);
+            }
+        }
     }
 }

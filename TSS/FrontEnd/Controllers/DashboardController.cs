@@ -769,6 +769,35 @@ namespace FrontEnd.Controllers
             TempData["Error"] = mensaje;
             return RedirectToAction("Doctors");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDoctorImage(DoctorViewModel doctor, List<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                IFormFile formFile = files[0];
+
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                doctor.DoctorPhoto = ms.ToArray();
+            }
+            else
+            {
+                doctor.DoctorPhoto = Array.Empty<byte>();
+            }
+
+            string mensaje = doctorsHelper.ChangeImage(doctor);
+
+            if (mensaje.StartsWith("I"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Doctors");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Doctors");
+        }
         #endregion
 
         #region Delete
@@ -882,7 +911,34 @@ namespace FrontEnd.Controllers
             string mensaje = productsHelper.Edit(product);
             if (mensaje.StartsWith("P"))
             {
-                TempData["Message"] = $"Producto {product.ProductName} editado correctamente.";
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Products");
+            }
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Products");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProductImage(ProductViewModel product, List<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                IFormFile formFile = files[0];
+
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                product.ProductImage = ms.ToArray();
+            }
+            else
+            {
+                product.ProductImage = Array.Empty<byte>();
+            }
+
+            string mensaje = productsHelper.ChangeImage(product);
+            if (mensaje.StartsWith("I"))
+            {
+                TempData["Message"] = mensaje;
                 return RedirectToAction("Products");
             }
             TempData["Error"] = mensaje;
@@ -1115,13 +1171,6 @@ namespace FrontEnd.Controllers
 
         #endregion
 
-        #region
-        public ActionResult Blog()
-        {
-            return View("Blog/Blog");
-        }
-        #endregion
-
         public IActionResult Privacy()
         {
             return View();
@@ -1278,6 +1327,35 @@ namespace FrontEnd.Controllers
             TempData["Error"] = mensaje;
             return RedirectToAction("Recomendations");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeImage(RecomendationViewModel recomendation, List<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                IFormFile formFile = files[0];
+
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                recomendation.PostImage = ms.ToArray();
+            }
+            else
+            {
+                recomendation.PostImage = Array.Empty<byte>();
+            }
+
+            string mensaje = recomendationsHelper.ChangeImage(recomendation);
+
+            if (mensaje.StartsWith("I"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Recomendations");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Recomendations");
+        }
         #endregion
 
         #region Delete
@@ -1305,6 +1383,7 @@ namespace FrontEnd.Controllers
             return RedirectToAction("Recomendations");
         }
         #endregion
+
         #endregion
     }
 }
