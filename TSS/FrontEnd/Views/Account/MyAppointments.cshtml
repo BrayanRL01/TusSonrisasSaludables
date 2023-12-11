@@ -5,75 +5,81 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<script>
+    setTimeout(function () {
+        $('#myAlert').alert('close');
+    }, 3000);
+</script>
 
 <div style="padding: 30px; width: 100%;">
     @if (TempData.ContainsKey("Message"))
     {
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="myAlert">
             @TempData["Message"]
-            @*             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button> *@
         </div>
     }
     else @if (TempData.ContainsKey("Error"))
     {
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="myAlert">
             @TempData["Error"]
         </div>
     }
     <center><h1>Mis Citas Reservadas</h1></center>
     <br />
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Doctor)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PacientName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SpecialtyName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndTime)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                @if (item != null)
+    @if (Model.Count() != 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Doctor)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PacientName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SpecialtyName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartTime)
+                    </th>
+                    <th>
+                        @Html.DisplayName("Acción")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Doctor)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PacientName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SpecialtyName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndTime)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Cancelar Cita", "Cancel", "Appointments", new { id = item.AppointmentId }, new { @class = "btn btn-primary" })
-                        </td>
-                    </tr>
+                    @if (item != null)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Doctor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PacientName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SpecialtyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartTime)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Cancelar Cita", "Cancel", "Appointments", new { id = item.AppointmentId }, new { @class = "btn btn-primary" })
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <center>
+            <h1>No ha reservado ninguna cita.</h1>
+        </center>
+    }
 </div>

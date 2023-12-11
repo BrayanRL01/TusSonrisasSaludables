@@ -31,6 +31,11 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/UI/bootstrap.min.css" rel="stylesheet">
 
+    <link href="~/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+
     <!-- Template Stylesheet -->
     <link href="~/css/UI/style.css" rel="stylesheet">
 </head>
@@ -60,7 +65,7 @@
             <div class="col-md-6 text-center text-lg-end">
                 <div class="position-relative d-inline-flex align-items-center bg-primary text-white top-shape px-5">
                     <div class="me-3 pe-3 border-end py-2">
-                        <p class="m-0"><i class="fa fa-envelope-open me-2"></i>info@example.com</p>
+                        <p class="m-0"><i class="fa fa-envelope-open me-2"></i>tusonrisasaludables@gmail.com</p>
                     </div>
                     <div class="py-2">
                         <p class="m-0"><i class="fa fa-phone-alt me-2"></i>2221-4316</p>
@@ -81,8 +86,8 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
                 <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Inicio</a>
-                <a href="#" class="nav-item nav-link">Acerca</a>
-                <a href="#" class="nav-item nav-link">Servicios</a>
+                <a asp-action="Recomendations" class="nav-item nav-link">Recomendaciones</a>
+                @* <a href="#" class="nav-item nav-link">Servicios</a> *@
                 @*                 <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Productos</a>
                 <div class="dropdown-menu m-0">
@@ -114,7 +119,7 @@
                         }
                     </div>
                 </div>
-                <a href="#" class="nav-item nav-link">Contacto</a>
+                @* <a href="contact.html" class="nav-item nav-link">Contacto</a> *@
             </div>
             <button type="button" class="btn text-dark" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fa fa-search"></i></button>
             <a asp-controller="Appointments" asp-action="Index" class="btn btn-primary py-2 px-4 ms-3">Citas</a>
@@ -150,7 +155,7 @@
                 <div class="col-lg-3 col-md-6">
                     <h3 class="text-white mb-4">Contacto</h3>
                     <p class="mb-2"><i class="bi bi-geo-alt text-primary me-2"></i>San José, Costa Rica</p>
-                    <p class="mb-2"><i class="bi bi-envelope-open text-primary me-2"></i>info@example.com</p>
+                    <p class="mb-2"><i class="bi bi-envelope-open text-primary me-2"></i>tusonrisasaludables@gmail.com</p>
                     <p class="mb-0"><i class="bi bi-telephone text-primary me-2"></i>2221-4316</p>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -191,6 +196,13 @@
     <script src="~/lib/UI/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="~/lib/UI/twentytwenty/jquery.event.move.js"></script>
     <script src="~/lib/UI/twentytwenty/jquery.twentytwenty.js"></script>
+
+
+    <script src="~/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/Dash/demo/datatables-demo.js"></script>
+
+
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>

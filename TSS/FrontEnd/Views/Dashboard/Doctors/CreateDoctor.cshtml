@@ -35,22 +35,24 @@
                 <span asp-validation-for="IdNumber" class="text-danger"></span>
             </div>
             <br />
+
             <div class="col">
                 @*    <label asp-for="DoctorName" class="control-label"></label>*@
                 <input asp-for="DoctorName" class="form-control" placeholder="Nombre" />
                 <span asp-validation-for="DoctorName" class="text-danger"></span>
             </div>
+            <br />
 
-            <div class="form-group">
+            <div class="col">
                 @* <label asp-for="FirstName" class="control-label"></label> *@
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control" placeholder="Primer Apellido" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
 
             <br />
             <div class="col">
                 @* <label asp-for="LastName" class="control-label"></label> *@
-                <input asp-for="LastName" class="form-control" placeholder="Apellidos" />
+                <input asp-for="LastName" class="form-control" placeholder="Segundo Apellido" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
 
@@ -84,8 +86,14 @@
             <partial name="Photo/_DoctorPhoto" model="Model" />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
-                <button class="btn btn-primary" asp-action="Doctors">Regresar a Doctores</button>
+                <a class="btn btn-primary" asp-action="Doctors">Regresar a Doctores</a>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

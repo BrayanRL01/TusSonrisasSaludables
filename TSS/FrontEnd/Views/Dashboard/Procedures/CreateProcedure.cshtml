@@ -5,6 +5,14 @@
     Layout = "~/Views/Shared/_DashLayout.cshtml";
 }
 
+<style>
+    .padding {
+        padding-left: 160px;
+        padding-right: 180px;
+        padding-bottom: 5px;
+    }
+</style>
+
 <center><h1>Crear Procedimiento</h1></center>
 
 <hr />
@@ -13,16 +21,21 @@
         <form asp-action="CreateProcedure">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col">
-              @*  <label asp-for="ProcedureName" class="control-label"></label>*@
-                <input asp-for="ProcedureName" class="form-control" placeholder="Nombre del Procedimiento"/>
+                @*  <label asp-for="ProcedureName" class="control-label"></label>*@
+                <input asp-for="ProcedureName" class="form-control" placeholder="Nombre del Procedimiento" />
                 <span asp-validation-for="ProcedureName" class="text-danger"></span>
             </div>
             <br />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
-                <button class="btn btn-primary" asp-action="Procedures">Regresar a Procedimientos</button>
+                <a class="btn btn-primary" asp-action="Procedures">Regresar a Procedimientos</a>
             </div>
         </form>
     </div>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

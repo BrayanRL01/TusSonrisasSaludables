@@ -1,0 +1,10 @@
+﻿@model FrontEnd.Models.RecomendationViewModel
+
+@{
+    if (Model.PostImage != null)
+    {
+        string imageBase64 = Convert.ToBase64String(Model.PostImage);
+        string imageSrc = string.Format("data:ContentType = image/jpg;base64,{0}", imageBase64);
+        <img src="@imageSrc" width="100" height="100" />
+    }
+}

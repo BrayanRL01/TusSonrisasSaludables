@@ -14,9 +14,13 @@ namespace FrontEnd.Controllers
         <body>
             <h1>Cita</h1>
             <p>Nombre: {formData.Nombre}</p>
+</br>
             <p>Edad: {formData.Edad}</p>
+</br>
             <p>Fecha: {formData.Fecha}</p>
+</br>
             <p>Correo: {formData.Correo}</p>
+</br>
         </body>
     </html>";
 
@@ -33,7 +37,7 @@ namespace FrontEnd.Controllers
             var htmlContent = $@"<!DOCTYPE html>
 <html>
 <head>
-    <title>Reporte de Cita Agendada</title>
+  <title>Reporte de cita de Sonrisas Saludables</title>
 </head>
 <body>
     <div style='width: 600px;
@@ -59,6 +63,32 @@ namespace FrontEnd.Controllers
           <p> Hora de Fin: {formData.EndTime} </p>
         </div>
     </div>
+</body>
+</html>";
+
+            var info = $@"<!DOCTYPE html>
+<html lang=""es"">
+<head>
+  <title>Reporte de cita de Sonrisas Saludables</title>
+</head>
+<body>
+  <h1>Reporte de cita</h1>
+  <p>
+    Información relacionada a la cita del usuario:
+  </p>
+  <p>
+    Doctor/a: {formData.Doctor}
+
+    Especialidad: {formData.SpecialtyName}
+
+    Paciente: {formData.PacientName}
+
+    Hora Inicio: {formData.StartTime}
+
+    Hora Fin: {formData.EndTime}
+
+    Fecha de Creación: {DateTime.Now}
+  </p>
 </body>
 </html>";
 

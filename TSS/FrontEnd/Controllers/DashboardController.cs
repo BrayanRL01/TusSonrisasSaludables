@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Newtonsoft.Json;
 
 namespace FrontEnd.Controllers
 {
@@ -45,6 +43,8 @@ namespace FrontEnd.Controllers
         RecordsHelper recordsHelper = new();
         ProceduresHelper proceduresHelper = new();
         #endregion
+
+        private RecomendationsHelper recomendationsHelper = new();
 
         #endregion
 
@@ -393,7 +393,7 @@ namespace FrontEnd.Controllers
 
                     mensaje = appointmentsHelper.Add(appointment);
                 };
-            } 
+            }
             else
             {
                 TempData["Error"] = "Se debe escoger un doctor y una especialidad.";
@@ -685,6 +685,17 @@ namespace FrontEnd.Controllers
             return View("Doctors/CreateDoctor", doctor);
         }
 
+        public ActionResult CreateDoctors()
+        {
+            DoctorViewModel doctor = new();
+            var specialties = specialtiesHelper.GetAllView();
+            var types = idHelper.GetAllView();
+            var genres = genresHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Types = new SelectList(types, "TypeId", "IdType");
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName");
+            return View("Doctors/CreateDoctor", doctor);
+        }
         // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1104,6 +1115,13 @@ namespace FrontEnd.Controllers
 
         #endregion
 
+        #region
+        public ActionResult Blog()
+        {
+            return View("Blog/Blog");
+        }
+        #endregion
+
         public IActionResult Privacy()
         {
             return View();
@@ -1141,10 +1159,152 @@ namespace FrontEnd.Controllers
             }
         }
 
+        public IActionResult ChangePassword()
+        {
+            PasswordModel model = new();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(PasswordModel model)
+        {
+            string? email = User.FindFirst(ClaimTypes.Email)?.Value;
+            model.Email = email!;
+            string message = securityHelper.ChangePassword(model);
+            if (message.StartsWith("Se"))
+            {
+                TempData["Message"] = message;
+                return RedirectToAction("ChangePassword");
+            }
+            else
+            {
+                TempData["Error"] = message;
+                return RedirectToAction("ChangePassword");
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region Recomendations
+        public ActionResult Recomendations()
+        {
+            List<VWRecomendationViewModel>? recomendations = recomendationsHelper.GetRecomendationsView();
+            return View("Recomendations/Recomendations", recomendations);
+        }
+
+        #region Create
+        public ActionResult CreateRecomendation()
+        {
+            RecomendationViewModel recomendation = new();
+            var specialties = specialtiesHelper.GetAllView();
+            var doctors = doctorsHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+            return View("Recomendations/CreateRecomendation", recomendation);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRecomendation(RecomendationViewModel recomendation, List<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                IFormFile formFile = files[0];
+
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                recomendation.PostImage = ms.ToArray();
+            }
+            else
+            {
+                recomendation.PostImage = Array.Empty<byte>();
+            }
+
+            string mensaje = recomendationsHelper.Add(recomendation);
+
+            if (mensaje.StartsWith("R"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Recomendations");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Recomendations");
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditRecomendation(int id)
+        {
+            RecomendationViewModel? recomendation = recomendationsHelper.GetByID(id);
+            var specialties = specialtiesHelper.GetAllView();
+            var doctors = doctorsHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+            return View("Recomendations/EditRecomendation", recomendation);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRecomendation(RecomendationViewModel recomendation, List<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                IFormFile formFile = files[0];
+
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                recomendation.PostImage = ms.ToArray();
+            }
+            else
+            {
+                recomendation.PostImage = Array.Empty<byte>();
+            }
+
+            string mensaje = recomendationsHelper.Edit(recomendation);
+
+            if (mensaje.StartsWith("R"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Recomendations");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Recomendations");
+        }
+        #endregion
+
+        #region Delete
+        // GET: UsersController/Delete/5
+        public ActionResult DeleteRecomendation(int id)
+        {
+            RecomendationViewModel? recomendation = recomendationsHelper.GetByID(id);
+            return View("Recomendations/DeleteRecomendation", recomendation);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRecomendation(RecomendationViewModel recomendation)
+        {
+            string mensaje = recomendationsHelper.Delete(recomendation.RecomendationId);
+
+            if (mensaje.StartsWith("R"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Recomendations");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Recomendations");
+        }
+        #endregion
+        #endregion
     }
 }

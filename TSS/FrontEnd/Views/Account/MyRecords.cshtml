@@ -10,79 +10,78 @@
     {
         <div class="alert alert-success" role="alert">
             @TempData["Message"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     }
     else @if (TempData.ContainsKey("Error"))
     {
         <div class="alert alert-danger" role="alert">
             @TempData["Error"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     }
     <center><h1>Mis Registros</h1></center>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.PatientName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DoctorName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProcedureName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Diagnoses)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Symptoms)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Treatment)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RecordDate)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @if (Model.Count() != 0)
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PatientName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DoctorName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProcedureName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Diagnoses)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Symptoms)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Treatment)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RecordDate)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
-                    </td>
+                    @*                     <th>
+                @Html.DisplayNameFor(model => model.PatientName)
+                </th> *@
+                    <th>
+                        @Html.DisplayNameFor(model => model.DoctorName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProcedureName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Diagnoses)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Symptoms)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Treatment)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RecordDate)
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <br />
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*                         <td>
+                @Html.DisplayFor(modelItem => item.PatientName)
+                </td> *@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DoctorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProcedureName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Diagnoses)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Symptoms)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Treatment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RecordDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <center>
+            <h1>No posee registros previos de citas realizadas.</h1>
+        </center>
+    }
 </div>

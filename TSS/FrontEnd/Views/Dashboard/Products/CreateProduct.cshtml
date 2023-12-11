@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col">
-        <form asp-action="CreateProduct">
+        <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col">
                 @*<label asp-for="BrandId" class="form-label"></label>*@
@@ -56,8 +56,16 @@
             <br />
             <div style="text-align: center;">
                 <input type="submit" value="Crear" class="btn btn-primary" />
-                <button class="btn btn-primary" asp-action="Products">Regresar a Producto</button>
+                <a class="btn btn-primary" asp-action="Products">Regresar a Productos</a>
+@*
+                <button class="btn btn-primary" asp-action="Products">Regresar a Producto</button>*@
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

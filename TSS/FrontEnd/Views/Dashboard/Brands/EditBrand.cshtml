@@ -10,25 +10,27 @@
 @*<h4>BrandViewModel</h4>*@
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col">
         <form asp-action="EditBrand">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @Html.HiddenFor(Model => Model.BrandId)
-            <div class="form-group">
+            <div class="col">
                 <label asp-for="BrandName" class="control-label"></label>
                 <input asp-for="BrandName" class="form-control" />
                 <span asp-validation-for="BrandName" class="text-danger"></span>
             </div>
+            <br />
             <div style="text-align: center;">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
-                <a asp-action="Brands">Regresar a marcas</a>
+                <a class="btn btn-primary" asp-action="Brands">Regresar a Marcas</a>
+
             </div>
         </form>
     </div>
 </div>
 
-@*<div>
-    <a asp-action="Index">Volver a marcas</a>
-</div>
-
-*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -23,14 +23,16 @@
             </div>
             <br /> 
             <div style="text-align: center;">
-                <input type="submit" value="Crear" class="btn btn-primary" />             
-                <button class="btn btn-primary" asp-action="SubCategories">Regresar a Subcategorías</button>
-                </div>          
+                <input type="submit" value="Crear" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-action="SubCategories">Regresar a Subcategorías</a>
+@*                <button class="btn btn-primary" asp-action="SubCategories">Regresar a Subcategorías</button>
+*@                </div>          
         </form>
     </div>
 </div>
 
-@*<div>
-    <a asp-action="SubCategories">Volver a Subcategorías</a>
-</div>*@
-
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
