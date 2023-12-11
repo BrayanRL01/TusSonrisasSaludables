@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col">
-        <form asp-action="CreateProduct">
+        <form asp-action="CreateProduct" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col">
                 @*<label asp-for="BrandId" class="form-label"></label>*@

@@ -341,19 +341,21 @@ namespace Entities.Entities
                     .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.PostImage).HasColumnType("image");
+
                 entity.Property(e => e.SpecialtyId).HasColumnName("SpecialtyID");
 
                 entity.HasOne(d => d.Doctor)
                     .WithMany(p => p.Recomendations)
                     .HasForeignKey(d => d.DoctorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Recomenda__Docto__2F9A1060");
+                    .HasConstraintName("FK__Recomenda__Docto__42ACE4D4");
 
                 entity.HasOne(d => d.Specialty)
                     .WithMany(p => p.Recomendations)
                     .HasForeignKey(d => d.SpecialtyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Recomenda__Speci__308E3499");
+                    .HasConstraintName("FK__Recomenda__Speci__43A1090D");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -761,6 +763,8 @@ namespace Entities.Entities
                 entity.Property(e => e.Information).IsUnicode(false);
 
                 entity.Property(e => e.PostDate).HasColumnType("date");
+
+                entity.Property(e => e.PostImage).HasColumnType("image");
 
                 entity.Property(e => e.RecomendationId).HasColumnName("RecomendationID");
 

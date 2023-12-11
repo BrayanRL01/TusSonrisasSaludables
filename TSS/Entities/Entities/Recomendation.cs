@@ -10,6 +10,7 @@ namespace Entities.Entities
         public int SpecialtyId { get; set; }
         public string Information { get; set; } = null!;
         public DateTime PostDate { get; set; }
+        public byte[]? PostImage { get; set; }
 
         public virtual Doctor Doctor { get; set; } = null!;
         public virtual Specialty Specialty { get; set; } = null!;

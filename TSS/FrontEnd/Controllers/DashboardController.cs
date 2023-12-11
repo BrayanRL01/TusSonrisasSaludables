@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Newtonsoft.Json;
 
 namespace FrontEnd.Controllers
 {
@@ -1192,11 +1190,121 @@ namespace FrontEnd.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
-        public ActionResult Blogs()
+        #region Recomendations
+        public ActionResult Recomendations()
         {
             List<VWRecomendationViewModel>? recomendations = recomendationsHelper.GetRecomendationsView();
-            return View("Blog/Blog", recomendations);
+            return View("Recomendations/Recomendations", recomendations);
         }
+
+        #region Create
+        public ActionResult CreateRecomendation()
+        {
+            RecomendationViewModel recomendation = new();
+            var specialties = specialtiesHelper.GetAllView();
+            var doctors = doctorsHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+            return View("Recomendations/CreateRecomendation", recomendation);
+        }
+
+        // POST: UsersController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRecomendation(RecomendationViewModel recomendation, List<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                IFormFile formFile = files[0];
+
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                recomendation.PostImage = ms.ToArray();
+            }
+            else
+            {
+                recomendation.PostImage = Array.Empty<byte>();
+            }
+
+            string mensaje = recomendationsHelper.Add(recomendation);
+
+            if (mensaje.StartsWith("R"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Recomendations");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Recomendations");
+        }
+        #endregion
+
+        #region Edit
+        public ActionResult EditRecomendation(int id)
+        {
+            RecomendationViewModel? recomendation = recomendationsHelper.GetByID(id);
+            var specialties = specialtiesHelper.GetAllView();
+            var doctors = doctorsHelper.GetAllView();
+            ViewBag.Specialties = new SelectList(specialties, "SpecialtyId", "SpecialtyName");
+            ViewBag.Doctors = new SelectList(doctors, "DoctorId", "FullName");
+            return View("Recomendations/EditRecomendation", recomendation);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRecomendation(RecomendationViewModel recomendation, List<IFormFile> files)
+        {
+            if (files.Count > 0)
+            {
+                IFormFile formFile = files[0];
+
+                using var ms = new MemoryStream();
+                formFile.CopyTo(ms);
+                recomendation.PostImage = ms.ToArray();
+            }
+            else
+            {
+                recomendation.PostImage = Array.Empty<byte>();
+            }
+
+            string mensaje = recomendationsHelper.Edit(recomendation);
+
+            if (mensaje.StartsWith("R"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Recomendations");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Recomendations");
+        }
+        #endregion
+
+        #region Delete
+        // GET: UsersController/Delete/5
+        public ActionResult DeleteRecomendation(int id)
+        {
+            RecomendationViewModel? recomendation = recomendationsHelper.GetByID(id);
+            return View("Recomendations/DeleteRecomendation", recomendation);
+        }
+
+        // POST: UsersController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRecomendation(RecomendationViewModel recomendation)
+        {
+            string mensaje = recomendationsHelper.Delete(recomendation.RecomendationId);
+
+            if (mensaje.StartsWith("R"))
+            {
+                TempData["Message"] = mensaje;
+                return RedirectToAction("Recomendations");
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction("Recomendations");
+        }
+        #endregion
+        #endregion
     }
 }

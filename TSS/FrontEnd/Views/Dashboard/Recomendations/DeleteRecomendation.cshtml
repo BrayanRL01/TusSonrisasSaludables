@@ -1,0 +1,20 @@
+﻿@model FrontEnd.Models.RecomendationViewModel
+
+@{
+    ViewData["Title"] = "DeleteRecomendation";
+    Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+<center>
+    <h1>Eliminar Recomendación</h1>
+
+    <h3>¿Está seguro/a de eliminar esta recomendación?</h3>
+    <div>
+        <hr />
+
+        <form asp-action="DeleteRecomendation">
+            @Html.HiddenFor(Model => Model.RecomendationId)
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+            <a class="btn btn-primary" asp-action="Recomendations">Regresar a Recomendaciones</a>
+        </form>
+    </div>
+</center>

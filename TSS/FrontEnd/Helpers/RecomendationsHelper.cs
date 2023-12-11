@@ -33,5 +33,44 @@ namespace FrontEnd.Helpers
         }
         #endregion
 
+        #region GetByID
+        public RecomendationViewModel? GetByID(int id)
+        {
+            HttpResponseMessage responseMessage = repository.GetResponse("api/Recomendations/Recomendation/" + id);
+            string content = responseMessage.Content.ReadAsStringAsync().Result;
+            RecomendationViewModel? recomendation = JsonConvert.DeserializeObject<RecomendationViewModel?>(content);
+            return recomendation;
+        }
+        #endregion
+
+        #region Create
+        public string Add(RecomendationViewModel Recomendation)
+        {
+            HttpResponseMessage responseMessage = repository.PostResponse("api/Recomendations/Recomendation/", Recomendation);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content.ToString();
+            return mensaje;
+        }
+        #endregion
+
+        #region Update
+        public string Edit(RecomendationViewModel Recomendation)
+        {
+            HttpResponseMessage responseMessage = repository.PutResponse("api/Recomendations/Recomendation/", Recomendation);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
+        }
+        #endregion
+
+        #region Delete
+        public string Delete(int id)
+        {
+            HttpResponseMessage responseMessage = repository.DeleteResponse("api/Recomendations/" + id);
+            var content = responseMessage.Content.ReadAsStringAsync().Result;
+            string mensaje = content;
+            return mensaje;
+        }
+        #endregion
     }
 }

@@ -27,10 +27,10 @@ namespace FrontEnd.Controllers
             return View();
         }
 
-        public ActionResult Blogs()
+        public ActionResult Recomendations()
         {
             List<VWRecomendationViewModel>? recomendations = recomendationsHelper.GetRecomendationsView();
-            return View("Blog/Blog", recomendations);
+            return View(recomendations);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

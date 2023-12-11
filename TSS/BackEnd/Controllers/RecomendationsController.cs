@@ -29,12 +29,28 @@ namespace BackEnd.Controllers
 
             try
             {
-                var users = await _context.VwRecomendations.FromSqlRaw("EXEC SP_GetRecomendations").ToListAsync();
-                return Ok(users);
+                var recomendations = await _context.VwRecomendations.FromSqlRaw("EXEC SP_GetRecomendations").ToListAsync();
+                return Ok(recomendations);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("Recomendation/{id}")]
+        public async Task<ActionResult> SP_GetRecomendation(int id)
+        {
+            try
+            {
+                var recomendations = await _context.Recomendations.FromSqlInterpolated($"EXEC SP_GetRecomendation {id}").ToListAsync();
+                var recomendation = recomendations.FirstOrDefault();
+
+                return Ok(recomendation);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se ha encontrado el usuario: " + ex.Message);
             }
         }
 
@@ -43,24 +59,24 @@ namespace BackEnd.Controllers
         {
             try
             {
-                string Query = "EXEC SP_CreateRecomendation @User, @Specialty, @Info";
+                string Query = "EXEC SP_CreateRecomendation @Doctor, @Specialty, @Info, @Image";
 
                 var param = new SqlParameter[]
                {
-                    
+
                     new SqlParameter()
                     {
-                        ParameterName = "@User",
+                        ParameterName = "@Doctor",
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.UserID
+                        Value = entity.DoctorId
                     },
                      new SqlParameter()
                     {
                         ParameterName = "@Specialty",
                         SqlDbType = System.Data.SqlDbType.Int,
                         Direction = System.Data.ParameterDirection.Input,
-                        Value = entity.SpecialtyID
+                        Value = entity.SpecialtyId
                     },
                      new SqlParameter()
                     {
@@ -68,7 +84,14 @@ namespace BackEnd.Controllers
                         SqlDbType = System.Data.SqlDbType.VarChar,
                         Direction = System.Data.ParameterDirection.Input,
                         Value = entity.Information
-                    }
+                    },
+                     new SqlParameter()
+                     {
+                        ParameterName = "@Image",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PostImage
+                     }
                };
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
@@ -79,6 +102,73 @@ namespace BackEnd.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "No se creó la recomendacion: " + ex.Message);
+            }
+        }
+
+
+        [HttpPut("Recomendation")]
+        public async Task<ActionResult<Recomendation>> PutRecomendations([FromBody] RecomendationModel entity)
+        {
+            try
+            {
+                string Query = "EXEC SP_EditRecomendation @ID, @Specialty, @Info, @Image";
+
+                var param = new SqlParameter[]
+               {
+
+                    new SqlParameter()
+                    {
+                        ParameterName = "@ID",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.RecomendationId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Specialty",
+                        SqlDbType = System.Data.SqlDbType.Int,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.SpecialtyId
+                    },
+                     new SqlParameter()
+                    {
+                        ParameterName = "@Info",
+                        SqlDbType = System.Data.SqlDbType.VarChar,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.Information
+                    },
+                     new SqlParameter()
+                     {
+                        ParameterName = "@Image",
+                        SqlDbType = System.Data.SqlDbType.Image,
+                        Direction = System.Data.ParameterDirection.Input,
+                        Value = entity.PostImage
+                     }
+               };
+
+                await _context.Database.ExecuteSqlRawAsync(Query, param);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Recomendacion editada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se editó la recomendacion: " + ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteRecomendation(int id)
+        {
+            try
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteRecomendation {id}");
+                await _context.SaveChangesAsync();
+                return Ok("Recomendación eliminada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "No se pudo eliminar la recomendación: " + ex.Message);
             }
         }
     }

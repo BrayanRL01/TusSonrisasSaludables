@@ -1,37 +1,50 @@
 ﻿@model IEnumerable<FrontEnd.Models.VWRecomendationViewModel>
 
 @{
-    ViewData["Title"] = "Blog";
-    Layout = "~/Views/Shared/_DashLayout.cshtml";
+    ViewData["Title"] = "Recomendations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<br />
+<center>
+    <h1 class="m-0 font-weight-bold text-primary" asp-action="CreateRecomendation">Recomendaciones Disponibles</h1>
+</center>
 
 <div class="projcard-container">
-    @foreach (var item in Model)
+    @if (Model.Count() != 0)
     {
-        <div class="projcard projcard-blue">
-            <div class="projcard-innerbox">
-                <img class="projcard-img" src="https://cdn.pixabay.com/photo/2020/02/04/16/37/teeth-4818711_1280.jpg" />
-                <div class="projcard-textbox">
-                    <div class="projcard-title">Prueba</div>
-                    <div class="projcard-subtitle">
-                        @Html.DisplayNameFor(itemModel => item.Information)
-                    </div>
-                    <div class="projcard-bar"></div>
-                    <div class="projcard-description">
-
-                        @Html.DisplayFor(modelItem => item.Information)
-
-
-                    </div>
-                    <div class="projcard-tagbox">
+        @foreach (var item in Model)
+        {
+            <div class="projcard projcard-blue">
+                <div class="projcard-innerbox">
+                    <partial name="Photo/_RecomendationPhotoView" model="item" />
+                    <div class="projcard-textbox">
+                        <div class="projcard-title">
+                            Especialista: @Html.DisplayFor(modelItem => item.FullName)
+                        </div>
+                        <div class="projcard-subtitle">
+                            Especialidad: @Html.DisplayFor(modelItem => item.SpecialtyName)
+                        </div>
+                        <div class="projcard-subtitle">
+                            Fecha de publicación: @Html.DisplayFor(modelItem => item.PostDate)
+                        </div>
+                        <div class="projcard-bar"></div>
+                        <div class="projcard-description">
+                            @Html.DisplayFor(modelItem => item.Information)
+                        </div>
+                        <div class="projcard-tagbox">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
+    }
+    else
+    {
+        <center style="padding-top: 50px;">
+            <h1>No hay recomendaciones disponibles.</h1>
+        </center>
     }
 </div>
-
-
 
 <style>
     /* Demo Code: */
@@ -344,5 +357,4 @@
     document.querySelectorAll(".projcard-description").forEach(function (box) {
         $clamp(box, { clamp: 6 });
     });
-
 </script>

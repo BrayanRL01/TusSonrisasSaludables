@@ -1,0 +1,52 @@
+﻿@model FrontEnd.Models.RecomendationViewModel
+
+@{
+    ViewData["Title"] = "EditRecomendation";
+    Layout = "~/Views/Shared/_DashLayout.cshtml";
+}
+<center>
+    <h1>Editar Recomendación</h1>
+</center>
+<hr />
+<div class="row">
+    <div class="col">
+        <form asp-action="EditRecomendation" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(Model => Model.RecomendationId)
+            <div class="col">
+                @Html.DropDownListFor(model => model.DoctorId, (SelectList)ViewBag.Doctors, "Seleccionar Doctor", new { @class = "form-control" })
+                <span asp-validation-for="DoctorId" class="text-danger"></span>
+            </div>
+            <hr />
+
+            <div class="col">
+                @Html.DropDownListFor(model => model.SpecialtyId, (SelectList)ViewBag.Specialties, "Seleccionar Especilidad", new { @class = "form-control" })
+                <span asp-validation-for="SpecialtyId" class="text-danger"></span>
+            </div>
+            <hr />
+
+            <div class="col">
+                <textarea asp-for="Information" class="form-control" rows="3" placeholder="Información"></textarea>
+                <span asp-validation-for="Information" class="text-danger"></span>
+            </div>
+            <hr />
+
+            <div class="col">
+                <input type="file" asp-for="PostImage" class="form-control" name="files" />
+                <span asp-validation-for="PostImage" class="text-danger"></span>
+            </div>
+            <hr />
+
+            <div style="text-align: center;">
+                <input type="submit" value="Actualizar" class="btn btn-primary" />
+                <a asp-action="Recomendations" class="btn btn-primary">Regresar a Recomendaciones</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

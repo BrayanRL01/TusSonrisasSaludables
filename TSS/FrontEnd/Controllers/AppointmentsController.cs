@@ -16,7 +16,6 @@ namespace FrontEnd.Controllers
         {
             List<VWAppointmentViewModel>? appointments = appointmentsHelper.GetAppointmentsView();
             var citas = appointmentsHelper.GetAppointmentsView();
-            ViewData["citas"] = citas.ToJson();
             return View(appointments);
         }
 
