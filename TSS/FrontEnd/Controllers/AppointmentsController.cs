@@ -15,7 +15,6 @@ namespace FrontEnd.Controllers
         public ActionResult Index()
         {
             List<VWAppointmentViewModel>? appointments = appointmentsHelper.GetAppointmentsView();
-            var citas = appointmentsHelper.GetAppointmentsView();
             return View(appointments);
         }
 
