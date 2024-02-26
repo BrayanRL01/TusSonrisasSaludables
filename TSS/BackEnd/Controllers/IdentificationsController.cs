@@ -29,6 +29,8 @@ namespace BackEnd.Controllers
             try
             {
                 var identifications = await _context.VwIdentifications.FromSqlRaw("EXEC SP_GetIdentificationsView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(identifications);
             }
             catch (Exception ex)
@@ -45,6 +47,7 @@ namespace BackEnd.Controllers
             {
                 var types = await _context.VwProvinces.FromSqlInterpolated($"EXEC SP_GetIdentificationView {id}").ToListAsync();
                 var type = types.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(type);
             }

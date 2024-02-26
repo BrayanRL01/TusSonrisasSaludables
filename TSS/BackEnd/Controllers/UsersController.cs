@@ -32,6 +32,8 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwUsers.FromSqlRaw("EXEC SP_GetUsersView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(users);
             }
             catch (Exception ex)
@@ -47,6 +49,7 @@ namespace BackEnd.Controllers
             {
                 var users = await _context.VwUsers.FromSqlInterpolated($"EXEC SP_GetUserView {id}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(user);
             }
@@ -64,6 +67,7 @@ namespace BackEnd.Controllers
             {
                 var users = await _context.Users.FromSqlInterpolated($"EXEC SP_GetUser {id}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(user);
             }
@@ -79,6 +83,8 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwUsers.FromSqlInterpolated($"EXEC SP_FindUserView {data}").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(users);
             }
             catch (Exception ex)
@@ -188,6 +194,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Administrador creado correctamente.");
             }
@@ -299,6 +306,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Usuario actualizado correctamente.");
             }
@@ -318,6 +326,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteUser {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Usuario eliminado correctamente.");
             }
             catch (Exception ex)
@@ -340,6 +350,8 @@ namespace BackEnd.Controllers
             };
             await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CountUsers {count} OUTPUT");
             string result = (string)count.Value;
+            await _context.Database.CloseConnectionAsync();
+
             return Ok(result);
         }
         #endregion

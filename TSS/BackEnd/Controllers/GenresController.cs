@@ -29,6 +29,8 @@ namespace BackEnd.Controllers
             try
             {
                 var genres = await _context.VwGenres.FromSqlRaw("EXEC SP_GetGenresView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(genres);
             }
 
@@ -46,6 +48,7 @@ namespace BackEnd.Controllers
             {
                 var genres = await _context.VwGenres.FromSqlInterpolated($"EXEC SP_GetGenreView {id}").ToListAsync();
                 var genre = genres.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(genre);
             }
