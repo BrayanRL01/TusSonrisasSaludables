@@ -31,6 +31,8 @@ namespace BackEnd.Controllers
             try
             {
                 var doctors = await _context.VwDoctors.FromSqlRaw("EXEC SP_GetDoctorsView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(doctors);
             }
             catch (Exception ex)
@@ -47,6 +49,7 @@ namespace BackEnd.Controllers
             {
                 var doctors = await _context.VwDoctors.FromSqlInterpolated($"EXEC SP_GetDoctorView {id}").ToListAsync();
                 var doctor = doctors.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(doctor);
             }
@@ -63,6 +66,7 @@ namespace BackEnd.Controllers
             {
                 var doctors = await _context.Doctors.FromSqlInterpolated($"EXEC SP_GetDoctor {id}").ToListAsync();
                 var doctor = doctors.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(doctor);
             }
@@ -78,6 +82,8 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwDoctors.FromSqlInterpolated($"EXEC SP_FindDoctorsView {data}").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(users);
             }
             catch (Exception ex)
@@ -180,6 +186,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Doctor/a {entity.DoctorName} {entity.FirstName} {entity.LastName} creado correctamente.");
             }
@@ -283,6 +290,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Doctor/a {entity.DoctorName} {entity.FirstName} {entity.LastName} actualizado correctamente.");
             }
@@ -338,6 +346,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Imagen editada correctamente.");
             }

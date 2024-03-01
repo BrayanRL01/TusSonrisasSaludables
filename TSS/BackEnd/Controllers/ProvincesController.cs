@@ -34,6 +34,8 @@ namespace BackEnd.Controllers
             try
             {
                 var provinces = await _context.VwProvinces.FromSqlRaw("EXEC SP_GetProvincesView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(provinces);
             }
             catch (Exception ex)
@@ -50,6 +52,7 @@ namespace BackEnd.Controllers
             {
                 var provinces = await _context.VwProvinces.FromSqlInterpolated($"EXEC SP_GetProvinceView {id}").ToListAsync();
                 var province = provinces.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(province);
             }

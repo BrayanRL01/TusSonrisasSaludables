@@ -30,6 +30,8 @@ namespace BackEnd.Controllers
             try
             {
                 var recomendations = await _context.VwRecomendations.FromSqlRaw("EXEC SP_GetRecomendations").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(recomendations);
             }
             catch (Exception ex)
@@ -45,6 +47,7 @@ namespace BackEnd.Controllers
             {
                 var recomendations = await _context.Recomendations.FromSqlInterpolated($"EXEC SP_GetRecomendation {id}").ToListAsync();
                 var recomendation = recomendations.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(recomendation);
             }
@@ -96,6 +99,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Recomendacion creada correctamente.");
             }
@@ -141,6 +145,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Recomendacion editada correctamente.");
             }
@@ -157,6 +162,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteRecomendation {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Recomendación eliminada correctamente.");
             }
             catch (Exception ex)
@@ -193,6 +200,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Imagen editada correctamente.");
             }

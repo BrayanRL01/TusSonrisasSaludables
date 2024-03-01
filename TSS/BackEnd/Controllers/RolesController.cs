@@ -26,6 +26,8 @@ namespace BackEnd.Controllers
             try
             {
                 var roles = await _context.VwRoles.FromSqlRaw("SP_GetAllRoles").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(roles);
             }
             catch (Exception ex)

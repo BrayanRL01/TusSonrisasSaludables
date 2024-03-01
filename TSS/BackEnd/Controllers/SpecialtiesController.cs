@@ -31,6 +31,8 @@ namespace BackEnd.Controllers
             try
             {
                 var specialties = await _context.VwSpecialties.FromSqlRaw("EXEC SP_GetSpecialtiesView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(specialties);
             }
             catch (Exception ex)
@@ -48,6 +50,7 @@ namespace BackEnd.Controllers
             {
                 var users = await _context.VwSpecialties.FromSqlInterpolated($"EXEC SP_GetSpecialtyView {id}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(user);
             }
@@ -78,6 +81,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Especialidad {entity.SpecialtyName} creada correctamente.");
             }
@@ -117,6 +121,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Especialidad {entity.SpecialtyName} actualizada correctamente.");
             }

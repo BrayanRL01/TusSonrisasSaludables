@@ -31,6 +31,8 @@ namespace BackEnd.Controllers
             try
             {
                 var brands = await _context.VwBrands.FromSqlRaw("EXEC SP_GetBrandsView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(brands);
             }
             catch (Exception ex)
@@ -53,6 +55,8 @@ namespace BackEnd.Controllers
             {
                 var brands = await _context.VwBrands.FromSqlInterpolated($"EXEC SP_GetBrandView {id}").ToListAsync();
                 var brand = brands.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(brand);
             }
             catch (Exception ex)
@@ -83,6 +87,8 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
 
                 return Ok("Marca creada correctamente.");
             }
@@ -120,6 +126,8 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
 
                 return Ok("Marca actualizada correctamente.");
             }
@@ -136,6 +144,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteBrand {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Marca eliminada correctamente.");
             }
             catch (Exception ex)

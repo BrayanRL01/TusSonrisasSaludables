@@ -32,6 +32,7 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwAppointments.FromSqlRaw("EXEC SP_GetAppointmentsView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -51,6 +52,7 @@ namespace BackEnd.Controllers
             try
             {
                 var citas = await _context.VwAdminAppointments.FromSqlRaw("EXEC SP_GetAdminAppointmentsView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
                 return Ok(citas);
             }
             catch (Exception ex)
@@ -77,6 +79,8 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_AvailableAppointmentsCount {outputParam} OUTPUT");
 
                 string count = (string)outputParam.Value;
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(count);
             }
             catch (Exception ex)
@@ -101,6 +105,8 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ReservedAppointmentsCount {outputParam} OUTPUT");
 
                 string count = (string)outputParam.Value;
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(count);
             }
             catch (Exception ex)
@@ -119,6 +125,8 @@ namespace BackEnd.Controllers
             {
                 var users = await _context.Appointments.FromSqlInterpolated($"EXEC SP_GetAppointment {id}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
+
 
                 return Ok(user);
             }
@@ -135,6 +143,7 @@ namespace BackEnd.Controllers
             {
                 var users = await _context.VwAppointments.FromSqlInterpolated($"EXEC SP_GetAppointmentView {id}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(user);
             }
@@ -151,6 +160,7 @@ namespace BackEnd.Controllers
             {
                 var users = await _context.VwAdminAppointments.FromSqlInterpolated($"EXEC SP_GetAdminAppointmentView {id}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(user);
             }
@@ -166,6 +176,8 @@ namespace BackEnd.Controllers
             try
             {
                 var users = await _context.VwAdminAppointments.FromSqlInterpolated($"EXEC SP_GetUserAppointments {email}").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 if (users != null)
                 {
                     return Ok(users);               
@@ -222,6 +234,8 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
 
                 return Ok("Cita(as) creada correctamente.");
             }
@@ -283,6 +297,8 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
 
                 return Ok("Cita actualizada correctamente.");
             }
@@ -303,6 +319,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteAppointment {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Cita eliminada correctamente.");
             }
             catch (Exception ex)
@@ -326,6 +344,8 @@ namespace BackEnd.Controllers
                 {
                     await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ConfirmAppointment {model.AppointmentId}, {model.Email}");
                     await _context.SaveChangesAsync();
+                    await _context.Database.CloseConnectionAsync();
+
                     return Ok("Cita reservada correctamente.");
                 }
             }
@@ -348,6 +368,8 @@ namespace BackEnd.Controllers
                 {
                     await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_CancelAppointment {model.AppointmentId}, {model.Email}");
                     await _context.SaveChangesAsync();
+                    await _context.Database.CloseConnectionAsync();
+
                     return Ok("Cita cancelada correctamente.");
                 }
             }
@@ -376,6 +398,8 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_NextAppointment {outputParam} OUTPUT");
 
                 string next = (string)outputParam.Value;
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(next);
             }
             catch (Exception ex)

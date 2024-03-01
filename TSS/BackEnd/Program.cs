@@ -96,7 +96,7 @@ app.UseSwaggerUI(c =>
 
 app.UseHttpsRedirection();
 
-//app.UseMiddleware<ApiKeyMiddleware>();
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.UseAuthentication();
 

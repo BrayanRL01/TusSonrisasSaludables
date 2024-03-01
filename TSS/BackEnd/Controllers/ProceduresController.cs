@@ -32,6 +32,8 @@ namespace BackEnd.Controllers
             try
             {
                 var procedures = await _context.VwProcedures.FromSqlRaw("EXEC SP_GetProceduresView ").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(procedures);
             }
             catch (Exception ex)
@@ -48,6 +50,8 @@ namespace BackEnd.Controllers
             {
                 var procedures = await _context.VwProcedures.FromSqlInterpolated($"EXEC SP_GetProcedureView  {id}").ToListAsync();
                 var procedure = procedures.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
+
 
                 return Ok(procedure);
             }
@@ -81,6 +85,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Procedimiento creado correctamente.");
             }
@@ -121,6 +126,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Procedimiento {entity.ProcedureName} actualizado correctamente.");
             }
@@ -140,6 +146,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteProcedure {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Procedimiento eliminado correctamente.");
             }
             catch (Exception ex)

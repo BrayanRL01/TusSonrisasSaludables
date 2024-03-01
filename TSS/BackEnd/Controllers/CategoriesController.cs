@@ -32,6 +32,8 @@ namespace BackEnd.Controllers
             try
             {
                 var categories = await _context.VwCategories.FromSqlRaw("EXEC SP_GetCategoriesView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return categories;
             }
             catch (Exception ex)
@@ -51,6 +53,8 @@ namespace BackEnd.Controllers
             try
             {
                 var subs = await _context.VwSubCategories.FromSqlRaw("EXEC SP_GetSubCategoriesView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return subs;
             }
             catch (Exception ex)
@@ -67,6 +71,7 @@ namespace BackEnd.Controllers
             {
                 var categories = await _context.VwCategories.FromSqlInterpolated($"EXEC SP_GetCategoryView {id}").ToListAsync();
                 var category = categories.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(category);
             }
@@ -83,6 +88,7 @@ namespace BackEnd.Controllers
             {
                 var categories = await _context.Categories.FromSqlInterpolated($"EXEC SP_GetCategory {id}").ToListAsync();
                 var category = categories.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(category);
             }
@@ -99,6 +105,7 @@ namespace BackEnd.Controllers
             {
                 var categories = await _context.VwSubCategories.FromSqlInterpolated($"EXEC SP_GetSubCategoryView {id}").ToListAsync();
                 var category = categories.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(category);
             }
@@ -131,6 +138,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Categoría creada correctamente.");
             }
@@ -167,6 +175,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Subcategoría creada correctamente.");
             }
@@ -206,6 +215,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Categoría actualizada correctamente.");
             }
@@ -249,6 +259,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Subcategoría actualizada correctamente.");
             }
@@ -268,6 +279,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteCategory {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Categoría/Subcategoría eliminada correctamente.");
             }
             catch (Exception ex)

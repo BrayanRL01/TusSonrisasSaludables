@@ -30,6 +30,8 @@ namespace BackEnd.Controllers
             try
             {
                 var records = await _context.VwRecords.FromSqlRaw("EXEC SP_GetRecordsView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(records);
             }
             catch (Exception ex)
@@ -49,6 +51,8 @@ namespace BackEnd.Controllers
             try
             {
                 var records = await _context.VwRecords.FromSqlInterpolated($"EXEC SP_GetPatientRecord {email}").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 if (records == null)
                 {
                     return StatusCode(500, "No hay registros disponibles.");
@@ -69,6 +73,7 @@ namespace BackEnd.Controllers
             {
                 var records = await _context.VwRecords.FromSqlInterpolated($"EXEC SP_GetRecordView {id}").ToListAsync();
                 var record = records.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(record);
             }
@@ -85,6 +90,7 @@ namespace BackEnd.Controllers
             {
                 var records = await _context.PatientRecords.FromSqlInterpolated($"EXEC SP_GetRecord {id}").ToListAsync();
                 var record = records.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(record);
             }
@@ -153,6 +159,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Registro creado correctamente.");
             }
@@ -207,6 +214,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok("Registro actualizado correctamente.");
             }
@@ -226,6 +234,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteRecord {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Registro eliminado correctamente.");
             }
             catch (Exception ex)

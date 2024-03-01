@@ -34,6 +34,8 @@ namespace BackEnd.Controllers
             try
             {
                 var products = await _context.VwProducts.FromSqlRaw("EXEC SP_GetProductsView").ToListAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(products);
             }
             catch (Exception ex)
@@ -56,6 +58,8 @@ namespace BackEnd.Controllers
             {
                 var products = await _context.VwProducts.FromSqlInterpolated($"EXEC SP_GetProductView {id}").ToListAsync();
                 var product = products.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(product);
             }
             catch (Exception ex)
@@ -77,6 +81,8 @@ namespace BackEnd.Controllers
             {
                 var products = await _context.Products.FromSqlInterpolated($"EXEC SP_GetProduct {id}").ToListAsync();
                 var product = products.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(product);
             }
             catch (Exception ex)
@@ -149,6 +155,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Producto {entity.ProductName} creado correctamente.");
             }
@@ -166,6 +173,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_DeleteProduct {id}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Producto eliminado correctamente.");
             }
             catch (Exception ex)
@@ -238,6 +247,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Producto {entity.ProductName} actualizado correctamente.");
             }
@@ -275,6 +285,7 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok($"Imagen editada correctamente.");
             }

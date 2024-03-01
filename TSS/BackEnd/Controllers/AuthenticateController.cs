@@ -169,6 +169,8 @@ namespace BackEnd.Controllers
 
                 await _context.Database.ExecuteSqlRawAsync(Query, param);
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
 
                 return Ok("Usuario creado correctamente.");
             }
@@ -211,6 +213,7 @@ namespace BackEnd.Controllers
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXECUTE SP_GetRoleUser {param1}, {param2}, {outputParam} OUTPUT");
 
                 model.Roles = (string)outputParam.Value;
+                await _context.Database.CloseConnectionAsync();
 
                 return model.Roles;
 
@@ -230,6 +233,7 @@ namespace BackEnd.Controllers
                 var users = await _context.Users.FromSqlInterpolated
                     ($"EXEC SP_GetEmailUser {model.Email}, {model.PasswordHash}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
 
                 return Ok(user);
             }
@@ -248,6 +252,8 @@ namespace BackEnd.Controllers
                 var users = await _context.Users.
                                    FromSqlInterpolated($"EXEC SP_EditUserEmail {email}").ToListAsync();
                 var user = users.FirstOrDefault();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok(user);
             }
             catch (Exception ex)
@@ -272,6 +278,8 @@ namespace BackEnd.Controllers
             {
                 await _context.Database.ExecuteSqlInterpolatedAsync($"EXEC SP_ChangePassword {model.Email}, {model.Password}");
                 await _context.SaveChangesAsync();
+                await _context.Database.CloseConnectionAsync();
+
                 return Ok("Se ha cambiado su contraseña correctamente.");
             }
             catch (Exception ex)
