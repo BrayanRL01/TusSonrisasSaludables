@@ -18,7 +18,7 @@ Tecnologías Utilizadas
 
 Frontend: HTML5, CSS3, Bootstrap.
 
-Backend y FrontEnd: ASP.NET.
+Backend y FrontEnd: C#, .NET Core 6.
 
 Base de Datos: Microsoft SQL Server Express para almacenar datos de pacientes, citas, entre otros.
 
