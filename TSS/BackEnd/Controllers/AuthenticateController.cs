@@ -50,7 +50,7 @@ namespace BackEnd.Controllers
                     audience: config["JWT:ValidAudience"],
                     expires: DateTime.Now.AddHours(1),
                     claims: authClaims,
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha512Signature)
+                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256Signature)
                     );
 
                 return Ok(new
@@ -69,7 +69,7 @@ namespace BackEnd.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] UserModel entity)
         {
-            if (ValidPassword(entity.PasswordHash) == false)
+            if (!ValidPassword(entity.PasswordHash))
             {
                 return BadRequest("La contraseña debe contener como mínimo 8 caracteres con un número, una letra mayúscula y un caracter especial.");
             }
